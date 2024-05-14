@@ -1,0 +1,30 @@
+# Fichiers générés par Eclipse
+*.classpath
+*.project
+/.settings/
+
+# Fichiers générés par IntelliJ
+.idea/
+*.iml
+*.iws
+
+# Fichiers générés par Visual Studio Code
+.vscode/
+
+# Fichiers de build Java
+bin/
+target/
+
+# Fichiers de logs
+*.log
+
+# Fichiers temporaires
+*.tmp
+
+# Fichiers de sauvegarde
+*~
+
+# Fichiers de configuration pour les serveurs d'application
+*.war
+*.ear
+*.jar
