@@ -16,6 +16,7 @@
 			<c:if test="${requestScope.categorie == 'GESTIONNAIRE'}">
 				<li><a href="central?type_action=gestionProduit">Gérer les produits</a></li>
 			</c:if>
+			<li><a href="central?type_action=gestion_List">Liste des courses</a></li>
 		</ul>	    
 	</body>
 </html>
