@@ -44,7 +44,10 @@ public class HibernateUtil {
      * @author EricB
      */
 	public static SessionFactory getSessionAnnotationFactory() {
-		if(sessionAnnotationFactory == null) sessionAnnotationFactory = buildSessionAnnotationFactory();
-        return sessionAnnotationFactory;
+		if(sessionAnnotationFactory == null) {
+			sessionAnnotationFactory = buildSessionAnnotationFactory();
+		}
+		return sessionAnnotationFactory;
     }
+	
 }

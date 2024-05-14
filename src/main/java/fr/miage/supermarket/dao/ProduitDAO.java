@@ -14,6 +14,11 @@ import fr.miage.supermarket.utils.HibernateUtil;
  */
 public class ProduitDAO {
 
+	/**
+	 * Se charge d'enregistrer une liste de produits
+	 * @param produitsToSave les produits à enregistrer
+	 * @author EricB
+	 */
 	public void registerProduits(List<Produit> produitsToSave) {		
 		//Récupération de la session 
 		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
@@ -26,7 +31,7 @@ public class ProduitDAO {
 		session.getTransaction().commit();
 		
 		//Ferme la session
-		sessionFactory.close();
+		session.close();
 	}
 	
 }
