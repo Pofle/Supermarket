@@ -71,6 +71,7 @@ public class AjouterProduit extends HttpServlet {
 		List<Produit> produits = new ArrayList<>();
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 			String line;
+			reader.readLine(); // On fait un premier readLine pour skip le header
 			while((line = reader.readLine()) != null) {
 				String data[] = line.split(",");
 				if(data.length == 10) {
