@@ -31,12 +31,15 @@ public class ServletDispatcher extends HttpServlet {
 		String action = request.getParameter("type_action");
 		
 		// Moyen temporaire de changer d'utilisateur au travers de cette variable.
-		String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
+		String categorieCompte = CategorieCompte.PREPARATEUR.name(); // ICI setter de rôle (visit, gestion, prepa)
 
 		if (categorieCompte != null) {
 			if (categorieCompte.equals(CategorieCompte.GESTIONNAIRE.name())) {
 				dispatchGestionnaireFuncs(action, request, response);
-			} else {
+			} else if (categorieCompte.equals(CategorieCompte.PREPARATEUR.name())){
+				dispatchPreparateurFuncs(action, request, response);
+			}
+			else {
 				dispatchDefaultFuncs(action, request, response);
 			}
 		}
@@ -59,7 +62,11 @@ public class ServletDispatcher extends HttpServlet {
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
-
+	
+	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		//TODO
+	}
 	private void dispatchDefaultFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url;
