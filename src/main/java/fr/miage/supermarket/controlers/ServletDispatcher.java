@@ -70,6 +70,8 @@ public class ServletDispatcher extends HttpServlet {
 			switch (action) {
 			default:
 				url = "accueil";
+			case "gestion_List":
+				url= "/gestionList";
 			}
 		}
 		request.getRequestDispatcher(url).forward(request, response);
