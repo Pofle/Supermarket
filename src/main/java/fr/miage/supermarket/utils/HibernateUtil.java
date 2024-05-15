@@ -5,6 +5,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Produit;
 
 
@@ -27,6 +28,7 @@ public class HibernateUtil {
         	configuration.configure("hibernate.cfg.xml");
 
         	configuration.addAnnotatedClass(Produit.class);
+        	configuration.addAnnotatedClass(Commande.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
