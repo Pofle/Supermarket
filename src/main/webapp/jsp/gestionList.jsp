@@ -12,22 +12,28 @@
 </head>
 <body>
     <h1>Mes listes de courses</h1>
+   
+    
+    <p>Les listes vous permettent de retrouver facilement les produits que vous souhaitez acheter. <br>
+    Vous pouvez créer jusqu'à 10 listes différentes de 100 articles maximum.</p>
+   
+   <c:if test="${requestScope.categorie == 'UTILISATEUR'}">
+    	<ul>
+        	<c:forEach var="list" items="${shoppingLists}" varStatus="status" >
+            	<li> ${status.index + 1} - ${list.name}</li>
+        	</c:forEach>
+    	</ul> 
+    </c:if>  
+    
+    <c:if test="${requestScope.categorie == 'VISITEUR'}">
+    	<p> <a href="">Connectez-vous</a> pour consulter vos listes, les modifier ou les ajouter à votre panier.</p>
+    </c:if>
+    
+    <p> <a href="central?type_action==BackToHome">Retour à la page d'accueil</a></p>
+
     
     <c:if test="${not empty msgError}">
         <p style="color:red;">${msgError}</p>
     </c:if>
-    
-    <p>Les listes vous permettent de retrouver facilement les produits que vous souhaitez acheter.
-    Vous pouvez créer jusqu'à 10 listes différentes de 100 articles maximum.</p>
-   
-    <ul>
-        <c:forEach var="list" items="${shoppingLists}" varStatus="status" >
-            <li> ${status.index + 1} - ${list.name}</li>
-        </c:forEach>
-    </ul> 
-    
-    
-    <p> <a href="central?type_action==BackToHome">Retour à la page d'accueil</a></p>
-    
 </body>
 </html>
