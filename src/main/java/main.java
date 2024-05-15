@@ -15,8 +15,8 @@ public class main {
 //		Produit article = new Produit();
 //		article.setEan("oidfjz");
 //		//Récupération de la session 
-//		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-//		Session session = sessionFactory.getCurrentSession();
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
 //
 //		//session.beginTransaction();
 //		//session.persist(article);
@@ -27,14 +27,14 @@ public class main {
 //		sessionFactory.close();
 //	}
 		
-		 try {
-	           List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists();
-	            for (ShoppingList list : shoppingLists) {
-	                System.out.println("ID: " + list.getId() + ", Name: " + list.getName());
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+//		 try {
+//	           List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists();
+//	            for (ShoppingList list : shoppingLists) {
+//	                System.out.println("ID: " + list.getId() + ", Name: " + list.getName());
+//	            }
+//	        } catch (Exception e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
 
-}
+}}
