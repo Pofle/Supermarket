@@ -14,10 +14,11 @@
 		<!--  Parseur HQL  -->
 		<property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
 		<property name="hibernate.show_sql">true</property>
+		<!--  Gestion des sessions par Hibernate lui-même - Pour getCurrentSession()  -->
 		<property name="hibernate.current_session_context_class">thread</property>
 		
 		<!--  Mode de mise à jour de la base de données - create, validate, update, none  -->
 		<property name="hibernate.hbm2ddl.auto">update</property>
-
+		
 	</session-factory>
 </hibernate-configuration>
