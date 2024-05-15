@@ -6,7 +6,7 @@ function uploadCSV() {
     formData.append('file', file);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'ajouterProduit', true);
+    xhr.open('POST', 'produits', true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
