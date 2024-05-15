@@ -4,6 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 
 @Entity
@@ -98,4 +103,6 @@ public class Produit {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	@ManyToMany(mappedBy="Produit")
+	private Set<Commande> commandes = new HashSet<Commande>();
 }
