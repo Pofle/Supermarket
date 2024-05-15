@@ -13,7 +13,7 @@
 	<h1>Paniers à préparer</h1>
 	<ul>
 		<% for (Commande c : (ArrayList<Commande>)request.getAttribute("ListeCommandes") )
-			out.println("<li>" + c.getIdCommande()+ " " + c.getCreneau() + "</li>");
+			out.println("<li> Identifiant : " + c.getIdCommande()+ " Créneau : " + c.getCreneau() + "</li>");
 		%>
 	</ul>
 </body>

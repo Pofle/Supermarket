@@ -3,6 +3,7 @@ package fr.miage.supermarket.dao;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -23,7 +24,10 @@ public class CommandeDAO {
 		//ouverture de la session hibernate 
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		//ouverture d'une transaction 
-		Transaction transact = session.beginTransaction();
+		Transaction transact = session.getTransaction();
+		if(!transact.isActive()) {
+			transact = session.beginTransaction();
+		}
 		Commande PanierUn = new Commande(Timestamp.valueOf("2024-05-10 18:30:00"));
 		Commande PanierDeux = new Commande(Timestamp.valueOf("2024-05-15 09:15:00"));
 		session.save(PanierUn);
@@ -34,20 +38,37 @@ public class CommandeDAO {
 		session.close();
 	}
 	public static Commande loadCommande(long id_Commande) {
-			Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-			Transaction transact = session.beginTransaction();
-			Commande wantedCommande = session.load(Commande.class, id_Commande);
-			session.close();
-			return wantedCommande;
+	    Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
+	    Transaction transact = session.getTransaction();
+	    if(!transact.isActive()) {
+	        transact = session.beginTransaction();
+	    }
+	    try {
+	        Commande wantedCommande = session.get(Commande.class, id_Commande);
+	        transact.commit();
+	        return wantedCommande;
+	    } catch (RuntimeException e) {
+	        if (transact != null && transact.isActive()) {
+	            transact.rollback();
+	        }
+	        throw e;
+	    } finally {
+	    	 if (session != null) {
+	             session.close();
+	         }
+	    }
 	}
-	public static long countAllCommande() {
+	
+	public static ArrayList<Long> AllIDCommande() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-		Transaction transact = session.beginTransaction();
-		Query query = session.createQuery("SELECT COUNT(*) FROM commande");
+		Transaction transact = session.getTransaction();
+		if(!transact.isActive()) {
+			transact = session.beginTransaction();
+		}
+		Query query = session.createQuery("SELECT id_commande FROM commande");
+		ArrayList<Long> id = (ArrayList<Long>) query.getResultList();
 		transact.commit();
-		session.close();
-		long count = (long) query.uniqueResult();
-        return count;
+		return id;
 	}
 
 }
