@@ -11,10 +11,10 @@
 </head>
 <body>
 <h1>Préparation du panier</h1>
-<h2>Panier n°<% (Commande)request.getAttribute("Commande_enCours").getIdCommande(); %></h2> 
+<h2>Panier n° <% request.getAttribute("Commande_enCours"); %></h2> 
 <ul>
-<% for (Produit p : (ArrayList<Produit>)request.getAttribute("Commande_enCours").getPanier())
-	out.println("<li>" + p.getEan()+ "</li>");
+<% for (Produit p : (ArrayList<Produit>)request.getAttribute("Commande_enCours"))
+	out.println("<li>" + p + "</li>");
 %>
 </ul>
 </body>
