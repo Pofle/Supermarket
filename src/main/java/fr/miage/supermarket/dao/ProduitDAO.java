@@ -60,4 +60,23 @@ public class ProduitDAO {
 			session.close();
 		}
 	}
+	
+	public Produit getProduitById(String ean) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction();
+		
+		try {
+			Produit produit = session.get(Produit.class, ean);
+			session.getTransaction().commit();
+			return produit;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }
