@@ -59,16 +59,16 @@ public class CommandeDAO {
 	    }
 	}
 	
-	public static ArrayList<Long> AllIDCommande() {
+	public static ArrayList<Commande> AllCommandeTrieParCreneau() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		Transaction transact = session.getTransaction();
 		if(!transact.isActive()) {
 			transact = session.beginTransaction();
 		}
-		Query query = session.createQuery("SELECT id_commande FROM commande");
-		ArrayList<Long> id = (ArrayList<Long>) query.getResultList();
+		Query query = session.createQuery("FROM commande ORDER BY creneau ASC", Commande.class);
+		ArrayList<Commande> commandes = (ArrayList<Commande>) query.getResultList();
 		transact.commit();
-		return id;
+		return commandes;
 	}
 
 }

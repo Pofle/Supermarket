@@ -94,10 +94,7 @@ public class ServletDispatcher extends HttpServlet {
 		//creation commande fictive 
 		//CommandeDAO.createCommande();
 		//on récupère les commandes à préparer 
-		ArrayList<Commande> listeC = new ArrayList<Commande>();
-		for(Long l : CommandeDAO.AllIDCommande()) {
-			listeC.add(CommandeDAO.loadCommande(l));
-		}
+		ArrayList<Commande> listeC = CommandeDAO.AllCommandeTrieParCreneau();
 		request.setAttribute("ListeCommandes", listeC);
 		request.getRequestDispatcher(url).forward(request, response);
 	}
