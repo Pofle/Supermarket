@@ -31,13 +31,19 @@ public class ServletDispatcher extends HttpServlet {
 		String action = request.getParameter("type_action");
 		
 		// Moyen temporaire de changer d'utilisateur au travers de cette variable.
-		String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
+	String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
 
 		if (categorieCompte != null) {
-			if (categorieCompte.equals(CategorieCompte.GESTIONNAIRE.name())) {
-				dispatchGestionnaireFuncs(action, request, response);
-			} else {
-				dispatchDefaultFuncs(action, request, response);
+			switch (categorieCompte) {
+            case "GESTIONNAIRE":
+                dispatchGestionnaireFuncs(action, request, response);
+                break;
+            case "PREPARATEUR":
+                dispatchPreparateurFuncs(action, request, response);
+                break;
+            default:
+                dispatchDefaultFuncs(action, request, response);
+                break;
 			}
 		}
 	}
@@ -53,6 +59,33 @@ public class ServletDispatcher extends HttpServlet {
 			case "gestionProduit":
 				url = "gestionProduit";
 				break;
+			case "gestionStock":
+				url = "gestionStock";
+				break;
+			case "gestionCommande":
+				url = "gestionCommande";
+				break;
+			case "statistiques":
+				url = "statistiques";
+				break;
+			default:
+				url = "accueil";
+			}
+		}
+		request.getRequestDispatcher(url).forward(request, response);
+	}
+	
+	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String url;
+		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
+		if (action == null)
+			url = "accueil";
+		else {
+			switch (action) {
+			case "preparationPanier":
+				url = "preparationPanier";
+				break;
 			default:
 				url = "accueil";
 			}
@@ -67,10 +100,25 @@ public class ServletDispatcher extends HttpServlet {
 		if (action == null)
 			url = "accueil";
 		else {
-			switch (action) {
-			default:
-				url = "accueil";
-			}
+            switch (action) {
+            case "rayons":
+                url = "rayons";
+                break;
+            case "promos":
+                url = "promos";
+                break;
+            case "listeCourse":
+                url = "listeCourse";
+                break;
+            case "connexionInscription":
+                url = "connexionInscription";
+                break;
+            case "panier":
+                url = "panier";
+                break;
+            default:
+                url = "accueil";
+            }
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}

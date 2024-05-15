@@ -13,11 +13,14 @@
 <body>
 	<%@ include file="navbar.jsp"%>
 	<h1>Accueil</h1>
+	<h2>Bienvenue :)</h2>
 
 	<div class="search-bar">
 		<input type="text" placeholder="Rechercher...">
 		<button type="button">Rechercher</button>
 	</div>
+	
+	<h2>Produits du moment</h2>
 	<div class="article-container" id="article-container"></div>
 	<script src="javascript/produits.js"></script>
 </body>
