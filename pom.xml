@@ -56,10 +56,10 @@
 		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
 		<!-- Nécessaire pour l'utilisation de JSTL au sein des JSP -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jstl</artifactId>
+    <version>1.2</version>
+</dependency>
 
 		<!--
 		https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard-impl -->
@@ -69,6 +69,8 @@
 			<artifactId>taglibs-standard-impl</artifactId>
 			<version>1.2.5</version>
 		</dependency>
+		
+		
 	</dependencies>
 
 	<build>

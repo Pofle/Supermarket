@@ -1,11 +1,14 @@
 package fr.miage.supermarket.utils;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.ShoppingList;
 
 
 /**
@@ -19,16 +22,19 @@ public class HibernateUtil {
 	/**
 	 * Méthode de création d'une session hibernate
 	 * @return la session nouvellement créée
-	 * @author EricB
+	 * @author EricB and PaulineF
 	 */
     private static SessionFactory buildSessionAnnotationFactory() {
     	try {
         	Configuration configuration = new Configuration();
         	configuration.configure("hibernate.cfg.xml");
+        	System.out.println("Hibernate Configuration loaded");
 
         	configuration.addAnnotatedClass(Produit.class);
+        	configuration.addAnnotatedClass(ShoppingList.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+        	System.out.println("Hibernate serviceRegistry created");
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
         }
@@ -47,4 +53,6 @@ public class HibernateUtil {
 		if(sessionAnnotationFactory == null) sessionAnnotationFactory = buildSessionAnnotationFactory();
         return sessionAnnotationFactory;
     }
+	
+	
 }

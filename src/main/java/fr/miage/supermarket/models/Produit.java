@@ -6,7 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
+
+import java.util.Set;
 
 @Entity
 @Table(name="Produit", uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})
@@ -36,6 +39,9 @@ public class Produit {
 	
 	@Column(name="LABEL", length=50, nullable=true)
 	private String label;
+	
+//	@ManyToMany(mappedBy = "produits")
+//    private Set<ShoppingList> shoppingLists;
 	
 	public String getEan() {
 		return ean;

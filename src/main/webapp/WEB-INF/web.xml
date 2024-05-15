@@ -50,6 +50,7 @@
 		<servlet-name>GestionProduit</servlet-name>
 		<url-pattern>/gestionProduit</url-pattern>
 	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>gestionList</servlet-name>
 		<url-pattern>/gestionList</url-pattern>
