@@ -39,5 +39,9 @@ public class Commande {
 	}
 	
 	@ManyToMany(mappedBy="Commande")
+	/*
+	 * @JoinTable( name = "Contenir", joinColumns = @JoinColumn(name =
+	 * "Id_Commande"), inverseJoinColumns = @JoinColumn(name = "ENA") )
+	 */
 	private Set<Produit> produits = new HashSet<Produit>();
 }
