@@ -1,14 +1,13 @@
 package fr.miage.supermarket.utils;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.models.Utilisateur;
 
 
 /**
@@ -32,6 +31,7 @@ public class HibernateUtil {
 
         	configuration.addAnnotatedClass(Produit.class);
         	configuration.addAnnotatedClass(ShoppingList.class);
+        	configuration.addAnnotatedClass(Utilisateur.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         	System.out.println("Hibernate serviceRegistry created");
