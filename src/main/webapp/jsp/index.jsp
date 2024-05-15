@@ -7,6 +7,7 @@
 		<title>Accueil</title>
 	
 		<link href="css/accueil.css" rel="stylesheet" type="text/css" />
+		 
 	</head>
 	
 	<body>
@@ -17,6 +18,8 @@
 				<li><a href="central?type_action=gestionProduit">Gérer les produits</a></li>
 			</c:if>
 			<li><a href="central?type_action=gestion_List">Listes des courses</a></li>
-		</ul>	    
+		</ul>
+		
+	<script src="javascript/script.js"></script>	    
 	</body>
 </html>
