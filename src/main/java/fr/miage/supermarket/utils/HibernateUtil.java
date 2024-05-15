@@ -5,7 +5,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import fr.miage.supermarket.models.Article;
+import fr.miage.supermarket.models.Produit;
 
 public class HibernateUtil {
 	
@@ -19,7 +19,7 @@ public class HibernateUtil {
 
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 
-        	configuration.addAnnotatedClass(Article.class);
+        	configuration.addAnnotatedClass(Produit.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         	
             return sessionFactory;

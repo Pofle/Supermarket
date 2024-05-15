@@ -1,9 +1,15 @@
+<<<<<<< Updated upstream
 .search-bar {
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+=======
+#errorMessage {
+    color: red;
+    font-weight: bold;
+>>>>>>> Stashed changes
 }
 
 .search-bar input[type="text"] {
@@ -47,4 +53,14 @@
 
 .article-card p {
     margin-bottom: 20px;
+<<<<<<< Updated upstream
 }
+=======
+}
+
+.image {
+	width: 12.5rem;
+	height: 12.5rem;
+}
+
+>>>>>>> Stashed changes

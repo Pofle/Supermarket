@@ -16,8 +16,6 @@
 		<servlet-name>GestionProduit</servlet-name>
 		<jsp-file>/jsp/gestionProduit.jsp</jsp-file>
 	</servlet>
-
-
 	<servlet>
 		<servlet-name>ServletDispatcher</servlet-name>
 		<display-name>ServletDispatcher</display-name>
@@ -37,6 +35,15 @@
 		<description>Servlet de gestion de récupération des produits</description>
 		<servlet-class>fr.miage.supermarket.controlers.RecupererProduits</servlet-class>
 	</servlet>
+<<<<<<< Updated upstream
+=======
+	<servlet>
+		<servlet-name>RecupererImage</servlet-name>
+		<display-name>RecupererImage</display-name>
+		<description>Servlet servant à la récupération des images</description>
+		<servlet-class>fr.miage.supermarket.controlers.RecupererImage</servlet-class>
+	</servlet>
+>>>>>>> Stashed changes
 	<servlet-mapping>
 		<servlet-name>ServletDispatcher</servlet-name>
 		<url-pattern>/central</url-pattern>
@@ -57,9 +64,16 @@
 		<servlet-name>RecupererProduits</servlet-name>
 		<url-pattern>/recupererProduits</url-pattern>
 	</servlet-mapping>
+<<<<<<< Updated upstream
 
+=======
+	<servlet-mapping>
+		<servlet-name>RecupererImage</servlet-name>
+		<url-pattern>/recupererImage</url-pattern>
+	</servlet-mapping>
+>>>>>>> Stashed changes
 	<welcome-file-list>
-		<welcome-file>supermarket</welcome-file>
+		<welcome-file>ServletDispatcher</welcome-file>
 	</welcome-file-list>
 >>>>>>> Stashed changes
 </web-app>
