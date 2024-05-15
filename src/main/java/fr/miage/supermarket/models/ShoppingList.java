@@ -15,12 +15,13 @@ import java.util.Set;
 
 /**
  * Object class for the Shopping List
- * @author EricB
+ * @author PaulineF
  */
 
 @Entity
 @Table(name = "ShoppingList",uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})
 public class ShoppingList {
+	//Attributs
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID", nullable=false, unique=true, length=13)
@@ -28,13 +29,12 @@ public class ShoppingList {
 	
 	@Column(name="NAME", nullable=false, unique=false, length=50)
     private String name;
-	
 
-    // Default constructor
+    // Construteur par défaut
     public ShoppingList() {
     }
 
-    // Parameterized constructor
+    // Conbstructeur paramétré
     public ShoppingList(String name) {
         //this.id = id;
         this.name = name;
