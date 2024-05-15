@@ -52,7 +52,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.28</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
 		<!-- Nécessaire pour l'utilisation de JSTL au sein des JSP -->
 		<dependency>
@@ -69,6 +68,16 @@
 			<artifactId>taglibs-standard-impl</artifactId>
 			<version>1.2.5</version>
 		</dependency>
+		
+		<!--
+		https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
+		<!-- Nécessaire pour le binding entre les objets java et xml -->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

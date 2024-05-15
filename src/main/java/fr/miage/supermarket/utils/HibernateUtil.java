@@ -31,6 +31,8 @@ public class HibernateUtil {
         	configuration.addAnnotatedClass(Commande.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+
+        	configuration.addAnnotatedClass(Produit.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
         }
@@ -46,7 +48,10 @@ public class HibernateUtil {
      * @author EricB
      */
 	public static SessionFactory getSessionAnnotationFactory() {
-		if(sessionAnnotationFactory == null) sessionAnnotationFactory = buildSessionAnnotationFactory();
-        return sessionAnnotationFactory;
+		if(sessionAnnotationFactory == null) {
+			sessionAnnotationFactory = buildSessionAnnotationFactory();
+		}
+		return sessionAnnotationFactory;
     }
+	
 }

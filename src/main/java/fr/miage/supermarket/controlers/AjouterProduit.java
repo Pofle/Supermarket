@@ -1,11 +1,14 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -71,18 +74,27 @@ public class AjouterProduit extends HttpServlet {
 		List<Produit> produits = new ArrayList<>();
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 			String line;
+			reader.readLine(); // On fait un premier readLine pour skip le header
 			while((line = reader.readLine()) != null) {
 				String data[] = line.split(",");
-				if(data.length == 10) {
+				if(data.length >= 11) {
 					Produit produit = new Produit();
 					produit.setEan(data[0]);
+					produit.setLibelle(data[1]);
 					produit.setDescriptionCourte(data[2]);
 					produit.setDescription(data[3]);
 					produit.setNutriscore(data[4]);
 					produit.setLabel(data[5]);
-					produit.setMarque(data[7]);
-					produit.setRepertoireImage(data[8]);
-					produit.setRepertoireVignette(data[9]);
+					produit.setMarque(data[6]);
+					produit.setRepertoireImage(data[7]);
+					produit.setRepertoireVignette(data[8]);
+					produit.setPrix(Float.valueOf(data[9]));
+					produit.setPoids(data[10].isBlank() ? null : Float.valueOf(data[10]));
+					
+					if(data.length == 12) {
+						produit.setConditionnement(data[11]);
+					}
+					
 					produits.add(produit);
 				} else {
 					throw new IOException("Le fichier est mal formaté");
@@ -91,5 +103,4 @@ public class AjouterProduit extends HttpServlet {
 		}
 		return produits;
 	}
-	
 }

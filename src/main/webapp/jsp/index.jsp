@@ -1,24 +1,24 @@
-<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+	isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Accueil</title>
-	
-		<link href="css/accueil.css" rel="stylesheet" type="text/css" />
-	</head>
-	
-	<body>
-		<h1>Accueil</h1>
-		<ul>
-			<li><a href="central?type_action=accueil">Accueil</a></li>
-			<c:if test="${requestScope.categorie == 'GESTIONNAIRE'}">
-				<li><a href="central?type_action=gestionProduit">Gérer les produits</a></li>
-			</c:if>
-			<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
-				<li><a href="central?type_action=listePaniers">Préparer les paniers</a></li>
-			</c:if>
-		</ul>	    
-	</body>
+<head>
+<jsp:include page="/jsp/header.jsp">
+	<jsp:param name="title" value="Accueil" />
+</jsp:include>
+<link href="css/accueil.css" rel="stylesheet" type="text/css" />
+<title>Accueil</title>
+</head>
+<body>
+	<%@ include file="navbar.jsp"%>
+	<h1>Accueil</h1>
+
+	<div class="search-bar">
+		<input type="text" placeholder="Rechercher...">
+		<button type="button">Rechercher</button>
+	</div>
+	<div class="article-container" id="article-container"></div>
+	<script src="javascript/produits.js"></script>
+</body>
 </html>

@@ -14,12 +14,6 @@
 		<jsp-file>/jsp/gestionProduit.jsp</jsp-file>
 	</servlet>
 	<servlet>
-		<servlet-name>ListePaniers</servlet-name>
-		<jsp-file>/jsp/listePaniers.jsp</jsp-file>
-	</servlet>
-
-
-	<servlet>
 		<servlet-name>ServletDispatcher</servlet-name>
 		<display-name>ServletDispatcher</display-name>
 		<description>Contrôleur central de l'ensemble des servlets de
@@ -31,6 +25,18 @@
 		<display-name>AjouterProduit</display-name>
 		<description>Servlet de traitement d'ajout d'un produit</description>
 		<servlet-class>fr.miage.supermarket.controlers.AjouterProduit</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>RecupererProduits</servlet-name>
+		<display-name>RecupererProduits</display-name>
+		<description>Servlet de gestion de récupération des produits</description>
+		<servlet-class>fr.miage.supermarket.controlers.RecupererProduits</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>RecupererImage</servlet-name>
+		<display-name>RecupererImage</display-name>
+		<description>Servlet servant à la récupération des images</description>
+		<servlet-class>fr.miage.supermarket.controlers.RecupererImage</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletDispatcher</servlet-name>
@@ -49,11 +55,14 @@
 		<url-pattern>/gestionProduit</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>ListePaniers</servlet-name>
-		<url-pattern>/listePaniers</url-pattern>
+		<servlet-name>RecupererProduits</servlet-name>
+		<url-pattern>/recupererProduits</url-pattern>
 	</servlet-mapping>
-
+	<servlet-mapping>
+		<servlet-name>RecupererImage</servlet-name>
+		<url-pattern>/recupererImage</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
-		<welcome-file>supermarket</welcome-file>
+		<welcome-file>ServletDispatcher</welcome-file>
 	</welcome-file-list>
 </web-app>
