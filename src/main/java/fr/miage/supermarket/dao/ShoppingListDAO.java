@@ -23,8 +23,9 @@ public class ShoppingListDAO {
 
 	        try {
 	            tx = session.beginTransaction();
-	            shoppingLists = session.createQuery("from ShoppingList", ShoppingList.class).list();
-	            tx.commit();
+	            shoppingLists = session.createQuery("from ShoppingList sl where sl.utilisateur.id = :userId", ShoppingList.class)
+                        .setParameter("userId", 11)
+                        .list();
 	        } catch (Exception e) {
 	            if (tx != null) tx.rollback();
 	            throw e;

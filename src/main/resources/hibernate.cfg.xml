@@ -20,9 +20,6 @@
 		<!--  Mode de mise à jour de la base de données - create, validate, update, none  -->
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		
-		<!-- Mode de mise à jour de la base de données - create, validate, update, none -->
-		<!-- <property name="hibernate.hbm2ddl.auto">create</property> -->
-		
 		<!-- Names the annotated entity class -->
         <mapping class="fr.miage.supermarket.models.ShoppingList"/>
       	<mapping class="fr.miage.supermarket.models.Produit"/> 

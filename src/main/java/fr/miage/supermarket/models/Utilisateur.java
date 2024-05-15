@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,6 +37,10 @@ public class Utilisateur {
 	
 	@Column(name = "MAIL", nullable = false, unique = false, length = 80)
 	private String mail;
+	
+	@Column(name= "ROLE")
+	@Enumerated(EnumType.STRING)
+	private CategorieCompte role;
 	
 	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<ShoppingList> listesCourseLst;
