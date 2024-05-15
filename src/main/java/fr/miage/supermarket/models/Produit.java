@@ -14,6 +14,9 @@ public class Produit {
 	@Column(name="EAN", nullable=false, unique=true, length=13)
 	private String ean;
 	
+	@Column(name="LIBELLE", nullable=false, length=100)
+	private String libelle;
+	
 	@Column(name="DESCRIPTION_COURTE", length=100, nullable=true)
 	private String descriptionCourte;
 	
@@ -34,6 +37,15 @@ public class Produit {
 	
 	@Column(name="LABEL", length=50, nullable=true)
 	private String label;
+
+	@Column(name="PRIX", nullable=true)
+	private Float prix;
+	
+	@Column(name="CONDITIONNEMENT", length=50, nullable=true)
+	private String conditionnement;
+	
+	@Column(name="POIDS", nullable=true)
+	private Float poids;
 	
 	public String getEan() {
 		return ean;
@@ -97,5 +109,37 @@ public class Produit {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+	
+	public Float getPrix() {
+		return prix;
+	}
+
+	public void setPrix(Float prix) {
+		this.prix = prix;
+	}
+
+	public String getConditionnement() {
+		return conditionnement;
+	}
+
+	public void setConditionnement(String conditionnement) {
+		this.conditionnement = conditionnement;
+	}
+
+	public Float getPoids() {
+		return poids;
+	}
+
+	public void setPoids(Float poids) {
+		this.poids = poids;
+	}
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
 	}
 }

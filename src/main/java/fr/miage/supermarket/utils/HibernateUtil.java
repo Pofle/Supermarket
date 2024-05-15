@@ -29,6 +29,8 @@ public class HibernateUtil {
         	configuration.addAnnotatedClass(Produit.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+
+        	configuration.addAnnotatedClass(Produit.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
         }
