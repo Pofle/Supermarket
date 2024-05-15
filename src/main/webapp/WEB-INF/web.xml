@@ -13,6 +13,10 @@
 		<servlet-name>GestionProduit</servlet-name>
 		<jsp-file>/jsp/gestionProduit.jsp</jsp-file>
 	</servlet>
+	<servlet>
+		<servlet-name>ListePaniers</servlet-name>
+		<jsp-file>/jsp/listePaniers.jsp</jsp-file>
+	</servlet>
 
 
 	<servlet>
@@ -43,6 +47,10 @@
 	<servlet-mapping>
 		<servlet-name>GestionProduit</servlet-name>
 		<url-pattern>/gestionProduit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ListePaniers</servlet-name>
+		<url-pattern>/listePaniers</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

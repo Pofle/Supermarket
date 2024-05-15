@@ -1,12 +1,16 @@
 package fr.miage.supermarket.controlers;
 
+import fr.miage.supermarket.models.Commande;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 
 /**
@@ -62,10 +66,40 @@ public class ServletDispatcher extends HttpServlet {
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
-	
+	/**
+	 * gestion de la catégorie PREPARATEUR d'utilisateur 
+	 * préparation des visuels pour les pages accessibles par cette catégorie
+	 * @author RR
+	 * @param action
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//TODO
+		String url;
+		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
+		if (action == null)
+			url = "accueil";
+		else {
+			switch (action) {
+			case "listePaniers":
+				url = "listePaniers";
+				break;
+			default:
+				url = "accueil";
+			}
+		}
+		//creation commande fictive 
+		//CommandeDAO.createCommande();
+		//on récupère les commandes à préparer 
+		ArrayList<Commande> listeC = new ArrayList<Commande>();
+		for(long i = 1; i < CommandeDAO.countAllCommande(); i++) {
+			listeC.add(CommandeDAO.loadCommande(i));
+		}
+		request.setAttribute("ListeCommandes", listeC);
+		request.getRequestDispatcher(url).forward(request, response);
 	}
 	private void dispatchDefaultFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
