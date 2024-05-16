@@ -6,9 +6,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.Promotion;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.models.Utilisateur;
-
 
 /**
  * Classe utilitaire de création de session hibernate
@@ -35,6 +35,9 @@ public class HibernateUtil {
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         	System.out.println("Hibernate serviceRegistry created");
+
+        	configuration.addAnnotatedClass(Produit.class);
+        	configuration.addAnnotatedClass(Promotion.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
         }
@@ -50,9 +53,10 @@ public class HibernateUtil {
      * @author EricB
      */
 	public static SessionFactory getSessionAnnotationFactory() {
-		if(sessionAnnotationFactory == null) sessionAnnotationFactory = buildSessionAnnotationFactory();
-        return sessionAnnotationFactory;
+		if(sessionAnnotationFactory == null) {
+			sessionAnnotationFactory = buildSessionAnnotationFactory();
+		}
+		return sessionAnnotationFactory;
     }
-	
 	
 }

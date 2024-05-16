@@ -1,24 +1,60 @@
-<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page import="java.text.DecimalFormat"%>
+<%-- Définion d'un format pour les prix --%>
+<%
+	request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
+%>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Accueil</title>
+<head>
+<jsp:include page="/jsp/header.jsp">
+	<jsp:param name="title" value="Accueil" />
+</jsp:include>
+<link href="css/accueil.css" rel="stylesheet" type="text/css" />
+<title>Accueil</title>
+</head>
+<body>
+	<%@ include file="navbar.jsp"%>
 	
-		<link href="css/accueil.css" rel="stylesheet" type="text/css" />
-		 
-	</head>
+	<div class="search-bar">
+		<input type="text" placeholder="Rechercher...">
+		<button type="button">Rechercher</button>
+	</div>
 	
-	<body>
-		<h1>Accueil</h1>
-		<ul>
-			<li><a href="central?type_action=accueil">Accueil</a></li>
-			<c:if test="${requestScope.categorie == 'GESTIONNAIRE'}">
-				<li><a href="central?type_action=gestionProduit">Gérer les produits</a></li>
-			</c:if>
-			<li><a href="central?type_action=gestion_List">Listes des courses</a></li>
-		</ul>
+	
+	<div class="article-container" id="article-container">
+		<c:forEach var="produit" items="${produits}">
+			<div class="article-card">
+				<a href="/SupermarketG3/accueil?ean=${produit.getEan()}">
+
+					<div class="product-info">
+						<div class="product-image">
+							<img src="${produit.getVignetteBase64()}" class="image" />
+						</div>
+						<div class="product-details">
+							<p class="price">${decimalFormat.format(produit.getPrix())}€</p>
+							<p class="libelle-marque">${produit.getLibelle()}-
+								${produit.getMarque()}</p>
+							<c:choose>
+								<c:when test="${not empty produit.getConditionnement()}">
+									<p class="additional-info">${produit.getConditionnement()}</p>
+								</c:when>
+								<c:otherwise>
+									<c:set var="prixKilo"
+										value="${produit.getPrix() * 1000 / produit.getPoids()}" />
+									<p class="additional-info">${produit.getPoids()}g-
+										${decimalFormat.format(prixKilo)}€/kg</p>
+								</c:otherwise>
+							</c:choose>
+							<p class="nutriscore">Nutriscore: ${produit.getNutriscore()}</p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</c:forEach>
+	</div>
+			
 		
 	<script src="javascript/script.js"></script>	    
 	</body>

@@ -9,9 +9,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"><title>Insert title here</title>
-
+<jsp:include page="/jsp/header.jsp">
+	<jsp:param name="title" value="Accueil" />
+</jsp:include>
+<link href="css/accueil.css" rel="stylesheet" type="text/css" />
 </head>
+
+<title>Liste de courses</title>
 <body>
+<%@ include file="navbar.jsp"%>
     <h1>Mes listes de courses</h1>
 
 <!-- Modal -->
@@ -42,7 +48,7 @@
             	<li> ${status.index + 1} - ${list.name}</li>
         	</c:forEach>
     	</ul> 
-    	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">aJOUTER UNE LISTE</button>
+    	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter liste</button>
    </c:if>  
     
     
