@@ -21,6 +21,7 @@ h1 {
 
 /* Styles pour la barre de recherche */
 .search-bar {
+    position: relative;
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
@@ -46,6 +47,8 @@ h1 {
     cursor: pointer;
 }
 
+
+/* Styles pour l'affichage des articles */ 
 .article-container {
     display: flex;
     flex-wrap: wrap;

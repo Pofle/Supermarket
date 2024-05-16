@@ -4,13 +4,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<jsp:include page="/jsp/header.jsp">
-	        <jsp:param name="title" value="Gestion des produits" />
-	    </jsp:include>
+		<jsp:include page="/jsp/header.jsp"/>
 	    <title>Gestion des produits</title>
 	</head>
 	<body>
-		<%@ include file="navbar.jsp"%>
+		<jsp:include page="/jsp/navbar.jsp"/>
 		<br>
 		<h1>Gestion des produits</h1>
 		<br>

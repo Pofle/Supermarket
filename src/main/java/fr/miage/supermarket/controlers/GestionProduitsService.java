@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.opencsv.CSVReader;
+
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.ListWrapper;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
+
+import java.text.DecimalFormat;
 
 /**
  * Service de gestion de recherche et d'insertion des produits
@@ -43,13 +50,17 @@ public class GestionProduitsService extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProduitDAO produitDAO = new ProduitDAO();
-        List<Produit> produits = produitDAO.getAllProduits();
+		List<Produit> produits = new ArrayList<>();
+		if(request.getParameter("libelle") != null) {
+	        produits = produitDAO.getProduitsByLibelle(request.getParameter("libelle"));
+		} else {
+			produits = produitDAO.getAllProduits();
+		}
+		
 		try {
-            //Configuration du contexte JAXB pour Produit et lister les produits
             JAXBContext jaxbContext = JAXBContext.newInstance(Produit.class, ListWrapper.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
 
-            // Convertir la liste de produits en XML
             ListWrapper<Produit> wrapper = new ListWrapper<>(produits);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
@@ -88,43 +99,93 @@ public class GestionProduitsService extends HttpServlet {
 		}
 	}
 	
-	/**
-	 * Lit le fichier CSV pour en retirer les produits
-	 * @param inputStream
-	 * @return
-	 * @throws IOException
-	 */
-	private List<Produit> readCsvFile(InputStream inputStream) throws IOException{
-		List<Produit> produits = new ArrayList<>();
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-			String line;
-			reader.readLine(); // On fait un premier readLine pour skip le header
-			while((line = reader.readLine()) != null) {
-				String data[] = line.split(",");
-				if(data.length >= 11) {
-					Produit produit = new Produit();
-					produit.setEan(data[0]);
-					produit.setLibelle(data[1]);
-					produit.setDescriptionCourte(data[2]);
-					produit.setDescription(data[3]);
-					produit.setNutriscore(data[4]);
-					produit.setLabel(data[5]);
-					produit.setMarque(data[6]);
-					produit.setRepertoireImage(data[7]);
-					produit.setRepertoireVignette(data[8]);
-					produit.setPrix(Float.valueOf(data[9]));
-					produit.setPoids(data[10].isBlank() ? null : Float.valueOf(data[10]));
-					
-					if(data.length == 12) {
-						produit.setConditionnement(data[11]);
-					}
-					
-					produits.add(produit);
-				} else {
-					throw new IOException("Le fichier est mal formaté");
-				}
-			}
-		}
-		return produits;
-	}
+	private static final int EXPECTED_COLUMNS = 13;
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+	
+    /**
+     * Lit le fichier CSV pour en retirer les produits
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     * @throws CsvValidationException
+     */
+    public List<Produit> readCsvFile(InputStream inputStream) throws IOException {
+    	
+        List<Produit> produits = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+             CSVReader csvReader = new CSVReader(reader)) {
+
+            String[] header = csvReader.readNext(); // Skip the header
+            if (header.length != EXPECTED_COLUMNS) {
+                throw new IOException("Le fichier est mal formaté. Nombre de colonnes attendu: " + EXPECTED_COLUMNS + ", trouvé: " + header.length);
+            }
+
+            String[] data;
+            int lineNumber = 1;
+            while ((data = csvReader.readNext()) != null) {
+                lineNumber++;
+                if (data.length != EXPECTED_COLUMNS) {
+                    throw new IOException("Le fichier est mal formaté à la ligne " + lineNumber + ". Nombre de colonnes attendu: " + EXPECTED_COLUMNS + ", trouvé: " + data.length);
+                }
+
+                Produit produit = new Produit();
+                produit.setEan(data[0]);
+                produit.setLibelle(data[1]);
+                produit.setDescriptionCourte(data[2]);
+                produit.setDescription(data[3]);
+                produit.setNutriscore(data[4]);
+                produit.setLabel(data[5]);
+                produit.setMarque(data[6]);
+                produit.setRepertoireImage(data[7]);
+                produit.setRepertoireVignette(data[8]);
+
+                // Vérification de la valeur du prix
+                if (data[9] != null && !data[9].isBlank()) {
+                    BigDecimal prix = new BigDecimal(data[9]);
+                    if (prix.compareTo(BigDecimal.ZERO) < 0) {
+                        throw new IOException("Le prix ne peut pas être inférieur à 0 à la ligne " + lineNumber);
+                    }
+                    
+                    //decimalFormat.format(prix)
+                    produit.setPrix(Float.parseFloat(decimalFormat.format(prix).replace(",", ".")));
+                }
+
+                // Vérification du poids
+                if (data[10] != null && !data[10].isBlank()) {
+                	BigDecimal poids = new BigDecimal(data[10]);
+                    if (poids.compareTo(BigDecimal.ZERO) < 0) {
+                        throw new IOException("Le poids ne peut pas être inférieur à 0 à la ligne " + lineNumber);
+                    }
+                    produit.setPoids(Float.parseFloat(decimalFormat.format(poids).replace(",", ".")));
+                }
+
+                // Vérification du conditionnement
+                String conditionnement = data[11].isBlank() ? null : data[11];
+                produit.setConditionnement(conditionnement);
+
+                // Vérification de la quantité de conditionnement
+                int quantiteConditionnement = 0;
+                if (data[12] != null && !data[12].isBlank() && StringUtils.isNumeric(data[12])) {
+                    quantiteConditionnement = Integer.parseInt(data[12]);
+                    if (quantiteConditionnement < 0) {
+                        throw new IOException("La quantité de conditionnement ne peut pas être inférieure à 0 à la ligne " + lineNumber);
+                    }
+                }
+                produit.setQuantiteConditionnement(quantiteConditionnement);
+
+                // Validation des règles de conditionnement et poids
+                if (quantiteConditionnement > 0 && conditionnement == null) {
+                    throw new IOException("Si une quantité de conditionnement est saisie, un conditionnement doit être saisi à la ligne " + lineNumber);
+                }
+                if (conditionnement == null && produit.getPoids() == null) {
+                    throw new IOException("Si un conditionnement n'est pas saisi, un poids doit être saisi à la ligne " + lineNumber);
+                }
+
+                produits.add(produit);
+            }
+        }
+        return produits;
+    }
+
 }

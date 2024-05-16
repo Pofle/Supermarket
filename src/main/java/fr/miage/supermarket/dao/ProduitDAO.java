@@ -78,4 +78,25 @@ public class ProduitDAO {
 			session.close();
 		}
 	}
+	
+	public List<Produit> getProduitsByLibelle(String libelle) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction();
+		
+		try {
+			Query query = session.createQuery("FROM Produit p "
+	                + "WHERE p.libelle LIKE CONCAT('%',?1,'%')", Produit.class);
+	        query.setParameter(1, libelle);
+	        List<Produit> produits = query.getResultList();
+			return produits;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }
