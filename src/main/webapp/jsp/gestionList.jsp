@@ -21,23 +21,28 @@
     <h1>Mes listes de courses</h1>
 
 <!-- Modal -->
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter une liste</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p>Hello world </p>
-      </div>
+      <form action="" method="post">
+      	<div class="modal-body">                
+        	<label for="name">Nom :</label>
+        	<input type="text" id="name" name="inputName" required>  	
+      	</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>       
       </div>
+      </form>
     </div>
   </div>
 </div>
+
     
     <p>Les listes vous permettent de retrouver facilement les produits que vous souhaitez acheter. <br>
     Vous pouvez créer jusqu'à 10 listes différentes de 100 articles maximum.</p>

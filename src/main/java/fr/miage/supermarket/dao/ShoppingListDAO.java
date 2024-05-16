@@ -38,6 +38,28 @@ public class ShoppingListDAO {
 
 	        return shoppingLists;
 	    }
+	 
+	 public static void ajouterListe(String nomListe)
+	 {
+		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	     Transaction tx = null;
+	     
+	     try {
+	    	 tx=session.beginTransaction();
+	    	 ShoppingList listeCourse = new ShoppingList();
+	    	 listeCourse.setName(nomListe);
+	    	 session.save(listeCourse);
+	    	 
+	    	 tx.commit();
+	     } catch (Exception e) {
+	            if (tx != null) tx.rollback();
+	            throw e;
+	        } finally {
+	            session.close();
+	        }
+	     System.out.println("Shopping List succesfully added.");
+	 }
+
 		
 }
 		
