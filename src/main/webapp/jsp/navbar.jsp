@@ -11,6 +11,10 @@
 						href="central?type_action=gestionProduit" class="navbar-link">Gérer
 							les produits</a></li>
 				</c:if>
+				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
+					<li class="navbar-item"><a
+						href="central?type_action=listePaniers" class="navbar-link">Préparer les commandes</a></li>
+				</c:if>
 			</ul>
 		</div>
 		<div class="navbar-right">

@@ -66,9 +66,10 @@ public class ServletDispatcher extends HttpServlet {
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
+	
 	/**
 	 * gestion de la catégorie PREPARATEUR d'utilisateur 
-	 * préparation des visuels pour les pages accessibles par cette catégorie
+	 * préparation des données pour les pages accessibles par cette catégorie
 	 * @author RR
 	 * @param action
 	 * @param request

@@ -30,8 +30,12 @@ public class CommandeDAO {
 		}
 		Commande PanierUn = new Commande(Timestamp.valueOf("2024-05-10 18:30:00"));
 		Commande PanierDeux = new Commande(Timestamp.valueOf("2024-05-15 09:15:00"));
+		Commande PanierTrois = new Commande(Timestamp.valueOf("2024-05-18 18:30:00"));
+		Commande PanierQuatre = new Commande(Timestamp.valueOf("2024-05-12 09:15:00"));
 		session.save(PanierUn);
 		session.save(PanierDeux);
+		session.save(PanierTrois);
+		session.save(PanierQuatre);
 		System.out.println("Commande créé : " + PanierUn.getIdCommande());
 		System.out.println("Commande créé : " + PanierUn.getIdCommande());
 		transact.commit();
@@ -58,7 +62,7 @@ public class CommandeDAO {
 	         }
 	    }
 	}
-	
+	//TODO tester le rendu si null ou non 
 	public static ArrayList<Commande> AllCommandeTrieParCreneau() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		Transaction transact = session.getTransaction();
@@ -67,6 +71,12 @@ public class CommandeDAO {
 		}
 		Query query = session.createQuery("FROM commande ORDER BY creneau ASC", Commande.class);
 		ArrayList<Commande> commandes = (ArrayList<Commande>) query.getResultList();
+		System.out.println("AllCommandeTrieParCreneau returns : ");
+		for (int i = 1; i<commandes.size(); i++) {
+			if (commandes.get(i)!= null) {
+				System.out.println(commandes.get(i).getIdCommande());
+			}
+		}
 		transact.commit();
 		return commandes;
 	}
