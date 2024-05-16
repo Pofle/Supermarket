@@ -6,9 +6,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-
-import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
@@ -29,7 +26,7 @@ public class ShoppingListDAO {
 	            shoppingLists = session.createQuery("from ShoppingList sl where sl.utilisateur.id = :userId", ShoppingList.class)
                         //TO-DO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
 	            		// -- Code à remplacer
-	            		.setParameter("userId", 11)
+	            		.setParameter("userId", 1)
 	            		// Fin du code à remplacer
                         .list();
 	        } catch (Exception e) {
@@ -49,7 +46,7 @@ public class ShoppingListDAO {
 	     
 	   //TO-DO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
  		// -- Code à remplacer
-	    Utilisateur utilisateur = session.get(Utilisateur.class, 11);
+	    Utilisateur utilisateur = session.get(Utilisateur.class, 1);
 	 // Fin du code à remplacer
 	     try {
 	    	 tx=session.beginTransaction();

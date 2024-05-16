@@ -13,15 +13,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-import java.util.Set;
-
+import java.util.List;
 /**
  * Object class for the Shopping List
  * @author PaulineF
  */
 
 @Entity
-@Table(name = "ShoppingList",uniqueConstraints= {@UniqueConstraint(columnNames= {"ID"})})
+@Table(name = "LISTE_COURSE",uniqueConstraints= {@UniqueConstraint(columnNames= {"ID"})})
 public class ShoppingList {
 	//Attributs
 	@Id
@@ -32,10 +31,16 @@ public class ShoppingList {
 	@Column(name="NAME", nullable=false, unique=false, length=50)
     private String name;
 	
-	//Relation
+	//Relations
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UTILISATEUR_ID")
     private Utilisateur utilisateur;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "LINK_LISTE_PRODUIT", 
+	           joinColumns = @JoinColumn(name = "ID_LISTE"), 
+	           inverseJoinColumns = @JoinColumn(name = "EAN",  referencedColumnName = "ean"))
+	private List<Produit> produits;
 
     // Construteur par défaut
     public ShoppingList() {

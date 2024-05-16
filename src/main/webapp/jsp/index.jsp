@@ -32,8 +32,16 @@
 						<div class="product-image">
 							<img src="${produit.getVignetteBase64()}" class="image" />
 						</div>
+						<div class="product-head">
+							<p class="price">${decimalFormat.format(produit.getPrix())}€</p>							
+							<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
+							<a class="bouton-image">
+								<img src="recupererImage?cheminImage=listIMG.png" class="bouton-image" />
+							</a>
+							</c:if>
+							
+						</div>
 						<div class="product-details">
-							<p class="price">${decimalFormat.format(produit.getPrix())}€</p>
 							<p class="libelle-marque">${produit.getLibelle()}-
 								${produit.getMarque()}</p>
 							<c:choose>
@@ -51,6 +59,7 @@
 						</div>
 					</div>
 				</a>
+				
 			</div>
 		</c:forEach>
 	</div>

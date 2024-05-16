@@ -55,8 +55,12 @@ public class Produit {
 	@Column(name="POIDS", nullable=true)
 	private Float poids;
 	
+	// Relations
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
 	private List<Promotion> promotions;
+	
+	@ManyToMany(mappedBy = "produits", fetch = FetchType.LAZY)
+	private List<ShoppingList> listes;
 	
 	@Transient
 	private String vignetteBase64;
@@ -64,8 +68,6 @@ public class Produit {
 	@Transient
 	private String imageBase64;
 	
-//	@ManyToMany(mappedBy = "produits")
-//    private Set<ShoppingList> shoppingLists;
 	
 	public String getEan() {
 		return ean;

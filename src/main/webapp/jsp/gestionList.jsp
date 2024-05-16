@@ -19,7 +19,6 @@
 
 </head>
 
-
 <body>
 <%@ include file="navbar.jsp"%>
     <h1>Mes listes de courses</h1>
@@ -35,11 +34,9 @@
         	</c:forEach>
     	</ul>  
     		<button type="button" class="btn-Add" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter liste</button> 	
-   	</c:if>  
-   
+   	</c:if>    
    </div>
-   
-    
+      
     <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   	<div class="modal-dialog">
@@ -61,10 +58,8 @@
     </div>
   </div>
 </div>
-    
-    
+        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
    </body>
-   
-   
-   </html>
+     
+</html>

@@ -59,7 +59,6 @@ public class GestionProduitsService extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 	}
-	
 	/**
 	 * Gère l'insertion de produits à partir de l'import CSV
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

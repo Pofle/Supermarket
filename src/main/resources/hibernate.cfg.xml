@@ -24,6 +24,7 @@
         <mapping class="fr.miage.supermarket.models.ShoppingList"/>
       	<mapping class="fr.miage.supermarket.models.Produit"/> 
       	<mapping class="fr.miage.supermarket.models.Utilisateur"/> 
+      	<mapping class="fr.miage.supermarket.models.LinkListeProduit"/> 
 		
 	</session-factory>
 </hibernate-configuration>
