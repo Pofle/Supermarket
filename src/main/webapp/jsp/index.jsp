@@ -14,6 +14,7 @@
 %>
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
 <head>
 <jsp:include page="/jsp/header.jsp">
     <jsp:param name="title" value="Accueil" />
@@ -153,4 +154,19 @@
 
     
 </body>
+
+	<head>
+		<jsp:include page="/jsp/header.jsp" />
+		<link href="css/accueil.css" rel="stylesheet" type="text/css" />
+		<title>Accueil</title>
+	</head>
+	<body>
+		<jsp:include page="/jsp/navbar.jsp" />
+		<div class="search-bar" >
+			<input type="text" placeholder="Rechercher..." id="search-bar">
+		</div>
+		<div class="article-container" id="article-container">
+		</div>
+		<script src="javascript/rechercherProduits.js"></script>
+	</body>
 </html>

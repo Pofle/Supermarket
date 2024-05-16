@@ -24,6 +24,7 @@ import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 import fr.miage.supermarket.models.Jour;
+import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
  * Servlet de gestion de la récupération des produits avec redirection vers JSP
@@ -44,7 +45,6 @@ public class RecupererProduits extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		if(request.getParameter("ean") == null) {
 			displayAllProduits(request, response);
 		} else {
@@ -116,6 +116,7 @@ public class RecupererProduits extends HttpServlet {
         
 		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
 		request.setAttribute("produits", produits);
+		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
 		request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 	
 	}
