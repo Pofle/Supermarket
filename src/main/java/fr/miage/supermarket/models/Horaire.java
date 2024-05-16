@@ -6,28 +6,27 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Date;
 
 @Entity
-@Table(name = "Jour")
-public class Jour {
+@Table(name = "Horaire")
+public class Horaire {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "horaire")
+    private String horaire;
 
     // Constructeurs, getters et setters
 
-    public Jour() {
+    public Horaire() {
     }
 
-    public Jour(int id, Date date) {
+    public Horaire(int id, String horaire) {
         this.id = id;
-        this.date = date;
+        this.horaire = horaire;
     }
 
     public int getId() {
@@ -38,11 +37,11 @@ public class Jour {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public String getHoraire() {
+        return horaire;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setHoraire(String horaire) {
+        this.horaire = horaire;
     }
 }

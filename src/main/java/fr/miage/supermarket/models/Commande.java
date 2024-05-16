@@ -13,18 +13,22 @@ import jakarta.persistence.Table;
 @Table(name = "Commande")
 public class Commande {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "id")
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "id_magasin")
     private Magasin magasin;
 
     @ManyToOne
-    @JoinColumn(name = "id_creneau")
-    private Creneau creneau;
+    @JoinColumn(name = "id_jour")
+    private Jour jour;
+
+    @ManyToOne
+    @JoinColumn(name = "id_horaire")
+    private Horaire horaire;
 
     // Constructeurs, getters et setters
 
@@ -51,11 +55,19 @@ public class Commande {
         this.magasin = magasin;
     }
 
-    public Creneau getCreneau() {
-        return creneau;
+    public Jour getJour() {
+        return jour;
     }
 
-    public void setCreneau(Creneau creneau) {
-        this.creneau = creneau;
+    public void setJour(Jour jour) {
+        this.jour = jour;
+    }
+
+    public Horaire getHoraire() {
+        return horaire;
+    }
+
+    public void setHoraire(Horaire horaire) {
+        this.horaire = horaire;
     }
 }

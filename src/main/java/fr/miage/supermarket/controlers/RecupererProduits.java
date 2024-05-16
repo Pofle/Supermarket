@@ -16,12 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.miage.supermarket.dao.CreneauDAO;
 import fr.miage.supermarket.dao.JourDAO;
 import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
-import fr.miage.supermarket.models.Creneau;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
@@ -116,15 +114,6 @@ public class RecupererProduits extends HttpServlet {
             }
         }
         
-        // Récupération de la liste des creneaux pour la date sélectionnée
-        List<Creneau> creneaux = new ArrayList<>();
-        if (date != null) {
-            creneaux = CreneauDAO.getAllCreneaux(date);
-        }      
-        // Ajout de la liste des creneaux à l'attribut de la requête
-        request.setAttribute("creneaux", creneaux);
-        // Ajout de la liste des magasins à l'attribut de la requête
-        request.setAttribute("creneaux", creneaux);
 		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
 		request.setAttribute("produits", produits);
 		request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
