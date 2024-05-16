@@ -68,7 +68,7 @@ public class RecupererProduits extends HttpServlet {
 			}
 		}
 		
-		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
+		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
 		request.setAttribute("produit", produit);
 		request.setAttribute("promotions", promotionsDisponibles);
 		request.getRequestDispatcher("/jsp/detailProduit.jsp").forward(request, response);
@@ -89,7 +89,7 @@ public class RecupererProduits extends HttpServlet {
 			prd.setVignetteBase64(imageToBase64(prd.getRepertoireVignette()));
 		}
 		
-		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
+		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
 		request.setAttribute("produits", produits);
 		request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 	}

@@ -15,12 +15,13 @@ import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.ShoppingList;
 
 /**
- * Servlet implementation class ServletDispatcher
+ * Servlet principale qui implemente la classe ServletDispatcher
  */
 public class ServletDispatcher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Constructeur par défaut
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public ServletDispatcher() {
@@ -28,15 +29,18 @@ public class ServletDispatcher extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * Gère les requêtes HTTP GET.
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("type_action");
 		
 		////// ---> Moyen temporaire de changer d'utilisateur au travers de cette variable. <---\\\\\
-		String categorieCompte = CategorieCompte.UTILISATEUR.name();
+		String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
 		// FIN
 		
 		if (categorieCompte != null) {
@@ -54,6 +58,14 @@ public class ServletDispatcher extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Gère les fonctionnalités spécifiques aux gestionnaires.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
 	private void dispatchGestionnaireFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url;
@@ -81,6 +93,14 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
+	/**
+	 * Gère les fonctionnalités spécifiques aux préparateurs.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
 	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url;
@@ -99,6 +119,14 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 
+	/**
+	 * Gère les fonctionnalités par défaut pour les visiteurs.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
 	private void dispatchDefaultFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url ="";
@@ -138,6 +166,14 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
+	/**
+	 * Gère les fonctionnalités spécifiques aux utilisateurs connectés.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
 	private void dispatchUtilisateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url ="";
