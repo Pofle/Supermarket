@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
@@ -14,6 +15,11 @@ import fr.miage.supermarket.utils.HibernateUtil;
  */
 public class ProduitDAO {
 
+	/**
+	 * Se charge d'enregistrer une liste de produits
+	 * @param produitsToSave les produits à enregistrer
+	 * @author EricB
+	 */
 	public void registerProduits(List<Produit> produitsToSave) {		
 		//Récupération de la session 
 		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
@@ -26,7 +32,51 @@ public class ProduitDAO {
 		session.getTransaction().commit();
 		
 		//Ferme la session
-		sessionFactory.close();
+		session.close();
 	}
 	
+	/**
+	 * Se charge de renvoyer l'entièreté des produits présents en base
+	 * @return la liste des produits
+	 */
+	public List<Produit> getAllProduits() {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction();
+		
+		try {
+			Query<Produit> query = session.createQuery("FROM Produit", Produit.class);
+			List<Produit> produits = query.getResultList();
+			
+			session.getTransaction().commit();
+			
+			return produits;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public Produit getProduitById(String ean) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction();
+		
+		try {
+			Produit produit = session.get(Produit.class, ean);
+			session.getTransaction().commit();
+			return produit;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }

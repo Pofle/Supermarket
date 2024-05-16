@@ -10,7 +10,7 @@ import fr.miage.supermarket.models.Creneau;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Point;
 import fr.miage.supermarket.models.Produit;
-
+import fr.miage.supermarket.models.Promotion;
 
 /**
  * Classe utilitaire de création de session hibernate
@@ -37,6 +37,9 @@ public class HibernateUtil {
         	configuration.addAnnotatedClass(Point.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+
+        	configuration.addAnnotatedClass(Produit.class);
+        	configuration.addAnnotatedClass(Promotion.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
         }
@@ -52,7 +55,10 @@ public class HibernateUtil {
      * @author EricB
      */
 	public static SessionFactory getSessionAnnotationFactory() {
-		if(sessionAnnotationFactory == null) sessionAnnotationFactory = buildSessionAnnotationFactory();
-        return sessionAnnotationFactory;
+		if(sessionAnnotationFactory == null) {
+			sessionAnnotationFactory = buildSessionAnnotationFactory();
+		}
+		return sessionAnnotationFactory;
     }
+	
 }
