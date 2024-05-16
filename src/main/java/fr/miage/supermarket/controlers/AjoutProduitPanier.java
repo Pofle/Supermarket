@@ -12,8 +12,8 @@ import fr.miage.supermarket.models.*;
 public class AjoutProduitPanier extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Récupération des données du formulaire
-        String ean = request.getAttribute("ean").toString();
-        String quantiteProduit = request.getAttribute("quantiteProduit").toString();
+        String ean = request.getParameter("ean");
+        String quantiteProduit = request.getParameter("quantiteProduit");
         System.out.println("EAN is: "+ean);
         
         
