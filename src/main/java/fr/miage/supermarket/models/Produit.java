@@ -5,9 +5,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.FetchType;
 
 import java.util.List;
@@ -66,6 +67,12 @@ public class Produit {
 	
 //	@ManyToMany(mappedBy = "produits")
 //    private Set<ShoppingList> shoppingLists;
+	
+//	@OneToMany(mappedBy = "produits", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private List<Stock> stocks;
+	
+	@OneToMany(mappedBy = "produit")
+	private List<Link_Produit_Stock> linkProduitStocks;
 	
 	public String getEan() {
 		return ean;
@@ -186,4 +193,13 @@ public class Produit {
 	public void setImageBase64(String imageBase64) {
 		this.imageBase64 = imageBase64;
 	}
+
+	public List<Link_Produit_Stock> getLinkProduitStocks() {
+		return linkProduitStocks;
+	}
+
+	public void setLinkProduitStocks(List<Link_Produit_Stock> linkProduitStocks) {
+		this.linkProduitStocks = linkProduitStocks;
+	}
+
 }

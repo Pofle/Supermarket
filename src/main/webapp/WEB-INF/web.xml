@@ -44,6 +44,11 @@
         <description>Service de gestion de recherche et d'insertion des produits</description>
         <servlet-class>fr.miage.supermarket.controlers.GestionProduitsService</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>GestionStockService</servlet-name>
+    	<display-name>GestionStocksService</display-name>
+    	<servlet-class>fr.miage.supermarket.controlers.GestionStockService</servlet-class>
+	</servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -70,6 +75,10 @@
         <servlet-name>GestionProduitsService</servlet-name>
         <url-pattern>/produits</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>GestionStockService</servlet-name>
+    	<url-pattern>/gestionStock</url-pattern>
+	</servlet-mapping>
 
     <!-- Welcome File List -->
     <welcome-file-list>

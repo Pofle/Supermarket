@@ -5,9 +5,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import fr.miage.supermarket.models.Link_Produit_Stock;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.models.Stock;
 import fr.miage.supermarket.models.Utilisateur;
 
 /**
@@ -38,6 +40,8 @@ public class HibernateUtil {
 
         	configuration.addAnnotatedClass(Produit.class);
         	configuration.addAnnotatedClass(Promotion.class);
+        	configuration.addAnnotatedClass(Stock.class);
+        	configuration.addAnnotatedClass(Link_Produit_Stock.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
         }

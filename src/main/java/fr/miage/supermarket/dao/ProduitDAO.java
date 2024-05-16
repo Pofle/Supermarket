@@ -79,4 +79,25 @@ public class ProduitDAO {
 			session.close();
 		}
 	}
+	
+	public List<Produit> getProduitsStock15ProchainsJours() {
+        SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+        Session session = sessionFactory.getCurrentSession();
+        
+        session.beginTransaction();
+        
+        try {
+            Query<Produit> query = session.createQuery("SELECT DISTINCT p FROM Produit p JOIN FETCH p.stocks s WHERE s.date BETWEEN CURRENT_DATE AND CURRENT_DATE + 15", Produit.class);
+            List<Produit> produits = query.getResultList();
+            
+            session.getTransaction().commit();
+            return produits;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
 }
