@@ -34,11 +34,10 @@ public class HibernateUtil {
         	configuration.addAnnotatedClass(Promotion.class);
             configuration.addAnnotatedClass(ShoppingList.class);
         	configuration.addAnnotatedClass(Utilisateur.class);
-        catch (Throwable ex) {
+
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
 	}
