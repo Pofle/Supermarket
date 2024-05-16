@@ -27,21 +27,17 @@ public class HibernateUtil {
     	try {
         	Configuration configuration = new Configuration();
         	configuration.configure("hibernate.cfg.xml");
-        	System.out.println("Hibernate Configuration loaded");
-
-        	configuration.addAnnotatedClass(Produit.class);
-        	configuration.addAnnotatedClass(ShoppingList.class);
-        	configuration.addAnnotatedClass(Utilisateur.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-        	System.out.println("Hibernate serviceRegistry created");
 
         	configuration.addAnnotatedClass(Produit.class);
         	configuration.addAnnotatedClass(Promotion.class);
+            configuration.addAnnotatedClass(ShoppingList.class);
+        	configuration.addAnnotatedClass(Utilisateur.class);
+
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
 	}

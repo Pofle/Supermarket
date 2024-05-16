@@ -8,9 +8,13 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import jakarta.persistence.CascadeType;
 
 import java.util.Set;
 
@@ -46,7 +50,7 @@ public class Produit {
 	@Column(name="LABEL", length=50, nullable=true)
 	private String label;
 
-	@Column(name="PRIX", nullable=true)
+	@Column(name="PRIX", nullable=false)
 	private Float prix;
 	
 	@Column(name="CONDITIONNEMENT", length=50, nullable=true)

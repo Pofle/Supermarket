@@ -43,13 +43,17 @@ public class GestionProduitsService extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProduitDAO produitDAO = new ProduitDAO();
-        List<Produit> produits = produitDAO.getAllProduits();
+		List<Produit> produits = new ArrayList<>();
+		if(request.getParameter("libelle") != null) {
+	        produits = produitDAO.getProduitsByLibelle(request.getParameter("libelle"));
+		} else {
+			produits = produitDAO.getAllProduits();
+		}
+		
 		try {
-            //Configuration du contexte JAXB pour Produit et lister les produits
             JAXBContext jaxbContext = JAXBContext.newInstance(Produit.class, ListWrapper.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
 
-            // Convertir la liste de produits en XML
             ListWrapper<Produit> wrapper = new ListWrapper<>(produits);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
