@@ -15,8 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.miage.supermarket.dao.CreneauDAO;
+import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
+import fr.miage.supermarket.models.Creneau;
+import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 
@@ -66,9 +70,11 @@ public class RecupererProduits extends HttpServlet {
 			if(prom.getDateDebut().before(now) && prom.getDateFin().after(now)) {
 				promotionsDisponibles.add(prom);
 			}
+			
 		}
+
 		
-		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
+		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
 		request.setAttribute("produit", produit);
 		request.setAttribute("promotions", promotionsDisponibles);
 		request.getRequestDispatcher("/jsp/detailProduit.jsp").forward(request, response);
@@ -89,9 +95,18 @@ public class RecupererProduits extends HttpServlet {
 			prd.setVignetteBase64(imageToBase64(prd.getRepertoireVignette()));
 		}
 		
-		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
+		// Récupération de la liste des magasins depuis la base de données
+        List<Magasin> magasins = MagasinDAO.getAllMagasins();       
+        // Ajout de la liste des magasins à l'attribut de la requête
+        request.setAttribute("magasins", magasins);
+     // Récupération de la liste des creneaux depuis la base de données
+        List<Creneau> creneaux = CreneauDAO.getAllCreneaux();       
+        // Ajout de la liste des magasins à l'attribut de la requête
+        request.setAttribute("creneaux", creneaux);
+		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
 		request.setAttribute("produits", produits);
 		request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
+	
 	}
 	
 	/**

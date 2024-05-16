@@ -12,6 +12,15 @@ import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Creneau;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
+import org.hibernate.SessionFactory;
+
+import java.util.List;
+
+import org.hibernate.Session;
+
+import fr.miage.supermarket.dao.ShoppingListDAO;
+import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 public class main {
@@ -204,3 +213,5 @@ public class main {
         }
     }
 }
+
+
