@@ -13,10 +13,6 @@
 </head>
 <body>
     <h1>Mes listes de courses</h1>
-   <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -27,7 +23,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        <p>Hello world </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -46,11 +42,12 @@
             	<li> ${status.index + 1} - ${list.name}</li>
         	</c:forEach>
     	</ul> 
-    </c:if>  
+    	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">aJOUTER UNE LISTE</button>
+   </c:if>  
     
-    <form id="ajouterList" >
-        <button id="ajouterBouton">Ajouter</button>
-    </form>
+    
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
    </body>
    
