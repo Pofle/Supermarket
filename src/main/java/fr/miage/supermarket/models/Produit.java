@@ -5,9 +5,14 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.persistence.Transient;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.FetchType;
+
+import java.util.List;
 
 @Entity
-@Table(name="Produit", uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})
+@Table(name="PRODUIT", uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})
 public class Produit {
 	
 	@Id
@@ -46,6 +51,15 @@ public class Produit {
 	
 	@Column(name="POIDS", nullable=true)
 	private Float poids;
+	
+	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
+	private List<Promotion> promotions;
+	
+	@Transient
+	private String vignetteBase64;
+	
+	@Transient
+	private String imageBase64;
 	
 	public String getEan() {
 		return ean;
@@ -141,5 +155,29 @@ public class Produit {
 
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
+	}
+	
+	public List<Promotion> getPromotions() {
+		return promotions;
+	}
+
+	public void setPromotions(List<Promotion> promotions) {
+		this.promotions = promotions;
+	}
+
+	public String getVignetteBase64() {
+		return vignetteBase64;
+	}
+
+	public void setVignetteBase64(String vignetteBase64) {
+		this.vignetteBase64 = vignetteBase64;
+	}
+
+	public String getImageBase64() {
+		return imageBase64;
+	}
+
+	public void setImageBase64(String imageBase64) {
+		this.imageBase64 = imageBase64;
 	}
 }
