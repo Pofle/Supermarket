@@ -28,6 +28,12 @@
 		<description>Servlet de traitement d'ajout d'un produit</description>
 		<servlet-class>fr.miage.supermarket.controlers.AjouterProduit</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>FinalisationCommande</servlet-name>
+		<display-name>FinalisationCommande</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.FinalisationCommande</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletDispatcher</servlet-name>
 		<url-pattern>/central</url-pattern>
@@ -43,6 +49,10 @@
 	<servlet-mapping>
 		<servlet-name>GestionProduit</servlet-name>
 		<url-pattern>/gestionProduit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FinalisationCommande</servlet-name>
+		<url-pattern>/FinalisationCommande</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
