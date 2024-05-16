@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.text.DecimalFormat"%>
 <%-- Définion d'un format pour les prix --%>
 <%
@@ -26,21 +27,21 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 					<p>${produit.getDescription()}</p>
 				</div>
 				<p class="price">${decimalFormat.format(produit.getPrix())}€</p>
-				<p class="nutriscore">Nutriscore : ${produit.getNutriscore()}</p>
 				<div class="additional-info">
 					<p>
 						<c:choose>
 							<c:when test="${not empty produit.getConditionnement()}">
-                            Conditionnement : ${produit.getConditionnement()}
-                        </c:when>
+                            	${produit.getQuantiteConditionnement()} ${produit.getConditionnement()}
+                        	</c:when>
 							<c:otherwise>
 								<c:set var="prixKilo"
-									value="${produit.getPrix() * 1000 / produit.getPoids()}" />
-                            ${produit.getPoids()}g - ${decimalFormat.format(prixKilo)}€/kg
-                        </c:otherwise>
+										value="${produit.getPrix() * 1000 / produit.getPoids()}" />
+	                            ${decimalFormat.format(produit.getPoids())}g - ${decimalFormat.format(prixKilo)}€/kg
+	                        </c:otherwise>
 						</c:choose>
 					</p>
 				</div>
+				<p class="nutriscore">Nutriscore : ${produit.getNutriscore()}</p>
 			</div>
 		</div>
 	</div>
