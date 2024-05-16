@@ -26,15 +26,19 @@
     
     <p>Les listes vous permettent de retrouver facilement les produits que vous souhaitez acheter. <br>
     Vous pouvez créer jusqu'à 10 listes différentes de 100 articles maximum.</p>
-   
-   <c:if test="${requestScope.categorie == 'UTILISATEUR'}">
+    
+   <div class="listes">
+   	<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
     	<ul>
         	<c:forEach var="list" items="${shoppingLists}" varStatus="status" >
             	<li> ${status.index + 1} - ${list.name}</li>
         	</c:forEach>
-    	</ul> 
-    	<button type="button" class="btn-Add" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter liste</button>
-   </c:if>  
+    	</ul>  
+    		<button type="button" class="btn-Add" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter liste</button> 	
+   	</c:if>  
+   
+   </div>
+   
     
     <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
