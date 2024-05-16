@@ -29,7 +29,7 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter une liste</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="" method="post">
+      <form action="ServletListeCourse" method="post">
       	<div class="modal-body">                
         	<label for="name">Nom :</label>
         	<input type="text" id="name" name="inputName" required>  	

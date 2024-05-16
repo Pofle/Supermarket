@@ -39,10 +39,6 @@ public class ServletListeCourse extends HttpServlet {
             ShoppingListDAO.ajouterListe(nomListeCourse);
 
             response.sendRedirect("central?type_action=gestion_List");
-        } else {
-            // Gérer le cas où le nom de la liste de course est invalide
-//            request.setAttribute("error", "Le nom de la liste ne peut pas être vide.");
-            request.getRequestDispatcher("gestionList.jsp").forward(request, response);
         }
     }
 

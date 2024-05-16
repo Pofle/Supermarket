@@ -6,8 +6,11 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
@@ -44,10 +47,15 @@ public class ShoppingListDAO {
 		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	     Transaction tx = null;
 	     
+	   //TO-DO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
+ 		// -- Code à remplacer
+	    Utilisateur utilisateur = session.get(Utilisateur.class, 11);
+	 // Fin du code à remplacer
 	     try {
 	    	 tx=session.beginTransaction();
 	    	 ShoppingList listeCourse = new ShoppingList();
 	    	 listeCourse.setName(nomListe);
+	    	 listeCourse.setUtilisateur(utilisateur);
 	    	 session.save(listeCourse);
 	    	 
 	    	 tx.commit();
