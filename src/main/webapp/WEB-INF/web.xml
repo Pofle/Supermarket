@@ -66,10 +66,6 @@
 		<url-pattern>/produits</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>GestionProduit</servlet-name>
-		<url-pattern>/gestionProduit</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
 		<servlet-name>FinalisationCommande</servlet-name>
 		<url-pattern>/FinalisationCommande</url-pattern>
 	</servlet-mapping>
