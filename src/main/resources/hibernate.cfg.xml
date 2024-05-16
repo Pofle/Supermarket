@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
-		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-		"https://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+		"-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
 		
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/test</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:8889/ProduitTest</property>
 		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password"></property>
+		<property name="hibernate.connection.password">root</property>
 
 		<!--  Parseur HQL  -->
 		<property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
@@ -19,6 +19,11 @@
 		
 		<!--  Mode de mise à jour de la base de données - create, validate, update, none  -->
 		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<!-- Names the annotated entity class -->
+        <mapping class="fr.miage.supermarket.models.ShoppingList"/>
+      	<mapping class="fr.miage.supermarket.models.Produit"/> 
+      	<mapping class="fr.miage.supermarket.models.Utilisateur"/> 
 		
 	</session-factory>
 </hibernate-configuration>
