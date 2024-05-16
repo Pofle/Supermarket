@@ -5,8 +5,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,9 +67,8 @@ public class Produit {
 	@Transient
 	private String imageBase64;
 	
-	@OneToMany(mappedBy = "produit")
-    private Set<LinkCommandeProduit> commandes = new HashSet<>();
-	
+	@ManyToMany(mappedBy="Produit")
+	private Set<Commande> commandes = new HashSet<Commande>();
 	public Float getPrix() {
 		return prix;
 	}

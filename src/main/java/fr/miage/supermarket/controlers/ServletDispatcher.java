@@ -36,7 +36,7 @@ public class ServletDispatcher extends HttpServlet {
 		String action = request.getParameter("type_action");
 
 		// Moyen temporaire de changer d'utilisateur au travers de cette variable.
-		String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
+		String categorieCompte = CategorieCompte.VISITEUR.name();
 
 
 		if (categorieCompte != null) {
