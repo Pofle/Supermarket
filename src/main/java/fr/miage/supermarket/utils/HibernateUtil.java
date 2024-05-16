@@ -7,6 +7,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
+import fr.miage.supermarket.models.*;
 
 /**
  * Classe utilitaire de création de session hibernate
@@ -25,8 +26,6 @@ public class HibernateUtil {
     	try {
         	Configuration configuration = new Configuration();
         	configuration.configure("hibernate.cfg.xml");
-
-        	configuration.addAnnotatedClass(Produit.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 
