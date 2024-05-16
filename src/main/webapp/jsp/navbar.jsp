@@ -22,6 +22,10 @@
 				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
 					<li class="navbar-item"><a href="central?type_action=preparationPanier" class="navbar-link">Préparation des paniers</a></li>
 				</c:if>
+				<c:if test="${requestScope.categorie == 'UTILISATEUR'|| requestScope.categorie == 'VISITEUR'}">
+					<li class="navbar-item"><a href="central?type_action=gestion_List" class="navbar-link">Listes des courses</a></li>
+				</c:if>
+				
 			</ul>
 		</div>
 		<div class="navbar-right">

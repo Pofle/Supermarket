@@ -4,12 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.FetchType;
 
 import java.util.List;
+
+import java.util.Set;
 
 @Entity
 @Table(name="PRODUIT", uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})
@@ -60,6 +63,9 @@ public class Produit {
 	
 	@Transient
 	private String imageBase64;
+	
+//	@ManyToMany(mappedBy = "produits")
+//    private Set<ShoppingList> shoppingLists;
 	
 	public String getEan() {
 		return ean;
