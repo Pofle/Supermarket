@@ -1,10 +1,28 @@
 package fr.miage.supermarket.models;
 
+import jakarta.persistence.*;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+@Table(name = "LINK_COMMANDE_PRODUIT")
 public class LinkCommandeProduit {
-	private Commande commande;
+
+	@EmbeddedId
+    private LinkCommandeProduitId id;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_COMMANDE", insertable=false, updatable=false)
+    private Commande commande;
+
+    @ManyToOne
+    @JoinColumn(name = "EAN", insertable=false, updatable=false)
     private Produit produit;
+
+    @Column(name = "QUANTITE")
     private int quantite;
-	public LinkCommandeProduit(Commande commande, Produit produit, int quantite) {
+	
+    public LinkCommandeProduit(Commande commande, Produit produit, int quantite) {
 		super();
 		this.commande = commande;
 		this.produit = produit;
