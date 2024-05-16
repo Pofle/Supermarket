@@ -2,8 +2,10 @@ function ajouterProduit(x) {
 	var valueAdded = parseInt(document.getElementById(x).value)
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', 'ajoutPanier', true);
-	console.log(x);
-	console.log(valueAdded)
+	
+	var params = 'ean='+x+'&quantite='+valueAdded;
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	
 	xhr.onload = function() {
 		if (xhr.status === 200) {
 			console.log('Le fichier a été envoyé et traité avec succès');
@@ -15,8 +17,5 @@ function ajouterProduit(x) {
 		console.error('Une erreur est survenue lors du traitement du fichier');
 
 	}
-	//var parametre = { "ean": x, "quantiteProduit": valueAdded }
-	var parametre = "ean="+x+"&quantiteProduit="+valueAdded
-	console.log(parametre)
-	xhr.send(parametre);
+	xhr.send(params);
 }

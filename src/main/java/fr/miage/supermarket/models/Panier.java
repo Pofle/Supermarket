@@ -1,15 +1,30 @@
 package fr.miage.supermarket.models;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.HashMap;
 
 public class Panier {
-    private List<HashMap<String, String>> panier = new ArrayList<>();
+	
+    private HashMap<String, ProduitPanier> panier = new HashMap<>();
 
-	public void ajouterProduit(HashMap<String, String> produit) {
-		panier.add(produit);
+	public void ajouterProduit(ProduitPanier produitPanier) {
+		if(produitPanier != null) {
+			if(panier.get(produitPanier.getEan()) == null) {
+				panier.put(produitPanier.getEan(), produitPanier);
+			}
+			panier.get(produitPanier.getEan()).ajouterQuantite(produitPanier.getQuantite());
+		}
 	}
 
+	public HashMap<String, ProduitPanier> getPanier() {
+		return panier;
+	}
+
+	public void setPanier(HashMap<String, ProduitPanier> panier) {
+		this.panier = panier;
+	}
+
+	@Override
+	public String toString() {
+		return "Panier [panier=" + panier + "]";
+	}	
 }
