@@ -5,6 +5,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 import jakarta.persistence.ManyToMany;
@@ -63,6 +67,10 @@ public class Produit {
 	
 	@Transient
 	private String imageBase64;
+	
+	
+	@ManyToMany(mappedBy="Produit")
+	private Set<Commande> commandes = new HashSet<Commande>();
 	
 //	@ManyToMany(mappedBy = "produits")
 //    private Set<ShoppingList> shoppingLists;

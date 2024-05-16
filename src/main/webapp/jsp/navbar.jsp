@@ -21,6 +21,8 @@
 				
 			</ul>
 		</div>
+		<div id="panier-compteur" class="navbar-middle">
+		</div>
 		<div class="navbar-right">
 			<span class="navbar-profile">${categorie}</span>
 		</div>

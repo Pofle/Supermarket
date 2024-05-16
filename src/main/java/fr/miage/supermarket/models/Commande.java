@@ -1,74 +1,47 @@
 package fr.miage.supermarket.models;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 
-@Entity (name="commande")
-
-public class Commande implements Serializable{
-	/*------Properties------*/
+@Entity
+@Table(name="COMMANDE", uniqueConstraints = {@UniqueConstraint(columnNames= {"Id_Commande"})})
+public class Commande {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column (name="ID_COMMANDE")
-	private long id_commande;
+	@Column(name="ID_COMMANDE", nullable=false, unique=true, length=50)
+	private String id_commande;
 	
-	@Column(name="TEMPS_PREPARATION")
-	@Temporal(jakarta.persistence.TemporalType.TIME)
-	private String chrono;
+	@Column(name="STATUT", nullable=false)
+	private boolean statut;
 
-	@Column (name="CRENEAU")
-	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
-	private Timestamp creneau;
-	
-	@Transient 
-	private String etat; 
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "contenir", joinColumns = @JoinColumn(name = "ID_COMMANDE"),inverseJoinColumns = @JoinColumn(name = "EAN"))
-	private Set<Produit> panier = new HashSet(0);
-	
-	/*------Constructor------*/
-	public Commande() {
-		// TODO Auto-generated constructor stub
-	}
-	public Commande(Timestamp creneau) {
-		super();
-		this.creneau = creneau;
-		etat = "En cours";
-	}
-	/*------Functions------*/
-
-	public Timestamp getCreneau() {
-		return creneau;
-	}
-
-	public String getEtat() {
-		return etat;
-	}
-
-	public void setEtat(String etat) {
-		this.etat = etat;
-	}
-
-	public Set<Produit> getPanier() {
-		return panier;
-	}
-
-	public long getIdCommande() {
+	public String getId_commande() {
 		return id_commande;
 	}
 
-	public String getChrono() {
-		return chrono;
+	public void setId_commande(String id_commande) {
+		this.id_commande = id_commande;
 	}
-	public void setChrono(String chrono) {
-		this.chrono = chrono;
+
+	public boolean isStatut() {
+		return statut;
+	}
+
+	public void setStatut(boolean statut) {
+		this.statut = statut;
 	}
 	
+	@ManyToMany(mappedBy="Commande")
+	/*
+	 * @JoinTable( name = "Contenir", joinColumns = @JoinColumn(name =
+	 * "Id_Commande"), inverseJoinColumns = @JoinColumn(name = "ENA") )
+	 */
+	private Set<Produit> produits = new HashSet<Produit>();
 }
-

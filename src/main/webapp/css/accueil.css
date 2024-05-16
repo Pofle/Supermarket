@@ -20,6 +20,11 @@ h1 {
 }
 
 /* Styles pour la barre de recherche */
+#errorMessage {
+    color: red;
+    font-weight: bold;
+}
+
 .search-bar {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -97,4 +102,7 @@ h1 {
 
 .nutriscore {
     font-size: 14px;
+}
+.article-card p {
+    margin-bottom: 20px;
 }

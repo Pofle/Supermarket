@@ -34,7 +34,6 @@ public class ProduitDAO {
 		//Ferme la session
 		session.close();
 	}
-	
 	/**
 	 * Se charge de renvoyer l'entièreté des produits présents en base
 	 * @return la liste des produits

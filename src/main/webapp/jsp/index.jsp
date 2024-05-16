@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ page import="java.text.DecimalFormat"%>
 <%-- Définion d'un format pour les prix --%>
 <%
 	request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 %>
+<%@page import="java.util.*"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,4 +60,8 @@
 		
 	<script src="javascript/script.js"></script>	    
 	</body>
+	<div class="article-container" id="article-container"></div>
+	<script src="javascript/produits.js"></script>
+	
+</body>
 </html>
