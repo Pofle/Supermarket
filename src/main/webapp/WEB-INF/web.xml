@@ -81,11 +81,7 @@
     	<url-pattern>/ServletListeCourse</url-pattern>
     </servlet-mapping>
     
- <!--    <servlet-mapping>
-        <servlet-name>gestionList</servlet-name>
-        <url-pattern>/ServletListeCourse</url-pattern>
-    </servlet-mapping>
- -->
+
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>supermarket</welcome-file>
