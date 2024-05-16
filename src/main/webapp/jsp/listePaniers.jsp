@@ -19,7 +19,7 @@
 	<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
 		<ul>
 			<% for (Commande c : (ArrayList<Commande>)request.getAttribute("ListeCommandes") )
-				out.println("<li> ID : " + c.getIdCommande()+ " <br> Créneau : " + c.getCreneau() + "</li>");
+				out.println("<li> ID      : " + c.getId_commande()+ " <br> Créneau : inconnu" + "</li>");
 			%>
 		</ul>
 	</c:if>
