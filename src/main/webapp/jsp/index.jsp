@@ -53,11 +53,15 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 						</div>
 					</div>
 				</a>
+				<div>
+					<input type="number" id="${produit.getEan()}" name="qte" min="0"
+						value="0">
+					<button onclick="ajouterProduit(${produit.getEan()})">Ajouter au panier</button>
+				</div>
 			</div>
 		</c:forEach>
 	</div>
 
-
-	<script src="javascript/script.js"></script>
+	<script src="javascript/produits.js"></script>
 </body>
 </html>

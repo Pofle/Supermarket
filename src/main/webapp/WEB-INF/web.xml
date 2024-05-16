@@ -44,6 +44,12 @@
         <description>Service de gestion de recherche et d'insertion des produits</description>
         <servlet-class>fr.miage.supermarket.controlers.GestionProduitsService</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>AjoutProduitPanier</servlet-name>
+        <display-name>AjoutProduitPanier</display-name>
+        <description>Servlet d'ajout d'un produit dans un panier</description>
+        <servlet-class>fr.miage.supermarket.controlers.AjoutProduitPanier</servlet-class>
+    </servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -69,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>GestionProduitsService</servlet-name>
         <url-pattern>/produits</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>AjoutProduitPanier</servlet-name>
+        <url-pattern>/ajoutPanier</url-pattern>
     </servlet-mapping>
 
 
