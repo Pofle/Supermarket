@@ -1,5 +1,6 @@
 package fr.miage.supermarket.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -87,7 +88,7 @@ public class ProduitDAO {
         session.beginTransaction();
         
         try {
-            Query<Produit> query = session.createQuery("SELECT DISTINCT p FROM Produit p JOIN FETCH p.stocks s WHERE s.date BETWEEN CURRENT_DATE AND CURRENT_DATE + 15", Produit.class);
+            Query<Produit> query = session.createQuery("SELECT DISTINCT p FROM Produit p JOIN FETCH p.linkProduitStocks lps JOIN FETCH lps.stock s WHERE s.date BETWEEN CURRENT_DATE AND CURRENT_DATE + 15", Produit.class);
             List<Produit> produits = query.getResultList();
             
             session.getTransaction().commit();

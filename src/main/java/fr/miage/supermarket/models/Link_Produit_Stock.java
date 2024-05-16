@@ -10,7 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "LINK_COMMANDE_PRODUIT")
+@Table(name = "LINK_PRODUIT_STOCK")
 public class Link_Produit_Stock {
 
     @Id
