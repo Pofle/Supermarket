@@ -7,6 +7,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Creneau;
+import fr.miage.supermarket.models.Jour;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Point;
 import fr.miage.supermarket.models.Produit;
@@ -39,6 +40,7 @@ public class HibernateUtil {
         	configuration.addAnnotatedClass(Point.class);
         	configuration.addAnnotatedClass(ShoppingList.class);
         	configuration.addAnnotatedClass(Utilisateur.class);
+        	configuration.addAnnotatedClass(Jour.class);
         	
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         	System.out.println("Hibernate serviceRegistry created");

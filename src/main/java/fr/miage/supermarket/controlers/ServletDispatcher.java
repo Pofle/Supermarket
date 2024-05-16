@@ -15,12 +15,13 @@ import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.ShoppingList;
 
 /**
- * Servlet implementation class ServletDispatcher
+ * Servlet principale qui implemente la classe ServletDispatcher
  */
 public class ServletDispatcher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Constructeur par défaut
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public ServletDispatcher() {
@@ -28,8 +29,11 @@ public class ServletDispatcher extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * Gère les requêtes HTTP GET.
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -43,6 +47,9 @@ public class ServletDispatcher extends HttpServlet {
 			if (categorieCompte.equals(CategorieCompte.GESTIONNAIRE.name())) {
 				dispatchGestionnaireFuncs(action, request, response);
 			}
+			if (categorieCompte.equals(CategorieCompte.PREPARATEUR.name())) {
+				dispatchPreparateurFuncs(action, request, response);
+			}
 			if (categorieCompte.equals(CategorieCompte.UTILISATEUR.name())) {
 				dispatchUtilisateurFuncs(action, request, response);
 			} else {
@@ -51,6 +58,14 @@ public class ServletDispatcher extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Gère les fonctionnalités spécifiques aux gestionnaires.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
 	private void dispatchGestionnaireFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url;
@@ -62,6 +77,41 @@ public class ServletDispatcher extends HttpServlet {
 			case "gestionProduit":
 				url = "gestionProduit";
 				break;
+			case "gestionStock":
+				url = "gestionStock";
+				break;
+			case "gestionCommande":
+				url = "gestionCommande";
+				break;
+			case "statistiques":
+				url = "statistiques";
+				break;
+			default:
+				url = "accueil";
+			}
+		}
+		request.getRequestDispatcher(url).forward(request, response);
+	}
+	
+	/**
+	 * Gère les fonctionnalités spécifiques aux préparateurs.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
+	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String url;
+		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
+		if (action == null)
+			url = "accueil";
+		else {
+			switch (action) {
+			case "preparationPanier":
+				url = "preparationPanier";
+				break;
 			default:
 				url = "accueil";
 			}
@@ -69,6 +119,14 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 
+	/**
+	 * Gère les fonctionnalités par défaut pour les visiteurs.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
 	private void dispatchDefaultFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url ="";
@@ -85,6 +143,21 @@ public class ServletDispatcher extends HttpServlet {
 					 e.printStackTrace();
 				}
 				break;
+			case "rayons":
+                url = "rayons";
+                break;
+            case "promos":
+                url = "promos";
+                break;
+            case "listeCourse":
+                url = "listeCourse";
+                break;
+            case "connexionInscription":
+                url = "connexionInscription";
+                break;
+            case "panier":
+                url = "panier";
+                break;
 			default:
 				url = "accueil";
 			
@@ -93,6 +166,14 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
+	/**
+	 * Gère les fonctionnalités spécifiques aux utilisateurs connectés.
+	 * @param action L'action à effectuer
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 */
 	private void dispatchUtilisateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url ="";
@@ -117,6 +198,21 @@ public class ServletDispatcher extends HttpServlet {
 					 e.printStackTrace();
 				}
 				break;
+			case "rayons":
+                url = "rayons";
+                break;
+            case "promos":
+                url = "promos";
+                break;
+            case "listeCourse":
+                url = "listeCourse";
+                break;
+            case "connexionInscription":
+                url = "connexionInscription";
+                break;
+            case "panier":
+                url = "panier";
+                break;
 			default:
 				url = "accueil";
 			

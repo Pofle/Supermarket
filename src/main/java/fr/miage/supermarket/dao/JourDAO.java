@@ -1,6 +1,5 @@
 package fr.miage.supermarket.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -8,13 +7,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import fr.miage.supermarket.models.Creneau;
+import fr.miage.supermarket.models.Jour;
 import fr.miage.supermarket.utils.HibernateUtil;
 
-public class CreneauDAO {
+public class JourDAO {
 
-    public static List<Creneau> getAllCreneaux(Date date) {
-        List<Creneau> creneaux = null;
+    public static List<Jour> getAllJours() {
+        List<Jour> jours = null;
         SessionFactory sessionFactory = null;
         Session session = null;
         Transaction transaction = null;
@@ -24,9 +23,8 @@ public class CreneauDAO {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            Query<Creneau> query = session.createQuery("FROM Creneau WHERE date(heureDebut) = :date", Creneau.class);
-            query.setParameter("date", date);
-            creneaux = query.list();
+            Query<Jour> query = session.createQuery("from Jour", Jour.class);
+            jours = query.list();
 
             transaction.commit();
         } catch (Exception e) {
@@ -40,6 +38,6 @@ public class CreneauDAO {
             }
         }
 
-        return creneaux;
+        return jours;
     }
 }

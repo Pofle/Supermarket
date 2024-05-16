@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Base64;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.miage.supermarket.dao.CreneauDAO;
+import fr.miage.supermarket.dao.JourDAO;
 import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
@@ -23,6 +25,7 @@ import fr.miage.supermarket.models.Creneau;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
+import fr.miage.supermarket.models.Jour;
 
 /**
  * Servlet de gestion de la récupération des produits avec redirection vers JSP
@@ -99,8 +102,27 @@ public class RecupererProduits extends HttpServlet {
         List<Magasin> magasins = MagasinDAO.getAllMagasins();       
         // Ajout de la liste des magasins à l'attribut de la requête
         request.setAttribute("magasins", magasins);
-     // Récupération de la liste des creneaux depuis la base de données
-        List<Creneau> creneaux = CreneauDAO.getAllCreneaux();       
+        
+     // Récupération de la date sélectionnée
+        String selectedDate = request.getParameter("date");
+        Date date = null;
+        if (selectedDate != null && !selectedDate.isEmpty()) {
+            // Conversion de la date en objet Date
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                date = formatter.parse(selectedDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        // Récupération de la liste des creneaux pour la date sélectionnée
+        List<Creneau> creneaux = new ArrayList<>();
+        if (date != null) {
+            creneaux = CreneauDAO.getAllCreneaux(date);
+        }      
+        // Ajout de la liste des creneaux à l'attribut de la requête
+        request.setAttribute("creneaux", creneaux);
         // Ajout de la liste des magasins à l'attribut de la requête
         request.setAttribute("creneaux", creneaux);
 		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());

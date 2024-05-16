@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -29,6 +31,10 @@ public class Creneau {
 
     @Column(name = "nombre_max_commandes")
     private int nombreMaxCommandes;
+    
+    @ManyToOne
+    @JoinColumn(name = "jour_id", referencedColumnName = "id")
+    private Jour jour;
 
     // Constructeurs, getters et setters
 
@@ -72,6 +78,12 @@ public class Creneau {
     public void setNombreMaxCommandes(int nombreMaxCommandes) {
         this.nombreMaxCommandes = nombreMaxCommandes;
     }
-    
-}
 
+    public Jour getJour() {
+        return jour;
+    }
+
+    public void setJour(Jour jour) {
+        this.jour = jour;
+    }    
+}
