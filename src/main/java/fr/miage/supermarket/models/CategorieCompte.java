@@ -5,7 +5,12 @@ package fr.miage.supermarket.models;
  * @author EricB
  */
 public enum CategorieCompte {
+	// Rôle du préparateur de commandes
 	PREPARATEUR(),
+	// Rôle du gérant
 	GESTIONNAIRE(),
-	VISITEUR()
+	// Rôle visiteur (non-connecté)
+	VISITEUR(),
+	// Rôle utilisateur (connecté)
+	UTILISATEUR()
 }

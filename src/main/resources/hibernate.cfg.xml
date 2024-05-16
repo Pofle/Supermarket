@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
-		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-		"https://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+		"-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
@@ -19,6 +19,11 @@
 		
 		<!--  Mode de mise à jour de la base de données - create, validate, update, none  -->
 		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<!-- Names the annotated entity class -->
+        <mapping class="fr.miage.supermarket.models.ShoppingList"/>
+      	<mapping class="fr.miage.supermarket.models.Produit"/> 
+      	<mapping class="fr.miage.supermarket.models.Utilisateur"/> 
 		
 	</session-factory>
 </hibernate-configuration>

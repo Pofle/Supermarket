@@ -16,11 +16,13 @@
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<h1>Accueil</h1>
+	
 	<div class="search-bar">
 		<input type="text" placeholder="Rechercher...">
 		<button type="button">Rechercher</button>
 	</div>
+	
+	
 	<div class="article-container" id="article-container">
 		<c:forEach var="produit" items="${produits}">
 			<div class="article-card">
@@ -52,5 +54,8 @@
 			</div>
 		</c:forEach>
 	</div>
-</body>
+			
+		
+	<script src="javascript/script.js"></script>	    
+	</body>
 </html>
