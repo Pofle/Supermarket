@@ -68,9 +68,6 @@ public class Produit {
 //	@ManyToMany(mappedBy = "produits")
 //    private Set<ShoppingList> shoppingLists;
 	
-//	@OneToMany(mappedBy = "produits", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    private List<Stock> stocks;
-	
 	@OneToMany(mappedBy = "produit")
 	private List<Link_Produit_Stock> linkProduitStocks;
 	

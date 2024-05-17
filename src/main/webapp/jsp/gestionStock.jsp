@@ -8,48 +8,28 @@
 		<jsp:param name="title" value="Gestion du Stock" />
 	</jsp:include>
     <title>Gestion des Stocks</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-    <h1>Gestion des Stocks - Prochains 15 jours</h1>
-    <table>
+    <h1>Gestion des Stocks des 15 prochains jours</h1>
+    <table border="1">
         <thead>
             <tr>
                 <th>EAN</th>
-                <th>Libellé</th>
-                <th>Marque</th>
-                <th>Quantité en stock</th>
+                <th>Libelle</th>
+                <th>Prix</th>
+                <th>Date Stock</th>
+                <th>Quantité</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="produit" items="${produits}">
+            <c:forEach items="${produitsStock}" var="produitStock">
                 <tr>
-                    <td>${produit.ean}</td>
-                    <td>${produit.libelle}</td>
-                    <td>${produit.marque}</td>
-                    <td>
-                        <c:forEach var="linkProduitStock" items="${produit.linkProduitStocks}">
-                            <c:if test="${linkProduitStock.stock.date.time >= (currentTime.time - (currentTime.time % 86400000)) && linkProduitStock.stock.date.time <= (currentTime.time + 15*86400000)}">
-                                ${linkProduitStock.qunatite} (au ${linkProduitStock.stock.date})
-                            </c:if>
-                        </c:forEach>
-                    </td>
+                    <td>${produitStock[0]}</td>
+                    <td>${produitStock[1]}</td>
+                    <td>${produitStock[2]}</td>
+                    <td>${produitStock[3]}</td>
+                    <td>${produitStock[4]}</td>
                 </tr>
             </c:forEach>
         </tbody>

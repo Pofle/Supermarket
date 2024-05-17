@@ -24,20 +24,13 @@ import java.util.List;
 public class Stock {
 
     @Id
+    @Column(name = "ID_STOCK", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    @ManyToOne
-//    @JoinColumn(name = "EAN", nullable = false)
-//    private Produit produit;
-  
-//  @ManyToMany
-//  @Column(name = "QUANTITE", nullable = false)
-//  private int quantite;
     
     @Column(name = "DATE_STOCK", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date dateStock;
     
     @OneToMany(mappedBy = "stock")
     private List<Link_Produit_Stock> linkProduitStocks;
@@ -52,12 +45,12 @@ public class Stock {
 		this.id = id;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getDateStock() {
+		return dateStock;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDateStock(Date dateStock) {
+		this.dateStock = dateStock;
 	}
 
 	public List<Link_Produit_Stock> getLinkProduitStocks() {
@@ -67,4 +60,5 @@ public class Stock {
 	public void setLinkProduitStocks(List<Link_Produit_Stock> linkProduitStocks) {
 		this.linkProduitStocks = linkProduitStocks;
 	}    
+  
 }

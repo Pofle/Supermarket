@@ -19,7 +19,7 @@ public class Link_Produit_Stock {
     private Long id;
     
     @Column (name="QUANTITE", nullable=false, columnDefinition = "bigint default 1")
-    private Long qunatite;
+    private Long quantite;
         
     @ManyToOne
     @JoinColumn(name = "ID_STOCK", nullable=false)
@@ -29,10 +29,10 @@ public class Link_Produit_Stock {
     @JoinColumn(name = "EAN", nullable=false)
     private Produit produit;
 
-	public Link_Produit_Stock(Long id, Long qunatite, Stock stock, Produit produit) {
+	public Link_Produit_Stock(Long id, Long quantite, Stock stock, Produit produit) {
 		super();
 		this.id = id;
-		this.qunatite = qunatite;
+		this.quantite = quantite;
 		this.stock = stock;
 		this.produit = produit;
 	}
@@ -46,11 +46,11 @@ public class Link_Produit_Stock {
 	}
 
 	public Long getQunatite() {
-		return qunatite;
+		return quantite;
 	}
 
-	public void setQunatite(Long qunatite) {
-		this.qunatite = qunatite;
+	public void setQunatite(Long quantite) {
+		this.quantite = quantite;
 	}
 
 	public Stock getStock() {
