@@ -56,6 +56,9 @@ public class Produit {
 	@Column(name="CONDITIONNEMENT", length=50, nullable=true)
 	private String conditionnement;
 	
+	@Column(name="QUANTITE_CONDITIONNEMENT", length=50, nullable=true)
+	private Integer quantiteConditionnement;
+	
 	@Column(name="POIDS", nullable=true)
 	private Float poids;
 	
@@ -173,6 +176,14 @@ public class Produit {
 
 	public void setPromotions(List<Promotion> promotions) {
 		this.promotions = promotions;
+	}
+
+	public Integer getQuantiteConditionnement() {
+		return quantiteConditionnement;
+	}
+
+	public void setQuantiteConditionnement(Integer quantiteConditionnement) {
+		this.quantiteConditionnement = quantiteConditionnement;
 	}
 
 	public String getVignetteBase64() {

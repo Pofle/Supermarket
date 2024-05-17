@@ -34,7 +34,7 @@ function createProductCard(product) {
     const additionalInfo = document.createElement('p');
     additionalInfo.classList.add('additional-info');
     if (product.conditionnement) {
-        additionalInfo.textContent = product.conditionnement;
+        additionalInfo.textContent = product.quantiteConditionnement + " " + product.conditionnement;
     } else {
         const prixKilo = (product.prix * 1000 / product.poids).toFixed(2);
         additionalInfo.textContent = `${product.poids}g - ${prixKilo}€/kg`;
@@ -81,7 +81,8 @@ function parseProductsFromXML(xml) {
         const conditionnement = produit.querySelector('conditionnement')?.textContent;
         const poids = parseFloat(produit.querySelector('poids')?.textContent);
         const nutriscore = produit.querySelector('nutriscore').textContent;
-        return { ean, vignetteBase64, prix, libelle, marque, conditionnement, poids, nutriscore };
+        const quantiteConditionnement = produit.querySelector('quantiteConditionnement')?.textContent;
+        return { ean, vignetteBase64, prix, libelle, marque, conditionnement, poids, nutriscore, quantiteConditionnement };
     });
 }
 
