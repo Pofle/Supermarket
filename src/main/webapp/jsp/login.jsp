@@ -22,7 +22,7 @@
 		
 		<input type="submit" value="Se connecter">
 	</form>
-	<a href="/SupermarketG3/inscription.jsp">Pas encore de compte ? Inscrivez vous</a>
+	<a href="jsp/inscription.jsp">Pas encore de compte ? Inscrivez vous</a>
 
 	<%
 	// Afficher les messages d'erreur ou de succès

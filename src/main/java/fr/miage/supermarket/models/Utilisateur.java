@@ -23,6 +23,7 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "Utilisateur",uniqueConstraints= {@UniqueConstraint(columnNames= {"ID"})})
 public class Utilisateur {
 	
+
 	//Attributs
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,6 +83,13 @@ public class Utilisateur {
 	}
 	public void setMotdepasse(String motdepasse) {
 		this.motdepasse = motdepasse;
+	}
+
+	public CategorieCompte getRole() {
+		return role;
+	}
+	public void setRole(CategorieCompte role) {
+		this.role = role;
 	}
 
 	public void setListeCourse(List<ShoppingList> listesCourseLst) {

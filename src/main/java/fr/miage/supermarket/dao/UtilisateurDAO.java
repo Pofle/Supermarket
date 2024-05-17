@@ -7,54 +7,42 @@ import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 public class UtilisateurDAO {
-
-	public String getMotdepasseByID(int idUser) {
+	
+	//On récupère un object utilisateur d'apres le mail
+	public Utilisateur getUtilisateurByMail(String mail) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
 		Session session = sessionFactory.getCurrentSession();
 		
-		session.beginTransaction();
-		
-		try {
-			Utilisateur utilisateur = session.get(Utilisateur.class, idUser);
-			session.getTransaction().commit();
-			return utilisateur.getMotdepasse();
-		} catch (Exception e) {
-			session.getTransaction().rollback();
-			e.printStackTrace();
-			return null;
-		} finally {
-			session.close();
-		}
-	}
+        try {
+            session.beginTransaction();
+            Utilisateur utilisateur = (Utilisateur) session.createQuery("FROM Utilisateur WHERE mail = :mail")
+                    .setParameter("mail", mail)
+                    .uniqueResult();
+            session.getTransaction().commit();
+            return utilisateur;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return null;
+        }
+        	finally {
+            session.close();
+        }
+    }
 	
-	public int getIdByMail(String mail) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
-		
-		session.beginTransaction();
-		
-		try {
-			Utilisateur utilisateur = session.get(Utilisateur.class, mail);
-			session.getTransaction().commit();
-			return utilisateur.getId();
-		} catch (Exception e) {
-			session.getTransaction().rollback();
-			e.printStackTrace();
-			return (Integer) null;
-		} finally {
-			session.close();
-		}
-	}
-	
+	//Ajout d'un utilisateur dans la base
 	public void insertUtilisateur(Utilisateur utilisateur) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
 		Session session = sessionFactory.getCurrentSession();
-		
-		session.beginTransaction();
-        session.save(utilisateur);
-        // Commit la transaction
-        session.getTransaction().commit();
-        session.close();
+		try {
+			session.beginTransaction();
+			System.out.println("Connexion réussie");
+	        session.save(utilisateur);
+	        session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Connexion failed");
+		} finally {
+			session.close();
+		}
 		
 	}
 	
@@ -65,7 +53,7 @@ public class UtilisateurDAO {
         for (int i = 0; i < password.length(); i++) {
             char c = password.charAt(i);
             int asciiValue = (int) c;
-            hash.append(asciiValue);
+            hash.append(asciiValue+" ");
         }
 		return hash.toString().trim();
 	}
