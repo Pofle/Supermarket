@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="fr.miage.supermarket.models.Magasin" %>
-<%@ page import="fr.miage.supermarket.models.Jour" %>
-<%@ page import="fr.miage.supermarket.models.Horaire" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -46,29 +44,30 @@
             </button>
           </div>
           <form action="FinaliserCommande" method="post">
-            <div class="modal-body">
-                <label for="magasin">Sélectionnez un magasin :</label>
-                <select name="magasin" id="magasin">
-                    <option value="">Votre magasin</option>
-                        <% for (Magasin magasin : (List<Magasin>)request.getAttribute("magasins")) { %>
-                    <option value="<%= magasin.getId() %>"><%= magasin.getNom() %></option>
-                        <% } %>
-                </select>
-                <br><br>
-                <label for="date">Sélectionnez une date :</label>
-                <input type="date" id="date" name="date" min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
-                <br><br>    
-                <label for="horaire">Sélectionnez un horaire :</label>
-                <select name="horaire" id="horaire">
-                    <option value="">Heure de retrait</option>
-                </select>
-                <br><br>    
-            </div>
-          <div class="modal-footer">
-            <button type="submit" value="Valider" class="btn btn-primary" data-dismiss="modal">Valider</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          </div>
-          </form>
+		    <div class="modal-body">
+		        <label for="magasin">Sélectionnez un magasin :</label>
+		        <select name="magasin" id="magasin" required>
+		            <option value="">Votre magasin</option>
+		            <% for (Magasin magasin : (List<Magasin>)request.getAttribute("magasins")) { %>
+		                <option value="<%= magasin.getId() %>"><%= magasin.getNom() %></option>
+		            <% } %>
+		        </select>
+		        <br><br>
+		        <label for="date">Sélectionnez une date :</label>
+		        <input type="date" id="date" name="date" min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required>
+		        <br><br>    
+		        <label for="horaire">Sélectionnez un horaire :</label>
+		        <select name="horaire" id="horaire" required>
+		            <option value="">Heure de retrait</option>
+		        </select>
+		        <br><br>    
+		    </div>
+		    <div class="modal-footer">
+		        <button type="submit" class="btn btn-primary">Valider</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+		    </div>
+		</form>
+
         </div>
       </div>
     </div>
@@ -119,15 +118,31 @@
     <script>
     $(document).ready(function() {
         $('#date').change(function() {
+            // Vider les options existantes dans le select horaire
             $('#horaire').empty();
+            
+            // Récupérer la date sélectionnée
             var selectedDate = new Date($(this).val());
+            selectedDate.setHours(0, 0, 0, 0); // Réinitialiser l'heure de la date sélectionnée
+            
+            // Récupérer la date d'aujourd'hui
             var today = new Date();
-            today.setHours(0, 0, 0, 0);
-            var currentHour = today.getHours();
-            var debut = (selectedDate.getTime() === today.getTime()) ? currentHour + 1 : 9; // Heure de début
+            today.setHours(0, 0, 0, 0); // Réinitialiser l'heure de la date d'aujourd'hui
+            
+            // Récupérer l'heure actuelle
+            var currentHour = new Date().getHours();
+            
+            // Définir l'heure de début
+            var debut;
+            if (selectedDate.getTime() === today.getTime()) {
+                debut = currentHour + 2;
+            } else {
+                debut = 9; // Heure de début par défaut si la date sélectionnée n'est pas aujourd'hui
+            }
+            
             var fin = 19; // Heure de fin
 
-            // Ajout des horaires
+            // Ajouter les horaires au select
             for (var i = debut; i <= fin; i++) {
                 for (var j = 0; j < 60; j += 15) {
                     var heure = (i < 10) ? '0' + i : i;
@@ -139,6 +154,7 @@
         });
     });
 </script>
+
 
 
 

@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Commande")
@@ -22,13 +23,14 @@ public class Commande {
     @JoinColumn(name = "id_magasin")
     private Magasin magasin;
 
-    @ManyToOne
-    @JoinColumn(name = "id_jour")
-    private Jour jour;
+    @Column(name = "date_commande")
+    private LocalDate dateCommande;
 
-    @ManyToOne
-    @JoinColumn(name = "id_horaire")
-    private Horaire horaire;
+    @Column(name = "date_retrait")
+    private LocalDate dateRetrait;
+
+    @Column(name = "horaire_retrait")
+    private String horaireRetrait;
 
     // Constructeurs, getters et setters
 
@@ -55,19 +57,34 @@ public class Commande {
         this.magasin = magasin;
     }
 
-    public Jour getJour() {
-        return jour;
+    public LocalDate getDateCommande() {
+        return dateCommande;
     }
 
-    public void setJour(Jour jour) {
-        this.jour = jour;
+    public void setDateCommande(LocalDate dateCommande) {
+        this.dateCommande = dateCommande;
     }
 
-    public Horaire getHoraire() {
-        return horaire;
+    public LocalDate getDateRetrait() {
+        return dateRetrait;
     }
 
-    public void setHoraire(Horaire horaire) {
-        this.horaire = horaire;
+    public void setDateRetrait(LocalDate dateRetrait) {
+        this.dateRetrait = dateRetrait;
+    }
+
+    public String getHoraireRetrait() {
+        return horaireRetrait;
+    }
+
+    public void setHoraireRetrait(String horaireRetrait) {
+        this.horaireRetrait = horaireRetrait;
+    }
+
+    public void setIdMagasin(int magasinId) {
+        if (this.magasin == null) {
+            this.magasin = new Magasin();
+        }
+        this.magasin.setId(magasinId);
     }
 }

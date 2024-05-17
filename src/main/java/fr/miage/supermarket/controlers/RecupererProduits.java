@@ -16,14 +16,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.miage.supermarket.dao.JourDAO;
 import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
-import fr.miage.supermarket.models.Jour;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
@@ -96,23 +94,19 @@ public class RecupererProduits extends HttpServlet {
 			prd.setVignetteBase64(imageToBase64(prd.getRepertoireVignette()));
 		}
 		
-		// Récupération de la liste des magasins depuis la base de données
-        List<Magasin> magasins = MagasinDAO.getAllMagasins();       
-        // Ajout de la liste des magasins à l'attribut de la requête
-        request.setAttribute("magasins", magasins);
-        
-     // Récupération de la date sélectionnée
-        String selectedDate = request.getParameter("date");
-        Date date = null;
-        if (selectedDate != null && !selectedDate.isEmpty()) {
-            // Conversion de la date en objet Date
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                date = formatter.parse(selectedDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+		List<Magasin> magasins = MagasinDAO.getAllMagasins();
+	    request.setAttribute("magasins", magasins);
+
+	    String selectedDate = request.getParameter("date");
+	    Date date = null;
+	    if (selectedDate != null && !selectedDate.isEmpty()) {
+	        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	        try {
+	            date = formatter.parse(selectedDate);
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	        }
+	    }
         
 		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
 		request.setAttribute("produits", produits);
