@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
@@ -24,7 +25,7 @@ public class ShoppingListDAO {
 	 * @throws Exception
 	 * @author PaulineF
 	 */
-	 public static List<ShoppingList> getShoppingLists() throws Exception {
+	 public static List<ShoppingList> getShoppingLists(int userId) throws Exception {
 	        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	        Transaction tx = null;
 	        List<ShoppingList> shoppingLists = new ArrayList<>();
@@ -34,7 +35,7 @@ public class ShoppingListDAO {
 	            shoppingLists = session.createQuery("from ShoppingList sl where sl.utilisateur.id = :userId", ShoppingList.class)
                         //TO-DO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
 	            		// -- Code à remplacer
-	            		.setParameter("userId", 1)
+	            		.setParameter("userId", userId)
 	            		// Fin du code à remplacer
                         .list();
 	        } catch (Exception e) {
@@ -43,7 +44,6 @@ public class ShoppingListDAO {
 	        } finally {
 	            session.close();
 	        }
-
 	        return shoppingLists;
 	    }
 	 
@@ -77,30 +77,7 @@ public class ShoppingListDAO {
 	            session.close();
 	        }
 	     System.out.println("Shopping List succesfully added.");
-	 }
-	 
-	 /**
-	  * Methode pour ajouté une quantité de produit à une liste - EN COURS-
-	  * @param quantite
-	  */
-	 public static void ajouterArticleListe(int quantite)
-	 {
-		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
-	     Transaction tx = null;
-	     
-	     try {
-	    	 tx=session.beginTransaction();
-	    	 LinkListeProduit linkListProduit = new LinkListeProduit();
-	    	 linkListProduit.setQuantite(quantite);
-	    	 
-	     }catch (Exception e) {
-	            if (tx != null) tx.rollback();
-	            throw e;
-	        } finally {
-	            session.close();
-	        }
-	 }
-	 
+	 }	 
 	 /**
 	  * Methode pour supprimer une liste de course
 	  * @param listeId, identifiant de la liste de course a supprimer
@@ -118,6 +95,55 @@ public class ShoppingListDAO {
 	             session.remove(liste);
 	         }
 	    	 tx.commit();
+	     }catch (Exception e) {
+	            if (tx != null) tx.rollback();
+	            throw e;
+	        } finally {
+	            session.close();
+	        }
+	 }
+	 
+	 public static List<LinkListeProduit> getLinkListProduit(int listeId) throws Exception {
+	        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	        Transaction tx = null;
+	        List<LinkListeProduit> linkListeProduits = new ArrayList<>();
+
+	        try {
+	            tx = session.beginTransaction();
+	            Query<LinkListeProduit> query = session.createQuery(
+	                    "from LinkListeProduit pl where pl.shoppingList.id = :listeId", LinkListeProduit.class);
+	                query.setParameter("listeId", listeId);
+	                linkListeProduits = query.list();
+	                tx.commit();
+	        } catch (Exception e) {
+	            if (tx != null) tx.rollback();
+	            throw e;
+	        } finally {
+	            session.close();
+	        }
+	     // AFFICHAGE RESULTAT CONSOLE
+	        for (LinkListeProduit link : linkListeProduits) {
+	            System.out.println("Produit EAN: " + link.getProduit().getEan() + 
+	                               ", Quantité: " + link.getQuantite());
+	        }
+	    // FIN 
+	        return linkListeProduits;
+	    }
+	 
+	 /**
+	  * Methode pour ajouté une quantité de produit à une liste - EN COURS-
+	  * @param quantite
+	  */
+	 public static void ajouterArticleListe(int quantite)
+	 {
+		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	     Transaction tx = null;
+	     
+	     try {
+	    	 tx=session.beginTransaction();
+	    	 LinkListeProduit linkListProduit = new LinkListeProduit();
+	    	 linkListProduit.setQuantite(quantite);
+	    	 
 	     }catch (Exception e) {
 	            if (tx != null) tx.rollback();
 	            throw e;

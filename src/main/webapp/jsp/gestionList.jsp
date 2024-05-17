@@ -31,7 +31,7 @@
     	<ul>
         	<c:forEach var="list" items="${shoppingLists}" varStatus="status" >
             	<li> 
-            		<p class="btn" data-bs-toggle="modal" data-bs-target="#modalProduits">${status.index + 1} - ${list.name}  </p>
+            		<p class="btn" href="ServletListeCourse?type_action=get_produits&listeId=${list.id} }" data-bs-toggle="modal" data-bs-target="#modalProduits">${status.index + 1} - ${list.name}  </p>
             		<a href="ServletListeCourse?type_action=delete_list&list_id=${list.id}">
             			<img src="recupererImage?cheminImage=delete_icon.png" class="btn-Delete" Title="Supprimer la liste de course" />
             		</a>
@@ -70,7 +70,7 @@
   	<div class="modal-dialog">
     	<div class="modal-content">
       	<div class="modal-header">
-        	<h1 class="modal-title fs-5" id="ModalProduitsLabel">Cette liste contient </h1>
+        	<h1 class="modal-title fs-5" id="ModalProduitsLabel">Cette liste contient :</h1>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       	<form action="" method="">
@@ -84,8 +84,7 @@
       </form>
     </div>
   </div>
-</div>
-       
+</div>       
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
    </body>
      

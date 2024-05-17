@@ -1,6 +1,8 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,11 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.miage.supermarket.dao.LinkListeProduitDAO;
+
 //import org.hibernate.mapping.List;
 
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
+import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.utils.ListWrapper;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
@@ -184,9 +192,14 @@ public class ServletDispatcher extends HttpServlet {
 			switch (action) {
 			case "gestion_List":
 				try {
-					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists();
+					int userId = 1;
+					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists(userId);
+					for (ShoppingList shoppingList : allShoppingLists) {
+                        shoppingList.getUtilisateur(); // Chargement explicite de l'Utilisateur
+                    }
 					 request.setAttribute("shoppingLists", allShoppingLists);
-					url= "gestionList";
+					 ConvertirEnXml(request, response);
+					return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());
 					 e.printStackTrace();
@@ -214,6 +227,33 @@ public class ServletDispatcher extends HttpServlet {
 			}
 		}
 		request.getRequestDispatcher(url).forward(request, response);
+	}
+	
+	private void ConvertirEnXml(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+	    try {
+	        List<LinkListeProduit> allLinkListProduits = LinkListeProduitDAO.getAllLinkListProduit();
+
+	        JAXBContext jaxbContext = JAXBContext.newInstance(LinkListeProduit.class, ListWrapper.class);
+	        Marshaller marshaller = jaxbContext.createMarshaller();
+
+	        ListWrapper<LinkListeProduit> wrapper = new ListWrapper<>(allLinkListProduits);
+	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+	     // Début de l'affichage du XML dans la console
+	        System.out.println("Début du XML généré");
+	       // Fin
+
+	        Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
+	        marshaller.marshal(wrapper, writer);
+
+	      // Fin de l'affichage du XML dans la console (pour des raisons de nettoyage rapide)
+	        System.out.println("Fin du XML généré.");
+	        request.getRequestDispatcher("gestionList.jsp").forward(request, response);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	    }
 	}
 
 }

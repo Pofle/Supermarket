@@ -44,16 +44,20 @@ public class ServletListeCourse extends HttpServlet {
         }
     }
 	
+	/**
+	 * Methode pour supprimer une liste de course - A COMPLETER AVEC SUPPRESSION DE SES PRODUIT ?
+	 * @author Pauline
+	 */
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String actionType = request.getParameter("type_action");
-        
+       String actionType = request.getParameter("type_action");        
        if ("delete_list".equals(actionType)) {
             Integer listeId = getIntegerParameter(request, "list_id");
             if (listeId != null) {
                 ShoppingListDAO.supprimerListe(listeId);
             }
             response.sendRedirect("central?type_action=gestion_List");
+            
         }
     }
 	
