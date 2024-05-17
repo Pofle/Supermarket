@@ -21,6 +21,7 @@ h1 {
 
 /* Styles pour la barre de recherche */
 .search-bar {
+    position: relative;
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;

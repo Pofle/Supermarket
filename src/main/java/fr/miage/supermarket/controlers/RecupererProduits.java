@@ -19,6 +19,7 @@ import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
+import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
  * Servlet de gestion de la récupération des produits avec redirection vers JSP
@@ -39,7 +40,6 @@ public class RecupererProduits extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		if(request.getParameter("ean") == null) {
 			displayAllProduits(request, response);
 		} else {

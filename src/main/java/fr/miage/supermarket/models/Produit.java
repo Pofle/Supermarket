@@ -8,9 +8,13 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import jakarta.persistence.CascadeType;
 
 import java.util.Set;
 
@@ -46,11 +50,14 @@ public class Produit {
 	@Column(name="LABEL", length=50, nullable=true)
 	private String label;
 
-	@Column(name="PRIX", nullable=true)
+	@Column(name="PRIX", nullable=false)
 	private Float prix;
 	
 	@Column(name="CONDITIONNEMENT", length=50, nullable=true)
 	private String conditionnement;
+	
+	@Column(name="QUANTITE_CONDITIONNEMENT", length=50, nullable=true)
+	private Integer quantiteConditionnement;
 	
 	@Column(name="POIDS", nullable=true)
 	private Float poids;
@@ -171,6 +178,14 @@ public class Produit {
 
 	public void setPromotions(List<Promotion> promotions) {
 		this.promotions = promotions;
+	}
+
+	public Integer getQuantiteConditionnement() {
+		return quantiteConditionnement;
+	}
+
+	public void setQuantiteConditionnement(Integer quantiteConditionnement) {
+		this.quantiteConditionnement = quantiteConditionnement;
 	}
 
 	public String getVignetteBase64() {
