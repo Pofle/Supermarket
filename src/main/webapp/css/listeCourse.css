@@ -11,10 +11,10 @@ p {
     margin-bottom: 20px; 
     text-align: center; 
 }
-/* Style pour la liste de courses */
+/* Style pour la liste des listes de courses */
 .listes {
     margin: 0 auto;
-    max-width: 800px; 
+    max-width: 30em; 
     padding: 20px; 
 }
 
@@ -23,11 +23,18 @@ ul {
     padding: 0;
 }
 .listes ul li {
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
     padding: 10px;
     background-color: #f8f9fa; 
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.btn-Delete{
+	width : 4ex;
 }
 .btn-Add {
     padding: 10px 20px;
