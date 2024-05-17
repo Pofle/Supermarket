@@ -15,7 +15,7 @@ import jakarta.persistence.UniqueConstraint;
 
 import java.util.List;
 /**
- * Object class for the Shopping List
+ * Classe d'objet d'une liste de course 
  * @author PaulineF
  */
 
@@ -42,39 +42,63 @@ public class ShoppingList {
 	           inverseJoinColumns = @JoinColumn(name = "EAN",  referencedColumnName = "ean"))
 	private List<Produit> produits;
 
-    // Construteur par défaut
+    /**
+     * Constructeur par défaut
+     * @author Pauline
+     */
     public ShoppingList() {
     }
 
-    // Conbstructeur paramétré
+    /**
+     * Constructeur paramétré
+     * @param name, nom de la liste
+     * @author Pauline
+     */
     public ShoppingList(String name) {
         //this.id = id;
         this.name = name;
     }
 
-    // Getters
+    /**
+     * Getter de l'id de la liste
+     * @return id liste
+     * @author Pauline
+     */
     public int getId() {
         return id;
     }  
+    /**
+     * Getter du nom de la liste
+     * @return nom de la liste
+     * @author Pauline
+     */
     public String getName() {
         return name;
     }
+    /**
+     * Getter de l'utilisateur a qui apprtient la liste
+     * @return utilisateur linked à la liste
+     * @author Pauline
+     */
     public Utilisateur getUtilisateur() {
         return utilisateur;
     }
 
-    // Setters
+    /**
+     * Setter du nom de la liste
+     * @param name de la liste
+     * @author Pauline
+     */
     public void setName(String name) {
         this.name = name;
     }
+    /**
+     * Setter de l'utilisateur linked à la liste
+     * @param utilisateur linked à la liste
+     * @author Pauline
+     */
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
     }
-
-//    // toString method
-//    @Override
-//    public String toString() {
-//        return "ShoppingList [id=" + id + ", name=" + name + "]";
-//    }
 
 }

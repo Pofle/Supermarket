@@ -50,6 +50,7 @@ public class ShoppingListDAO {
 	 /**
 	  * Méthode permettant à un utilisateur connecté de créer une nouvelle liste
 	  * @param nomListe, le nom de la liste à ajouter
+	  * @author Pauline
 	  */
 	 public static void ajouterListe(String nomListe)
 	 {

@@ -35,7 +35,9 @@
 						<div class="product-head">
 							<p class="price">${decimalFormat.format(produit.getPrix())}€</p>							
 							<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
-							<a href="central?type_action=addToList" class="btn-Add-IntoList" data-bs-toggle="modal" data-bs-target="#exampleModal"  Title="Ajouter à une liste"> <img src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" /></a>
+							<a href="central?type_action=addToList" class="btn-Add-IntoList" data-bs-toggle="modal" data-bs-target="#exampleModal"  Title="Ajouter à une liste"> 
+								<img src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" />
+							</a>
 							</c:if>
 							
 						</div>

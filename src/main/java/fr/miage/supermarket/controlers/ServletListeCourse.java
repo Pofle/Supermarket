@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.miage.supermarket.dao.ShoppingListDAO;
-
 /**
- * Servlet implementation class ServletListeCourse
+ * Servlet gérant les listes de course
+ * @author PaulineF
  */
 public class ServletListeCourse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -31,7 +31,9 @@ public class ServletListeCourse extends HttpServlet {
 //	}
 
 	/**
+	 * Méthode DoPost pour ajouter une liste
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author PaulineF
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nomListeCourse = request.getParameter("inputName");
