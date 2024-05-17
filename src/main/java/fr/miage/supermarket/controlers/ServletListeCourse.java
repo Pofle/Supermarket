@@ -43,5 +43,36 @@ public class ServletListeCourse extends HttpServlet {
             response.sendRedirect("central?type_action=gestion_List");
         }
     }
+	
+	@Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String actionType = request.getParameter("type_action");
+        
+       if ("delete_list".equals(actionType)) {
+            Integer listeId = getIntegerParameter(request, "list_id");
+            if (listeId != null) {
+                ShoppingListDAO.supprimerListe(listeId);
+            }
+            response.sendRedirect("central?type_action=gestion_List");
+        }
+    }
+	
+	/**
+	 * Method generique pour encapsuler la conversion d'un parametre type INT en STRING
+	 * @param request
+	 * @param paramName
+	 * @return
+	 */
+	private Integer getIntegerParameter(HttpServletRequest request, String paramName) {
+	    String paramValue = request.getParameter(paramName);
+	    if (paramValue != null && !paramValue.isEmpty()) {
+	        try {
+	            return Integer.parseInt(paramValue);
+	        } catch (NumberFormatException e) {
+	            
+	        }
+	    }
+	    return null; 
+	}
 
 }

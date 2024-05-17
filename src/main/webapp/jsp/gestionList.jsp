@@ -30,7 +30,10 @@
    	<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
     	<ul>
         	<c:forEach var="list" items="${shoppingLists}" varStatus="status" >
-            	<li> ${status.index + 1} - ${list.name}</li>
+            	<li> 
+            		<p>${status.index + 1} - ${list.name}</p>
+            	 	<a href="ServletListeCourse?type_action=delete_list&list_id=${list.id}">Suurpimer</a>
+            	</li> 
         	</c:forEach>
     	</ul>  
     		<button type="button" class="btn-Add" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter liste</button> 	

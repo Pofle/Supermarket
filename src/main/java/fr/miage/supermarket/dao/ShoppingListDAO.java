@@ -67,7 +67,7 @@ public class ShoppingListDAO {
 	    	 ShoppingList listeCourse = new ShoppingList();
 	    	 listeCourse.setName(nomListe);
 	    	 listeCourse.setUtilisateur(utilisateur);
-	    	 session.save(listeCourse);
+	    	 session.persist(listeCourse);
 	    	 
 	    	 tx.commit();
 	     } catch (Exception e) {
@@ -79,6 +79,10 @@ public class ShoppingListDAO {
 	     System.out.println("Shopping List succesfully added.");
 	 }
 	 
+	 /**
+	  * Methode pour ajouté une quantité de produit à une liste - EN COURS-
+	  * @param quantite
+	  */
 	 public static void ajouterArticleListe(int quantite)
 	 {
 		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
@@ -96,8 +100,31 @@ public class ShoppingListDAO {
 	            session.close();
 	        }
 	 }
-
-		
+	 
+	 /**
+	  * Methode pour supprimer une liste de course
+	  * @param listeId, identifiant de la liste de course a supprimer
+	  * @author Pauline
+	  */
+	 public static void supprimerListe(int listeId )
+	 {
+		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	     Transaction tx = null;
+	     
+	     try {
+	    	 tx=session.beginTransaction();
+	    	 ShoppingList liste = session.get(ShoppingList.class, listeId);
+	    	 if (liste != null) {
+	             session.remove(liste);
+	         }
+	    	 tx.commit();
+	     }catch (Exception e) {
+	            if (tx != null) tx.rollback();
+	            throw e;
+	        } finally {
+	            session.close();
+	        }
+	 }
 }
 		
 		
