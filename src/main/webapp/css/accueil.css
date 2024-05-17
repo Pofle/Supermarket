@@ -108,14 +108,12 @@ h1 {
     justify-content: space-between; 
 }
 
-.bouton-image {
-    flex: 1; 
-}
-
-.bouton-image img {
-    max-width: 30%; 
-    height: auto; 
-    margin-left: 80px;
-}
-
 /* Style de la modal liste de course */
+.img-AddIntoList {
+   max-width: 30%; 
+    height: auto; 
+    margin-left: 80px; 
+}
+
+
+

@@ -50,6 +50,12 @@
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.ServletListeCourse</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>GestionArticleListe</servlet-name>
+    	<display-name>GestionArticleListe</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
+    </servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -79,6 +85,10 @@
     <servlet-mapping>
     	<servlet-name>ServletListeCourse</servlet-name>
     	<url-pattern>/ServletListeCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>GestionArticleListe</servlet-name>
+    	<url-pattern>/GestionArticleListe</url-pattern>
     </servlet-mapping>
     
 
