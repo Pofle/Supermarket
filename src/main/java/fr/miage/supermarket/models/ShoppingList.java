@@ -41,7 +41,7 @@ public class ShoppingList {
 	           joinColumns = @JoinColumn(name = "ID_LISTE"), 
 	           inverseJoinColumns = @JoinColumn(name = "EAN",  referencedColumnName = "ean"))
 	private List<Produit> produits;
-
+	
     /**
      * Constructeur par défaut
      * @author Pauline
@@ -55,7 +55,6 @@ public class ShoppingList {
      * @author Pauline
      */
     public ShoppingList(String name) {
-        //this.id = id;
         this.name = name;
     }
 
@@ -83,7 +82,7 @@ public class ShoppingList {
     public Utilisateur getUtilisateur() {
         return utilisateur;
     }
-
+    
     /**
      * Setter du nom de la liste
      * @param name de la liste
@@ -100,5 +99,4 @@ public class ShoppingList {
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
     }
-
 }
