@@ -14,7 +14,6 @@
 %>
 <!DOCTYPE html>
 <html>
-<<<<<<< HEAD
 <head>
 <jsp:include page="/jsp/header.jsp">
     <jsp:param name="title" value="Accueil" />
@@ -50,7 +49,7 @@
             <div class="modal-body">
                 <label for="magasin">Sélectionnez un magasin :</label>
                 <select name="magasin" id="magasin">
-                    <option value="">Sélectionnez un magasin :</option>
+                    <option value="">Votre magasin</option>
                         <% for (Magasin magasin : (List<Magasin>)request.getAttribute("magasins")) { %>
                     <option value="<%= magasin.getId() %>"><%= magasin.getNom() %></option>
                         <% } %>
@@ -61,7 +60,7 @@
                 <br><br>    
                 <label for="horaire">Sélectionnez un horaire :</label>
                 <select name="horaire" id="horaire">
-                    <option value="">Sélectionnez un horaire :</option>
+                    <option value="">Heure de retrait</option>
                 </select>
                 <br><br>    
             </div>
@@ -121,21 +120,12 @@
     $(document).ready(function() {
         $('#date').change(function() {
             $('#horaire').empty();
-            var date = $(this).val();
+            var selectedDate = new Date($(this).val());
             var today = new Date();
             today.setHours(0, 0, 0, 0);
-            var selectedDate = new Date(date);
-            var horaires = [];
-
-            // Si la date sélectionnée est aujourd'hui, on ajoute seulement les horaires qui sont après l'heure actuelle
-            if (selectedDate.getTime() === today.getTime()) {
-                var currentHour = today.getHours();
-                var debut = (currentHour < 9) ? 9 : currentHour + 1; // Heure de début
-                var fin = 19; // Heure de fin
-            } else {
-                var debut = 9; // Heure de début
-                var fin = 19; // Heure de fin
-            }
+            var currentHour = today.getHours();
+            var debut = (selectedDate.getTime() === today.getTime()) ? currentHour + 1 : 9; // Heure de début
+            var fin = 19; // Heure de fin
 
             // Ajout des horaires
             for (var i = debut; i <= fin; i++) {
@@ -152,21 +142,7 @@
 
 
 
+
     
 </body>
-
-	<head>
-		<jsp:include page="/jsp/header.jsp" />
-		<link href="css/accueil.css" rel="stylesheet" type="text/css" />
-		<title>Accueil</title>
-	</head>
-	<body>
-		<jsp:include page="/jsp/navbar.jsp" />
-		<div class="search-bar" >
-			<input type="text" placeholder="Rechercher..." id="search-bar">
-		</div>
-		<div class="article-container" id="article-container">
-		</div>
-		<script src="javascript/rechercherProduits.js"></script>
-	</body>
 </html>
