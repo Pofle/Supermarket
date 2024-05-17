@@ -1,3 +1,4 @@
+/*Style global de la page */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -9,6 +10,7 @@ body {
     padding: 20px;
 }
 
+/* Style des cartes*/
 .card {
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -64,6 +66,14 @@ body {
 .additional-info p {
     font-size: 16px;
     margin-top: 10px;
+}
+
+/*Style de la modal d'ajout à une liste de course */
+
+.img-AddIntoList {
+   max-width: 3em; 
+    height: auto; 
+    margin-left: 80px; 
 }
 
 /* Tableau des promotions */
