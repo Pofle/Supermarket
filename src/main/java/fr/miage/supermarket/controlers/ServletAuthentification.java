@@ -61,7 +61,7 @@ public class ServletAuthentification extends HttpServlet {
     			System.out.println("Mot de passe incorrect");
     			request.setAttribute("message", "Mot de passe incorrect");
     		}
-            request.getRequestDispatcher("/jsp/login.jsp");
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
         }
 
     }

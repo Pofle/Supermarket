@@ -42,5 +42,12 @@
         
 		<input type="submit" value="Se connecter">
 	</form>
+	<%
+	// Afficher les messages d'erreur ou de succès
+	String message = (String) request.getAttribute("message");
+	if (message != null) {
+		out.println("<p>" + message + "</p>");
+	}
+	%>
 </body>
 </html>

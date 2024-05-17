@@ -55,7 +55,7 @@ public class ServletInscription extends HttpServlet {
         } else {
         	System.out.println("Mail utilisé");
         	request.setAttribute("message", "Ce mail est deja utilisé");
-        	request.getRequestDispatcher("/jsp/inscription.jsp");
+        	request.getRequestDispatcher("/jsp/inscription.jsp").forward(request, response);
         }
 
 	}
