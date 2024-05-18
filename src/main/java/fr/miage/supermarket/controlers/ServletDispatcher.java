@@ -2,6 +2,8 @@ package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
@@ -195,10 +197,10 @@ public class ServletDispatcher extends HttpServlet {
 					int userId = 1;
 					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists(userId);
 					for (ShoppingList shoppingList : allShoppingLists) {
-                        shoppingList.getUtilisateur(); // Chargement explicite de l'Utilisateur
+                        shoppingList.getUtilisateur();
                     }
 					 request.setAttribute("shoppingLists", allShoppingLists);
-					 ConvertirEnXml(request, response);
+					 ConvertirListeProduitXml(request, response);
 					return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());
@@ -229,27 +231,33 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
-	private void ConvertirEnXml(HttpServletRequest request, HttpServletResponse response)
+	/**
+	 * Methode pour convertir la liste de produit reçu en xml
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @author Pauline
+	 */
+	private void ConvertirListeProduitXml(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException {
 	    try {
 	        List<LinkListeProduit> allLinkListProduits = LinkListeProduitDAO.getAllLinkListProduit();
-
 	        JAXBContext jaxbContext = JAXBContext.newInstance(LinkListeProduit.class, ListWrapper.class);
 	        Marshaller marshaller = jaxbContext.createMarshaller();
-
 	        ListWrapper<LinkListeProduit> wrapper = new ListWrapper<>(allLinkListProduits);
 	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+	        // Set content type to XML
+	        response.setContentType("text/xml");
 
-	     // Début de l'affichage du XML dans la console
-	        System.out.println("Début du XML généré");
-	       // Fin
+	        // Marshal XML to a StringWriter
+	        StringWriter sw = new StringWriter();
+	        marshaller.marshal(wrapper, sw);
 
-	        Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
-	        marshaller.marshal(wrapper, writer);
+	        // Set XML string as request attribute
+	        request.setAttribute("xmlData", sw.toString());
 
-	      // Fin de l'affichage du XML dans la console (pour des raisons de nettoyage rapide)
-	        System.out.println("Fin du XML généré.");
-	        request.getRequestDispatcher("gestionList.jsp").forward(request, response);
+	        request.getRequestDispatcher("gestionList").forward(request, response);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
