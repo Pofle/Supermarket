@@ -15,6 +15,7 @@ import jakarta.persistence.Transient;
 import jakarta.persistence.FetchType;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -52,7 +53,7 @@ public class Produit {
 	@Column(name="PRIX", nullable=true)
 	private Float prix;
 	
-	@Column(name="CONDITIONNEMENT", length=50, nullable=true)
+	@Column(name="CONDITIONNEMENT", length=50, nullable=false)
 	private String conditionnement;
 	
 	@Column(name="POIDS", nullable=true)

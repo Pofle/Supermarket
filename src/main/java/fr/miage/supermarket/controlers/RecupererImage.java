@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,8 +39,16 @@ public class RecupererImage extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "L'image n'a pas été trouvée");
             return;
         }
+        
+        String mimeType = Files.probeContentType(imageFile.toPath());
+        if(mimeType == null) {
+        	response.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
+        	return;
+        }
 
-        response.setContentType("image/jpeg");
+        response.setContentType(mimeType);
+        response.setContentLengthLong(imageFile.length());
+        
         try (FileInputStream fis = new FileInputStream(imageFile);
              OutputStream os = response.getOutputStream()) {
             byte[] buffer = new byte[1024];

@@ -1,20 +1,36 @@
 package fr.miage.supermarket.models;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Objet représentant le produit dans le panier
  */
 public class ProduitPanier {
 
 	private String libelle;
-	
+
 	private String ean;
-	
+
+	private String conditionnement;
+
+	private Float prix;
+
 	private int quantite;
 
-	public ProduitPanier(String libelle, String ean, int quantite) {
+	private Float tauxPromotion;
+	
+	private Float poids;
+
+	public ProduitPanier(String libelle, String ean, int quantite, Float prix, Float tauxPromotion,
+			String conditionnement, Float poids) {
 		this.libelle = libelle;
 		this.ean = ean;
 		this.quantite = quantite;
+		this.prix = new BigDecimal(prix).setScale(2, RoundingMode.HALF_UP).floatValue();
+		this.tauxPromotion = tauxPromotion;
+		this.conditionnement = conditionnement;
+		this.poids = poids;
 	}
 
 	public String getLibelle() {
@@ -40,13 +56,42 @@ public class ProduitPanier {
 	public void setQuantite(int quantite) {
 		this.quantite = quantite;
 	}
-	
-	public void ajouterQuantite(int qtt) {
-		this.quantite+=qtt;
+
+	public int ajusterQuantite(int qtt) {
+		this.quantite += qtt;
+		return this.quantite;
+	}
+
+	public String getConditionnement() {
+		return conditionnement;
+	}
+
+	public void setConditionnement(String conditionnement) {
+		this.conditionnement = conditionnement;
+	}
+
+	public Float getPrix() {
+		return prix;
+	}
+
+	public void setPrix(Float prix) {
+		this.prix = new BigDecimal(prix).setScale(2, RoundingMode.HALF_UP).floatValue();
+	}
+
+	public Float getTauxPromotion() {
+		return tauxPromotion;
+	}
+
+	public void setTauxPromotion(Float tauxPromotion) {
+		this.tauxPromotion = tauxPromotion;
 	}
 	
-	public void retirerQuantite(int qtt) {
-		this.quantite-=qtt;
+	public Float getPoids() {
+		return poids;
+	}
+
+	public void setPoids(Float poids) {
+		this.poids = poids;
 	}
 
 	@Override
