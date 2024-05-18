@@ -146,6 +146,9 @@ public class Produit {
 		this.label = label;
 	}
 	
+	public Float getPrix() {
+		return this.prix;
+	}
 
 	public void setPrix(Float prix) {
 		this.prix = prix;

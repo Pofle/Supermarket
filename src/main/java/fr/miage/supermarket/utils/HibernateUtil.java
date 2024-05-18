@@ -5,6 +5,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
@@ -29,20 +31,17 @@ public class HibernateUtil {
         	Configuration configuration = new Configuration();
         	configuration.configure("hibernate.cfg.xml");
 
-        	configuration.addAnnotatedClass(Commande.class);
-        	configuration.addAnnotatedClass(ShoppingList.class);
-        	configuration.addAnnotatedClass(Utilisateur.class);
+        	
 
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 
         	configuration.addAnnotatedClass(Produit.class);
             configuration.addAnnotatedClass(LinkCommandeProduit.class);
         	configuration.addAnnotatedClass(Promotion.class);
-            configuration.addAnnotatedClass(ShoppingList.class);
-        	configuration.addAnnotatedClass(Utilisateur.class);
-        onfiguration.addAnnotatedClass(Commande.class);
         	configuration.addAnnotatedClass(ShoppingList.class);
-
+        	configuration.addAnnotatedClass(Commande.class);
+        	configuration.addAnnotatedClass(ShoppingList.class);
+        	configuration.addAnnotatedClass(Utilisateur.class);
         	configuration.addAnnotatedClass(LinkListeProduit.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
