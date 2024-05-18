@@ -65,12 +65,11 @@
 		<servlet-class>fr.miage.supermarket.controlers.AjoutProduitPanier</servlet-class>
 	</servlet>
     <servlet>
-    </servlet>
     	<servlet-name>GestionArticleListe</servlet-name>
     	<display-name>GestionArticleListe</display-name>
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
-
+	</servlet>
 	<!-- Servlet Mappings -->
 	<servlet-mapping>
 		<servlet-name>ServletDispatcher</servlet-name>
@@ -105,13 +104,13 @@
 		<url-pattern>/afficherPanier</url-pattern>
 	</servlet-mapping>
 
-
+	<servlet-mapping>
     	<servlet-name>ServletListeCourse</servlet-name>
-    <servlet-mapping>
     	<url-pattern>/ServletListeCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>GestionArticleListe</servlet-name>
-    </servlet-mapping>
     	<url-pattern>/GestionArticleListe</url-pattern>
+     </servlet-mapping>
+     
 </web-app>
