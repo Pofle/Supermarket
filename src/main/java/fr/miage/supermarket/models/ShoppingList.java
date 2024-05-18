@@ -11,14 +11,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-
+import java.util.List;
 /**
- * Object class for the Shopping List
+ * Classe d'objet d'une liste de course 
  * @author PaulineF
  */
 
 @Entity
-@Table(name = "ShoppingList",uniqueConstraints= {@UniqueConstraint(columnNames= {"ID"})})
+@Table(name = "LISTE_COURSE",uniqueConstraints= {@UniqueConstraint(columnNames= {"ID"})})
 public class ShoppingList {
 	//Attributs
 	@Id
@@ -29,36 +29,71 @@ public class ShoppingList {
 	@Column(name="NAME", nullable=false, unique=false, length=50)
     private String name;
 	
-	//Relation
+	//Relations
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UTILISATEUR_ID")
     private Utilisateur utilisateur;
-
-    // Construteur par défaut
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "LINK_LISTE_PRODUIT", 
+	           joinColumns = @JoinColumn(name = "ID_LISTE"), 
+	           inverseJoinColumns = @JoinColumn(name = "EAN",  referencedColumnName = "ean"))
+	private List<Produit> produits;
+	
+    /**
+     * Constructeur par défaut
+     * @author Pauline
+     */
     public ShoppingList() {
     }
 
-    // Conbstructeur paramétré
+    /**
+     * Constructeur paramétré
+     * @param name, nom de la liste
+     * @author Pauline
+     */
     public ShoppingList(String name) {
-        //this.id = id;
         this.name = name;
     }
 
-    // Getters
+    /**
+     * Getter de l'id de la liste
+     * @return id liste
+     * @author Pauline
+     */
     public int getId() {
         return id;
     }  
+    /**
+     * Getter du nom de la liste
+     * @return nom de la liste
+     * @author Pauline
+     */
     public String getName() {
         return name;
     }
+    /**
+     * Getter de l'utilisateur a qui apprtient la liste
+     * @return utilisateur linked à la liste
+     * @author Pauline
+     */
     public Utilisateur getUtilisateur() {
         return utilisateur;
     }
-
-    // Setters
+    
+    /**
+     * Setter du nom de la liste
+     * @param name de la liste
+     * @author Pauline
+     */
     public void setName(String name) {
         this.name = name;
     }
+    /**
+     * Setter de l'utilisateur linked à la liste
+     * @param utilisateur linked à la liste
+     * @author Pauline
+     */
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
     }

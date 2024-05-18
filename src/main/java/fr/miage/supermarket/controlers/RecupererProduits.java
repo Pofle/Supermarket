@@ -68,7 +68,7 @@ public class RecupererProduits extends HttpServlet {
 			}
 		}
 		
-		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
+		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
 		request.setAttribute("produit", produit);
 		request.setAttribute("promotions", promotionsDisponibles);
 		request.getRequestDispatcher("/jsp/detailProduit.jsp").forward(request, response);
@@ -82,7 +82,15 @@ public class RecupererProduits extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void displayAllProduits(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
+		ProduitDAO produitDAO = new ProduitDAO();
+		List<Produit> produits = produitDAO.getAllProduits();
+		
+		for(Produit prd: produits) {
+			prd.setVignetteBase64(imageToBase64(prd.getRepertoireVignette()));
+		}
+		
+		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
+		request.setAttribute("produits", produits);
 		request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 	}
 	

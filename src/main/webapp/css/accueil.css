@@ -47,8 +47,7 @@ h1 {
     cursor: pointer;
 }
 
-
-/* Styles pour l'affichage des articles */ 
+/* Style des vignettes */
 .article-container {
     display: flex;
     flex-wrap: wrap;
@@ -101,3 +100,16 @@ h1 {
 .nutriscore {
     font-size: 14px;
 }
+
+.product-head {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    text-align: center; 
+    justify-content: space-between; 
+}
+
+
+
+
+

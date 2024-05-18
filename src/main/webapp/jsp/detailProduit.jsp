@@ -11,7 +11,9 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 <html>
 <head>
 	<jsp:include page="/jsp/header.jsp" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link href="css/detail-produit.css" rel="stylesheet" type="text/css" />
+	<link href="css/navbar.css" rel="stylesheet" type="text/css" />
 	<title>Détail produit</title>
 </head>
 <body>
@@ -23,6 +25,13 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 			</div>
 			<div class="card-body product-info">
 				<h1>${produit.getLibelle()}-${produit.getMarque()}</h1>
+				
+				<!-- Bouton Ajouter à une liste -->
+				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
+					 <img src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#exampleModal" />
+				</c:if>
+				<!-- Fin du bouton	 -->	
+				
 				<div class="description">
 					<p>${produit.getDescription()}</p>
 				</div>
@@ -45,6 +54,8 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 			</div>
 		</div>
 	</div>
+	
+	<!-- Affichage des promotions -->
 	<c:if test="${not empty promotions}">
 		<div class="promotion-section">
 
@@ -70,5 +81,6 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 			</div>
 		</div>
 	</c:if>
-</body>
+	
+	
 </html>
