@@ -19,6 +19,7 @@ import jakarta.xml.bind.Marshaller;
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
+ *
  */
 public class ServletDispatcher extends HttpServlet {
 	private static final long serialVersionUID = 1L;

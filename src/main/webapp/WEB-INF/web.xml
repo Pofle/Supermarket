@@ -88,7 +88,7 @@
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>GestionProduitListe</servlet-name>
-    	<url-pattern>/GestionProduitsListe</url-pattern>
+    	<url-pattern>/GestionProduitListe</url-pattern>
     </servlet-mapping>
     
 

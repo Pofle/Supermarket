@@ -2,6 +2,7 @@ package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.List;
 
@@ -35,7 +36,32 @@ public class GestionProduitListe extends HttpServlet {
     public GestionProduitListe() {
         super();
     }
+    /**
+     * Methode pour récupérer les produits d'une liste de course
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/xml");
+        PrintWriter out = response.getWriter();
 
+        try {
+            List<LinkListeProduit> produits = LinkListeProduitDAO.getAllLinkListProduit();
+
+            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.println("<produits>");
+
+            for (LinkListeProduit produit : produits) {
+                out.println("<produit>");
+                out.println("<libelle>" + produit.getProduit().getLibelle() + "</libelle>");
+                
+                out.println("</produit>");
+            }
+
+            out.println("</produits>");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
     	
