@@ -60,15 +60,15 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-        <groupId>javax.servlet.jsp.jstl</groupId>
-        <artifactId>jstl-api</artifactId>
-        <version>1.2</version>
-    </dependency>
-    <dependency>
-        <groupId>org.glassfish.web</groupId>
-        <artifactId>jstl-impl</artifactId>
-        <version>1.2</version>
-    </dependency>
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>jstl-api</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jstl-impl</artifactId>
+			<version>1.2</version>
+		</dependency>
 
 		<!--
 		https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard-impl -->
@@ -78,6 +78,7 @@
 			<artifactId>taglibs-standard-impl</artifactId>
 			<version>1.2.5</version>
 		</dependency>
+    
 		<!--
 		https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
 		<!-- Nécessaire pour le binding entre les objets java et xml -->
@@ -86,6 +87,18 @@
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>4.0.2</version>
 		</dependency>
+    
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.14.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>4.1</version>
+    </dependency>
 	</dependencies>
 
 	<build>

@@ -34,7 +34,7 @@ public class RecupererImage extends HttpServlet {
             return;
         }
         
-        File imageFile = new File(request.getServletContext().getRealPath("WEB-INF/images/"+imagePath));
+        File imageFile = new File(request.getServletContext().getRealPath("WEB-INF/images/"+java.net.URLDecoder.decode(imagePath, "UTF-8")));
         if (!imageFile.exists()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "L'image n'a pas été trouvée");
             return;

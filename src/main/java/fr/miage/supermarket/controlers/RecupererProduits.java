@@ -19,6 +19,7 @@ import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
+import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
  * Servlet de gestion de la récupération des produits avec redirection vers JSP
@@ -39,7 +40,6 @@ public class RecupererProduits extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		if(request.getParameter("ean") == null) {
 			displayAllProduits(request, response);
 		} else {
@@ -68,7 +68,7 @@ public class RecupererProduits extends HttpServlet {
 			}
 		}
 		
-		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
+		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
 		request.setAttribute("produit", produit);
 		request.setAttribute("promotions", promotionsDisponibles);
 		request.getRequestDispatcher("/jsp/detailProduit.jsp").forward(request, response);
@@ -82,15 +82,7 @@ public class RecupererProduits extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void displayAllProduits(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		ProduitDAO produitDAO = new ProduitDAO();
-		List<Produit> produits = produitDAO.getAllProduits();
-		
-		for(Produit prd: produits) {
-			prd.setVignetteBase64(imageToBase64(prd.getRepertoireVignette()));
-		}
-		
-		request.setAttribute("categorie", CategorieCompte.UTILISATEUR.name());
-		request.setAttribute("produits", produits);
+		request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
 		request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 	}
 	
