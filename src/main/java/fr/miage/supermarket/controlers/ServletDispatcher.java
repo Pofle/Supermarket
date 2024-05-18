@@ -1,21 +1,14 @@
 package fr.miage.supermarket.controlers;
 
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import fr.miage.supermarket.dao.LinkListeProduitDAO;
-
-//import org.hibernate.mapping.List;
-
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.LinkListeProduit;
@@ -194,7 +187,9 @@ public class ServletDispatcher extends HttpServlet {
 			switch (action) {
 			case "gestion_List":
 				try {
+				// TO-DO:: remplacer par le get de l'id de l'utilisateur connecté
 					int userId = 1;
+				// FIN TOD-DO
 					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists(userId);
 					for (ShoppingList shoppingList : allShoppingLists) {
                         shoppingList.getUtilisateur();
@@ -232,12 +227,11 @@ public class ServletDispatcher extends HttpServlet {
 	}
 	
 	/**
-	 * Methode pour convertir la liste de produit reçu en xml
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 * @author Pauline
+	 * Methode pour convertir la liste de produit reçu en xml et renvoyer vers la page de gestion des listes
+	 *@param request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @throws ServletException Si une erreur survient au niveau du servlet
+	 * @throws IOException Si une erreur d'entrée/sortie survient
 	 */
 	private void ConvertirListeProduitXml(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException {
@@ -247,15 +241,22 @@ public class ServletDispatcher extends HttpServlet {
 	        Marshaller marshaller = jaxbContext.createMarshaller();
 	        ListWrapper<LinkListeProduit> wrapper = new ListWrapper<>(allLinkListProduits);
 	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-	        // Set content type to XML
-	        response.setContentType("text/xml");
-
-	        // Marshal XML to a StringWriter
+	        
+	        //response.setContentType("text/xml");	        
 	        StringWriter sw = new StringWriter();
 	        marshaller.marshal(wrapper, sw);
+	        String xmlString = sw.toString();
+	        
+	     // SAVE FICHIER XML POUR TEST
+	        String filePath = "C:\\Users\\Pauline\\Cours\\Projet\\produitlist.txt";
+	        FileWriter writer = new FileWriter(filePath);
+	        writer.write(xmlString);
+	        writer.close();
+	        request.setAttribute("xmlFilePath", filePath);
+	      // FIN
 
-	        // Set XML string as request attribute
-	        request.setAttribute("xmlData", sw.toString());
+	        // Set XMLstring comme attribut de la requête (pour une manipulation AJAX)
+	        request.setAttribute("xmlListeProduit", sw.toString());
 
 	        request.getRequestDispatcher("gestionList").forward(request, response);
 	    } catch (Exception e) {

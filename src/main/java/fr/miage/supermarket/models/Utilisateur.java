@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 /**
- * Object class for the Shopping List
+ * Cllasse de l'objet utilisateur
  * @author PaulineF
  */
 
@@ -45,35 +45,74 @@ public class Utilisateur {
 	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<ShoppingList> listesCourseLst;
 
-	//Getters
+	/**
+	 * Getter de l'id utilisateur
+	 * @return
+	 * @author Pauline
+	 */
 	 public int getId() {
 	        return id;
 	}
+	 /**
+	  * Getter du nom utilisateur
+	  * @return
+	  * @author Pauline
+	  */
 	public String getNom() {
 		return nom;
 	}
+	/**
+	 * Getter prenom utilisateur
+	 * @return
+	 * @author Pauline
+	 */
 	public String getPrenom() {
 		return prenom;
 	}
+	/**
+	 * Getter mail utilisateur
+	 * @return
+	 * @author Pauline
+	 */
 	public String getMail() {
 		return mail;
 	}
+	/*
+	 * Getter de la relation avec une liste de course
+	 */
 	public List<ShoppingList> getListesCourse() {
         return listesCourseLst;
     }
 	
-	//Setters
+	/**
+	 * Setter du nom utilisateur
+	 * @param nom
+	 * @author Pauline
+	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-
+	/**
+	 * Setter prenom utlisateur
+	 * @param prenom
+	 * @author Pauline
+	 */
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-
+	/**
+	 * Setter mail utilisateur
+	 * @param mail
+	 * @author Pauline
+	 */
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+	/**
+	 * Setter de la relation avec une liste de course
+	 * @param listesCourseLst
+	 * @author Pauline
+	 */
 	public void setListeCourse(List<ShoppingList> listesCourseLst) {
         this.listesCourseLst = listesCourseLst;
     }
