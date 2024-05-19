@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						const conditionnement = produit.getElementsByTagName("conditionnement")[0]?.textContent;
 						const poids = produit.getElementsByTagName("poids")[0]?.textContent;
 						const promotion = produit.getElementsByTagName("promotion")[0]?.textContent;
+						const image = produit.getElementsByTagName("imageLocation")[0]?.textContent;
 
 						const prixTotal = prix * quantite;
 
@@ -33,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						const leftContainer = document.createElement("div");
 						leftContainer.classList.add("left-container");
 						const img = document.createElement("img");
-						img.src = "recupererImage?cheminImage=art1.png";
+						img.src = `recupererImage?cheminImage=${encodeURIComponent(image)}`;
 						leftContainer.appendChild(img);
 
 						const centerContainer = document.createElement("div");

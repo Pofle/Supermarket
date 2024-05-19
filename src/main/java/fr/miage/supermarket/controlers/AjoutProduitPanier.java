@@ -97,7 +97,7 @@ public class AjoutProduitPanier extends HttpServlet {
 
 		// Création de notre produitpanier, on ajoute le produit au panier
 		ProduitPanier produitPanier = new ProduitPanier(produit.getLibelle(), ean, 1, produit.getPrix(), null,
-				produit.getConditionnement(), produit.getPoids());
+				produit.getConditionnement(), produit.getPoids(), produit.getRepertoireImage());
 		panier.ajouterProduit(produitPanier);
 	}
 	
@@ -123,7 +123,9 @@ public class AjoutProduitPanier extends HttpServlet {
 			if(produitPanierItem.getPoids() != null) {
 				xmlResponse.append("<poids>").append(produitPanierItem.getPoids())
 					.append("</poids>");
-			}	
+			}
+			xmlResponse.append("<imageLocation>").append(produitPanierItem.getImage())
+			.append("</imageLocation>");
 			xmlResponse.append("</produit>");
 		}
 		xmlResponse.append("</produits>");

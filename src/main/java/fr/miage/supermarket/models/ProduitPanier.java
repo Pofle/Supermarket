@@ -21,9 +21,11 @@ public class ProduitPanier {
 	private Float tauxPromotion;
 	
 	private Float poids;
+	
+	private String image;
 
 	public ProduitPanier(String libelle, String ean, int quantite, Float prix, Float tauxPromotion,
-			String conditionnement, Float poids) {
+			String conditionnement, Float poids, String image) {
 		this.libelle = libelle;
 		this.ean = ean;
 		this.quantite = quantite;
@@ -31,6 +33,7 @@ public class ProduitPanier {
 		this.tauxPromotion = tauxPromotion;
 		this.conditionnement = conditionnement;
 		this.poids = poids;
+		this.image = image;
 	}
 
 	public String getLibelle() {
@@ -92,6 +95,14 @@ public class ProduitPanier {
 
 	public void setPoids(Float poids) {
 		this.poids = poids;
+	}
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	@Override
