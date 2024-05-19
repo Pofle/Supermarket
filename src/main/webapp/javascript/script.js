@@ -8,7 +8,7 @@ function chargerProduitsListe(idListe, nomListe) {
     // FIN RETOUR
     
    var xhr = new XMLHttpRequest();
-            xhr.open("GET", "GestionProduitListe?id=" + idListe);
+            xhr.open("GET", "GenerationListeProduitXml?id=" + idListe);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     var xmlDoc = xhr.responseXML;
@@ -27,6 +27,7 @@ function chargerProduitsListe(idListe, nomListe) {
                         produitsHTML += "<li>";
                         produitsHTML += "<input type='number' min='0' step='1' class='input_quantite' name='" + ean + "' value='" + quantite + "'>";
                         produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
+                       produitsHTML += "<a href='GestionProduitListe?type_action=delete_produit&produit_ean=" + ean + "&listeId=" + idListe + "'><img src='recupererImage?cheminImage=delete_icon.png' class='btn-DeleteProduit' title='Supprimer le produit'/></a>";
                         produitsHTML += "</li>";
                     }
                     produitsHTML += "</ul>";

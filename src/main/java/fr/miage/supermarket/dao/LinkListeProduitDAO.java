@@ -91,6 +91,35 @@ public class LinkListeProduitDAO {
 	        session.close();
 	    }
 	}
+	
+	public static void supprimerProduit(String eanProduit, int listeId) {
+        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+
+            // Recherche du lien entre le produit et la liste à supprimer
+            Query<LinkListeProduit> query = session.createQuery("FROM LinkListeProduit WHERE produit.ean = :ean AND shoppingList.id = :listeId", LinkListeProduit.class);
+            query.setParameter("ean", eanProduit);
+            query.setParameter("listeId", listeId);
+            LinkListeProduit link = query.uniqueResult();
+
+            if (link != null) {
+                // Suppression du lien entre le produit et la liste
+                session.delete(link);
+            } else {
+                System.out.println("Le lien entre le produit avec l'EAN " + eanProduit + " et la liste avec l'ID " + listeId + " n'a pas été trouvé.");
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
 
 	
  /**

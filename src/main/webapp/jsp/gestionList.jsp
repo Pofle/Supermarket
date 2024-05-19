@@ -37,7 +37,7 @@
             			${status.index + 1} - ${list.name}
             		</p>
             		<a href="ServletListeCourse?type_action=delete_list&list_id=${list.id}">
-            			<img src="recupererImage?cheminImage=delete_icon.png" class="btn-Delete" Title="Supprimer la liste de course" />
+            			<img src="recupererImage?cheminImage=delete_icon.png" class="btn-DeleteListe" Title="Supprimer la liste de course" />
             		</a>
             	</li> 
         	</c:forEach>

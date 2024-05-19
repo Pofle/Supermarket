@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.miage.supermarket.dao.LinkListeProduitDAO;
+import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.LinkListeProduit;
 
 /**
@@ -33,43 +34,27 @@ public class GestionProduitListe extends HttpServlet {
      * @author Pauline
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	response.setContentType("text/xml");
-        PrintWriter out = response.getWriter();
-        Integer listeId = getIntegerParameter(request, "id");
-        // Log de contrôle pour l'id de la liste reçu
-        System.out.println("Request received for list ID: " + listeId);
-
-        try {
-            List<LinkListeProduit> produits = LinkListeProduitDAO.getLinkListeProduitByListeId(listeId);
-
-            // Création du contenu XML
-            StringBuilder xmlContent = new StringBuilder();
-            xmlContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            xmlContent.append("<produits>");
-
-            for (LinkListeProduit produit : produits) {
-                xmlContent.append("<produit>");
-                xmlContent.append("<ean>").append(produit.getProduit().getEan()).append("</ean>");
-                xmlContent.append("<libelle>").append(produit.getProduit().getLibelle()).append("</libelle>");
-                xmlContent.append("<marque>").append(produit.getProduit().getMarque()).append("</marque>");
-                xmlContent.append("<quantite>").append(produit.getQuantite()).append("</quantite>");
-                xmlContent.append("</produit>");
+    	String actionType = request.getParameter("type_action");        
+        if ("delete_produit".equals(actionType)) {
+            String eanProduit = request.getParameter("produit_ean");
+            String listeIdStr = request.getParameter("listeId");
+            Integer listeId = null;
+            try {
+                listeId = Integer.parseInt(listeIdStr);
+            } catch (NumberFormatException e) {
+                System.out.println("Erreur lors de la conversion de l'ID de liste en entier : " + e.getMessage());
             }
-            xmlContent.append("</produits>");
-
-            // Écriture du contenu XML dans la réponse
-            out.println(xmlContent.toString());
-
-            // Log de contrôle de la génération du XML
-            System.out.println("XML_LinkListeProduits response generated");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } finally {
-            out.close();
+            
+            System.out.println("EAN du produit à supprimer : " + eanProduit);
+            System.out.println("ID liste du produit à supprimer : " + listeId);
+            
+            if (eanProduit != null && listeId != null) {
+                LinkListeProduitDAO.supprimerProduit(eanProduit, listeId.intValue());
+            }
         }
+        response.sendRedirect("central?type_action=gestion_List");
     }
+    
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	// Récupération de l'ID de la liste
@@ -105,8 +90,6 @@ public class GestionProduitListe extends HttpServlet {
         response.sendRedirect("central?type_action=gestion_List");
     }
     
-
-    
     /**
 	 * Method generique pourconvertir un parametre type INT en STRING
 	 * @param request L'objet HttpServletRequest contenant la requête
@@ -125,6 +108,7 @@ public class GestionProduitListe extends HttpServlet {
 	    }
 	    return null; 
 	}
+    
 }
     	
     	
