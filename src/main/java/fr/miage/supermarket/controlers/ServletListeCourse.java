@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 /**
  * Servlet gérant les listes de course
- * @author PaulineF
+ * @author Pauline
  */
 public class ServletListeCourse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -19,12 +19,13 @@ public class ServletListeCourse extends HttpServlet {
      */
     public ServletListeCourse() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * Méthode DoPost pour ajouter une liste
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
 	 * @author PaulineF
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,7 +38,9 @@ public class ServletListeCourse extends HttpServlet {
     }
 	
 	/**
-	 * Methode pour supprimer une liste de course - A COMPLETER AVEC SUPPRESSION DE SES PRODUIT ?
+	 * Methode pour supprimer une liste de course - A COMPLETER AVEC SUPPRESSION DE SES PRODUIT FK 
+	 * @request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
 	 * @author Pauline
 	 */
 	@Override
@@ -54,13 +57,14 @@ public class ServletListeCourse extends HttpServlet {
     }
 	
 	/**
-	 * Method generique pour encapsuler la conversion d'un parametre type INT en STRING
-	 * @param request
-	 * @param paramName
+	 * Method generique pourconvertir un parametre type INT en STRING
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param stringParam parametre string qui sera converti en INT
 	 * @return
+	 * @author Pauline
 	 */
-	private Integer getIntegerParameter(HttpServletRequest request, String paramName) {
-	    String paramValue = request.getParameter(paramName);
+	private Integer getIntegerParameter(HttpServletRequest request, String stringParam) {
+	    String paramValue = request.getParameter(stringParam);
 	    if (paramValue != null && !paramValue.isEmpty()) {
 	        try {
 	            return Integer.parseInt(paramValue);

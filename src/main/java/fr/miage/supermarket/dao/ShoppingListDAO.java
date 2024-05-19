@@ -1,6 +1,5 @@
 package fr.miage.supermarket.dao;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
  * Classe permettant de gérer les services liés aux liste de courses
- * @author PaulineF
+ * @author Pauline
  */
 public class ShoppingListDAO {
 	
@@ -23,7 +22,7 @@ public class ShoppingListDAO {
 	 * Methode pour récupérer toutes les listes de courses d'un utlisateur
 	 * @return la liste des listes de courses liées à l'utilisateur connecté
 	 * @throws Exception
-	 * @author PaulineF
+	 * @author Pauline
 	 */
 	 public static List<ShoppingList> getShoppingLists(int userId) throws Exception {
 	        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
@@ -79,7 +78,7 @@ public class ShoppingListDAO {
 	     System.out.println("Shopping List succesfully added.");
 	 }	 
 	 /**
-	  * Methode pour supprimer une liste de course
+	  * Methode pour supprimer une liste de course - GERER LA SUPPRESSION DE FK DES PRODUITS CONTENUS)
 	  * @param listeId, identifiant de la liste de course a supprimer
 	  * @author Pauline
 	  */
@@ -121,12 +120,6 @@ public class ShoppingListDAO {
 	        } finally {
 	            session.close();
 	        }
-	     // AFFICHAGE RESULTAT CONSOLE
-	        for (LinkListeProduit link : linkListeProduits) {
-	            System.out.println("Produit EAN: " + link.getProduit().getEan() + 
-	                               ", Quantité: " + link.getQuantite());
-	        }
-	    // FIN 
 	        return linkListeProduits;
 	    }
 	 

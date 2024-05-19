@@ -2,38 +2,41 @@
  * Script pour afficher les produits d'une liste de course
  */
 function chargerProduitsListe(idListe) {
-	 console.log("ID de la liste:" + idListe);
-    // Objet XMLHttpRequest.
+    // RETOUR CONSOLE pour test
+    console.log("ID requested :" + idListe);
+    // FIN RETOUR
     var xhr = new XMLHttpRequest();
 
-    // Requête au serveur avec les paramètres éventuels.
     xhr.open("GET", "GestionProduitListe?id=" + idListe);
-
-    // On précise ce que l'on va faire quand on aura reçu la réponse du serveur.
     xhr.onload = function() {
-        // Si la requête http s'est bien passée.
         if (xhr.status === 200) {
-            // Analyser la réponse XML
             var xmlDoc = xhr.responseXML;
+            // Log de controle du chargement du xml
+            if (xmlDoc === null) {
+                console.error("xmlDoc is null. Check the response format.");
+                return;
+            }
             var produits = xmlDoc.getElementsByTagName("produit");
             var produitsHTML = "<ul>";
             for (var i = 0; i < produits.length; i++) {
                 var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
                 produitsHTML += "<li>" + libelle + "</li>";
             }
-            produitsHTML += "</ul>";
+            produitsHTML += "<ul>";
 
-            // Mettre à jour la modale avec les produits
+            // Mise-a-jour et affichage de la modale
             var modalBody = document.querySelector("#modalProduits .modal-body");
             modalBody.innerHTML = produitsHTML;
 
-            // Afficher la modale
             var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
             modal.show();
         }
     };
-
-    // Envoie de la requête.
+    // Log de controle en cas d'échec de la requete
+    xhr.onerror = function() {
+        console.error("Request failed");
+    };
+    //Envoi de la requete
     xhr.send();
 }
 
@@ -41,11 +44,11 @@ function chargerProduitsListe(idListe) {
  * Fonction pour forcer la fermeture de la modale boostrap
  */
 function forcerFermetureModal() {
-            $('#modalProduits').on('hidden.bs.modal', function () {
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-            });
-        }
-        $(document).ready(function () {
-            forcerFermetureModal();
-        });
+    $('#modalProduits').on('hidden.bs.modal', function() {
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    });
+}
+$(document).ready(function() {
+    forcerFermetureModal();
+});

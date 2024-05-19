@@ -4,18 +4,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+
 import fr.miage.supermarket.dao.LinkListeProduitDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.utils.ListWrapper;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
@@ -233,6 +236,7 @@ public class ServletDispatcher extends HttpServlet {
 	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
 	 * @throws ServletException Si une erreur survient au niveau du servlet
 	 * @throws IOException Si une erreur d'entrée/sortie survient
+	 * @author Pauline
 	 */
 	private void ConvertirListeProduitXml(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException {

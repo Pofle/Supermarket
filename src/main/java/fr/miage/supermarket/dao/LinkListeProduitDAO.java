@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.miage.supermarket.dao;
 
 import java.util.ArrayList;
@@ -46,7 +43,7 @@ public class LinkListeProduitDAO {
 	
  /**
   * Methode pour ajouter une quantité de produit à une liste - EN COURS-
-  * @param quantite
+  * @param quantite de produit a ajouter dans la liste
   * @author Pauline
   */
  public static void ajouterArticleListe(int quantite)
