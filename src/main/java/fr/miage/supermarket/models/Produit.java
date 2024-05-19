@@ -7,9 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import fr.miage.supermarket.utils.ImageUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 
@@ -74,9 +76,6 @@ public class Produit {
 	
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.LAZY)
 	private List<ShoppingList> listes;
-	
-	@Transient
-	private String vignetteBase64;
 	
 	@Transient
 	private String imageBase64;
@@ -194,19 +193,20 @@ public class Produit {
 		this.quantiteConditionnement = quantiteConditionnement;
 	}
 
-	public String getVignetteBase64() {
-		return vignetteBase64;
-	}
-
-	public void setVignetteBase64(String vignetteBase64) {
-		this.vignetteBase64 = vignetteBase64;
-	}
-
 	public String getImageBase64() {
 		return imageBase64;
 	}
-
-	public void setImageBase64(String imageBase64) {
-		this.imageBase64 = imageBase64;
+	
+	/**
+	 * Saisit la base64 de l'image contenue dans le répertoire image du produit
+	 * @param fullPath le chemin complet où chercher l'image
+	 * @author EricB
+	 */
+	public void setImageBase64(String fullPath) {
+		try {
+			this.imageBase64 = ImageUtil.writeImageToBase64(this.repertoireImage , fullPath + this.repertoireImage);
+		} catch (IOException e){
+			this.imageBase64 = "";
+		}
 	}
 }

@@ -14,15 +14,19 @@ import fr.miage.supermarket.utils.HibernateUtil;
  * @author EricB
  */
 public class ProduitDAO {
-
+	
+	private SessionFactory sessionFactory;
+    
+    public ProduitDAO() {
+        this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+    }
+	
 	/**
-	 * Se charge d'enregistrer une liste de produits
+	 * Enregistre une liste de produits en base
 	 * @param produitsToSave les produits à enregistrer
 	 * @author EricB
 	 */
 	public void registerProduits(List<Produit> produitsToSave) {		
-		//Récupération de la session 
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
 		Session session = sessionFactory.getCurrentSession();
 		
 		session.beginTransaction();
@@ -31,15 +35,14 @@ public class ProduitDAO {
 		}
 		session.getTransaction().commit();
 		
-		//Ferme la session
 		session.close();
 	}
 	/**
-	 * Se charge de renvoyer l'entièreté des produits présents en base
+	 * Renvoit l'entièreté des produits présents en base
 	 * @return la liste des produits
+	 * @author EricB
 	 */
 	public List<Produit> getAllProduits() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
 		Session session = sessionFactory.getCurrentSession();
 		
 		session.beginTransaction();
@@ -60,12 +63,15 @@ public class ProduitDAO {
 		}
 	}
 
-	public Produit getProduitById(String ean) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+	/**
+	 * Retourne un {@link Produit} en fonction de son EAN
+	 * @param ean l'ean du produit à récupérer
+	 * @return le {@link Produit} associé à l'ean
+	 * @author EricB
+	 */
+	public Produit getProduitByEan(String ean) {
 		Session session = sessionFactory.getCurrentSession();
-		
 		session.beginTransaction();
-		
 		try {
 			Produit produit = session.get(Produit.class, ean);
 			session.getTransaction().commit();
@@ -79,13 +85,17 @@ public class ProduitDAO {
 		}
 	}
 	
+	/**
+	 * Retourne une liste de {@link Produit} détenant le libellé passé en paramètre dans leur libellé respectif.
+	 * @param libelle le libelle des produits à rechercher
+	 * @return la liste de {@link Produit}
+	 * @author EricB
+	 */
 	public List<Produit> getProduitsByLibelle(String libelle) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
 		Session session = sessionFactory.getCurrentSession();
-		
 		session.beginTransaction();
-		
 		try {
+			// Concat nécessaire pour bonne prise en compte de tout les caractères
 			Query query = session.createQuery("FROM Produit p "
 	                + "WHERE p.libelle LIKE CONCAT('%',?1,'%')", Produit.class);
 	        query.setParameter(1, libelle);

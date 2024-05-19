@@ -12,14 +12,25 @@ import fr.miage.supermarket.utils.HibernateUtil;
 
 import org.hibernate.SessionFactory;
 
-
+/**
+ * Objet d'accès aux données de promotion
+ * @author EricB
+ */
 public class PromotionDAO {
+	
 	private SessionFactory sessionFactory;
     
     public PromotionDAO() {
         this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
     }
     
+    /**
+     * Retourne le taux de promotion relatif au produit dont l'ean est passé en paramètre
+     * 
+     * @param produitEan l'ean du produit dont récupérer la promotion en cours
+     * @return le taux de promotion sous la forme d'un flottant
+     * @author EricB
+     */
     public Float getPromotionPourProduit(String produitEan) {
         Session session = sessionFactory.openSession();
         try {
@@ -39,6 +50,13 @@ public class PromotionDAO {
         }
     }
     
+    /**
+     * Retourne, sous la forme d'une map, la promotion en cours pour chacun des produits dont l'EAN est passé en paramètre
+     * 
+     * @param eanList la liste des EAN des produits dont récupérer la promotion en cours
+     * @return la map avec l'EAN en clef et la promotion en valeur associée à la clef.
+     * @author EricB
+     */
     public Map<String, Float> getPromotionsPourProduits(List<String> eanList) {
         try (Session session = sessionFactory.openSession()) {
             Query<Object[]> query = session.createQuery(

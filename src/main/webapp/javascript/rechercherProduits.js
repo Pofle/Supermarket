@@ -8,7 +8,7 @@ function createProductCard(product) {
     articleCard.classList.add('article-card');
 
     const link = document.createElement('a');
-    link.href = `/SupermarketG3/accueil?ean=${product.ean}`;
+    link.href = `/SupermarketG3/detailProduit?ean=${product.ean}`;
 
     const productInfo = document.createElement('div');
     productInfo.classList.add('product-info');

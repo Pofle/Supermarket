@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Objet représentant le produit dans le panier
+ * Classe représentant le produit dans le panier enregistré en session
+ * @author EricB
  */
 public class ProduitPanier {
 
@@ -103,10 +104,5 @@ public class ProduitPanier {
 
 	public void setImage(String image) {
 		this.image = image;
-	}
-
-	@Override
-	public String toString() {
-		return "ProduitPanier [libelle=" + libelle + ", ean=" + ean + ", quantite=" + quantite + "]";
 	}
 }
