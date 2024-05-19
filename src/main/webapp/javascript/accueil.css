@@ -1,0 +1,122 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    color: inherit;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    display: inline;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+/* Styles pour la barre de recherche */
+.search-bar {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Style des vignettes */
+.article-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0 30px;
+}
+
+.article-card {
+    width: calc(20% - 20px);
+	margin-bottom: 20px;
+	border: 1px 1px 1px 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.article-card .product-info {
+    padding: 15px;
+}
+
+.product-image {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.product-image img {
+    width: 100%;
+	height: auto;
+	border-radius: 10px;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.libelle-marque {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.additional-info {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.nutriscore {
+    font-size: 14px;
+}
+
+.product-head {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    text-align: center; 
+    justify-content: space-between; 
+}
+
+.ajouterpanier-bottom-card {
+	display: flex;
+	justify-content: right;
+	align-items: center;
+	cursor: pointer;
+}
+
+
+
+
+

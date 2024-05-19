@@ -24,7 +24,7 @@ public class ServletInscription extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/jsp/inscription.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp").forward(request, response);
 	}
 
 
@@ -51,11 +51,11 @@ public class ServletInscription extends HttpServlet {
         	request.setAttribute("message", "Inscription réussie! Bienvenue "+prenom+" "+nom+".");
         	HttpSession session = request.getSession();
         	session.setAttribute("utilisateur", nouvelUtilisateur);
-        	request.getRequestDispatcher("/jsp/confirmLogin.jsp").forward(request, response);
+        	request.getRequestDispatcher("/WEB-INF/jsp/confirmLogin.jsp").forward(request, response);
         } else {
         	System.out.println("Mail utilisé");
         	request.setAttribute("message", "Ce mail est deja utilisé");
-        	request.getRequestDispatcher("/jsp/inscription.jsp").forward(request, response);
+        	request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp").forward(request, response);
         }
 
 	}

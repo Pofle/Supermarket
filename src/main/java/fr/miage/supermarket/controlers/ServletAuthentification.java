@@ -21,12 +21,11 @@ public class ServletAuthentification extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public ServletAuthentification() {
-		// TODO Auto-generated constructor stub
     	super();
 	}
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	 request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+    	 request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,7 +50,7 @@ public class ServletAuthentification extends HttpServlet {
             request.setAttribute("message", "Authentification réussie ! Bienvenue, " + mail + ".");
             HttpSession session = request.getSession();
             session.setAttribute("utilisateur", userConnecting);
-            request.getRequestDispatcher("/jsp/confirmLogin.jsp").forward(request, response);
+            request.getRequestDispatcher("/").forward(request, response);
         } else {
         	//Si la connexion n'est pas valide, on explique pourquoi et on propose à nouveau à l'utilisateur de se connecter
             if (userConnecting == null) {
@@ -61,7 +60,7 @@ public class ServletAuthentification extends HttpServlet {
     			System.out.println("Mot de passe incorrect");
     			request.setAttribute("message", "Mot de passe incorrect");
     		}
-            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
         }
 
     }

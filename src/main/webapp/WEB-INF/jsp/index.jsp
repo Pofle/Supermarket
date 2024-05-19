@@ -6,17 +6,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<jsp:include page="/jsp/header.jsp" />
+		<jsp:include page="/WEB-INF/jsp/header.jsp" />
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-		<link href="css/accueil.css" rel="stylesheet" type="text/css" />
+		<link href="${pageContext.request.contextPath}/css/accueil.css" rel="stylesheet" type="text/css" />
 		<title>Accueil</title>
 	</head>
 	<body>
-		<jsp:include page="/jsp/navbar.jsp" />
+		<jsp:include page="/WEB-INF/jsp/navbar.jsp" />
 		<div class="search-bar" >
 			<input type="text" placeholder="Rechercher..." id="search-bar">
 		</div>
 		<div class="article-container" id="article-container"></div>
-		<script src="javascript/rechercherProduits.js"></script>
+		<script src="${pageContext.request.contextPath}/javascript/rechercherProduits.js"></script>
 	</body>
 </html>

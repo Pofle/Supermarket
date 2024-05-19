@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Confirmation de Connexion</title>
-    <jsp:include page="/jsp/header.jsp" />
+    <jsp:include page="/WEB-INF/jsp/header.jsp" />
 </head>
 <body>
-    <jsp:include page="/jsp/navbar.jsp" />
+    <jsp:include page="/WEB-INF/jsp/navbar.jsp" />
     <br>
     <h2>Confirmation de Connexion</h2>
 
