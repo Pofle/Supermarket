@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="/jsp/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/header.jsp" />
 <title>Création de compte</title>
 </head>
 <body>
-	<jsp:include page="/jsp/navbar.jsp" />
+	<jsp:include page="/WEB-INF/jsp/navbar.jsp" />
 	<br>
 	
 	<h2>Inscription</h2>

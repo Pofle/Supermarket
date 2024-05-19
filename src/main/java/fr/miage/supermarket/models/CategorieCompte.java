@@ -13,4 +13,5 @@ public enum CategorieCompte {
 	VISITEUR(),
 	// Rôle utilisateur (connecté)
 	UTILISATEUR()
+	
 }
