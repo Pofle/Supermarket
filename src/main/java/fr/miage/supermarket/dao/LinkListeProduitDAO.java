@@ -16,8 +16,7 @@ import fr.miage.supermarket.utils.HibernateUtil;
  */
 public class LinkListeProduitDAO {
 	/**
-	 * Methode pour recuperer les produits contenus dans une liste
-	 * @param listeId, l'id de la liste à récupérer
+	 * Methode pour recuperer les produits link à une liste
 	 * @return liste de l'ensemble des produits contenus dans les listes
 	 * @throws Exception si une erreur survient
 	 * @author Pauline
@@ -40,6 +39,35 @@ public class LinkListeProduitDAO {
         }
         return linkListeProduits;
     }
+	
+	/**
+	 * Methode pour récupérer les produits contenu dans une liste par l'id de la liste de course
+	 * @param listeId
+	 * @return
+	 * @throws Exception
+	 * @author Pauline
+	 */
+	public static List<LinkListeProduit> getLinkListeProduitByListeId(int listeId) throws Exception {
+        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+        Transaction tx = null;
+        List<LinkListeProduit> linkListeProduits = new ArrayList<>();
+
+        try {
+            tx = session.beginTransaction();
+            Query<LinkListeProduit> query = session.createQuery(
+                "from LinkListeProduit where shoppingList.id = :listId", LinkListeProduit.class);
+            query.setParameter("listId", listeId);
+            linkListeProduits = query.list();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return linkListeProduits;
+    }
+
 	
  /**
   * Methode pour ajouter une quantité de produit à une liste - EN COURS-

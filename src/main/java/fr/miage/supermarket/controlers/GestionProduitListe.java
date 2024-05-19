@@ -34,11 +34,12 @@ public class GestionProduitListe extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/xml");
         PrintWriter out = response.getWriter();
+        Integer listeId = getIntegerParameter(request, "id");
         //Log de controle pour l'id de la liste reçu
-        System.out.println("Request received for list ID: " + request.getParameter("id"));
+        System.out.println("Request received for list ID: " + listeId);
 
         try {
-            List<LinkListeProduit> produits = LinkListeProduitDAO.getAllLinkListProduit();
+            List<LinkListeProduit> produits = LinkListeProduitDAO.getLinkListeProduitByListeId(listeId);
             System.out.println("Produits: " + produits);
 
             out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -57,7 +58,24 @@ public class GestionProduitListe extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
+    /**
+	 * Method generique pourconvertir un parametre type INT en STRING
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param stringParam parametre string qui sera converti en INT
+	 * @return
+	 * @author Pauline
+	 */
+	private Integer getIntegerParameter(HttpServletRequest request, String stringParam) {
+	    String paramValue = request.getParameter(stringParam);
+	    if (paramValue != null && !paramValue.isEmpty()) {
+	        try {
+	            return Integer.parseInt(paramValue);
+	        } catch (NumberFormatException e) {
+	            
+	        }
+	    }
+	    return null; 
+	}
 }
     	
     	

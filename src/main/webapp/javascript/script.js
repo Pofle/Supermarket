@@ -1,9 +1,10 @@
 /**
  * Script pour afficher les produits d'une liste de course
  */
-function chargerProduitsListe(idListe) {
+function chargerProduitsListe(idListe, nomListe) {
     // RETOUR CONSOLE pour test
-    console.log("ID requested :" + idListe);
+    console.log("ID requested:" + idListe);
+      console.log("Nom de la liste:" + nomListe);
     // FIN RETOUR
     var xhr = new XMLHttpRequest();
 
@@ -27,6 +28,9 @@ function chargerProduitsListe(idListe) {
             // Mise-a-jour et affichage de la modale
             var modalBody = document.querySelector("#modalProduits .modal-body");
             modalBody.innerHTML = produitsHTML;
+            
+            var modalTitle = document.querySelector("#ModalProduitsLabel");
+            modalTitle.innerText = "La liste " + nomListe +" contient :"; 
 
             var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
             modal.show();

@@ -9,13 +9,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link href="css/accueil.css" rel="stylesheet" type="text/css" />
+<link href="css/listeCourse.css" rel="stylesheet" type="text/css" />
 
 <jsp:include page="/jsp/header.jsp">
 	<jsp:param name="title" value="Accueil" />
 </jsp:include>
 <title>Liste de courses</title>
-<link href="css/accueil.css" rel="stylesheet" type="text/css" />
-<link href="css/listeCourse.css" rel="stylesheet" type="text/css" />
+
 
 </head>
 
@@ -31,7 +32,8 @@
     	<ul>
         	<c:forEach var="list" items="${shoppingLists}" varStatus="status" >
             	<li> 
-            		<p class="btn" data-bs-toggle="modal" data-bs-target="#modalProduits" onclick="chargerProduitsListe(${list.id})">
+            		<p class="btn" data-bs-toggle="modal" data-bs-target="#modalProduits" 
+            		onclick="chargerProduitsListe(${list.id}, '${list.name}')">
             			${status.index + 1} - ${list.name}
             		</p>
             		<a href="ServletListeCourse?type_action=delete_list&list_id=${list.id}">
@@ -50,7 +52,7 @@
   	<div class="modal-dialog">
     	<div class="modal-content">
       	<div class="modal-header">
-        	<h1 class="modal-title fs-5" id="ModalProduitsLabel">Cette liste contient :</h1>
+        	<h1 class="modal-title fs-5" id="ModalProduitsLabel"></h1>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       	<form action="" method="">

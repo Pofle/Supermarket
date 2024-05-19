@@ -89,6 +89,12 @@ public class ShoppingListDAO {
 	     
 	     try {
 	    	 tx=session.beginTransaction();
+	    	 
+	    	 // Suppression des produits linked a la liste supprimee
+	    	 Query<?> deleteQuery = session.createQuery("DELETE FROM LinkListeProduit WHERE shoppingList.id = :listId");
+	         deleteQuery.setParameter("listId", listeId);
+	         deleteQuery.executeUpdate();
+	    	 
 	    	 ShoppingList liste = session.get(ShoppingList.class, listeId);
 	    	 if (liste != null) {
 	             session.remove(liste);
@@ -101,27 +107,6 @@ public class ShoppingListDAO {
 	            session.close();
 	        }
 	 }
-	 
-	 public static List<LinkListeProduit> getLinkListProduit(int listeId) throws Exception {
-	        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
-	        Transaction tx = null;
-	        List<LinkListeProduit> linkListeProduits = new ArrayList<>();
-
-	        try {
-	            tx = session.beginTransaction();
-	            Query<LinkListeProduit> query = session.createQuery(
-	                    "from LinkListeProduit pl where pl.shoppingList.id = :listeId", LinkListeProduit.class);
-	                query.setParameter("listeId", listeId);
-	                linkListeProduits = query.list();
-	                tx.commit();
-	        } catch (Exception e) {
-	            if (tx != null) tx.rollback();
-	            throw e;
-	        } finally {
-	            session.close();
-	        }
-	        return linkListeProduits;
-	    }
 	 
 	 /**
 	  * Methode pour ajouté une quantité de produit à une liste - EN COURS-
