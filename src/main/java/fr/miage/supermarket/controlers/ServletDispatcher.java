@@ -38,11 +38,10 @@ public class ServletDispatcher extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("type_action");
-		
-		////// ---> Moyen temporaire de changer d'utilisateur au travers de cette variable. <---\\\\\
-		String categorieCompte = CategorieCompte.UTILISATEUR.name();
+		// Moyen temporaire de changer d'utilisateur au travers de cette variable.
+		String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
 		// FIN
-		
+
 		if (categorieCompte != null) {
 			if (categorieCompte.equals(CategorieCompte.GESTIONNAIRE.name())) {
 				dispatchGestionnaireFuncs(action, request, response);

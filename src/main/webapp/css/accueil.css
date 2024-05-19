@@ -109,6 +109,13 @@ h1 {
     justify-content: space-between; 
 }
 
+.ajouterpanier-bottom-card {
+	display: flex;
+	justify-content: right;
+	align-items: center;
+	cursor: pointer;
+}
+
 
 
 
