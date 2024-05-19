@@ -242,34 +242,25 @@ public class ServletDispatcher extends HttpServlet {
 	 */
 	private void ConvertirListeProduitXml(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException {
-	    try {
-	        List<LinkListeProduit> allLinkListProduits = LinkListeProduitDAO.getAllLinkListProduit();
-	        JAXBContext jaxbContext = JAXBContext.newInstance(LinkListeProduit.class, ListWrapper.class);
-	        Marshaller marshaller = jaxbContext.createMarshaller();
-	        ListWrapper<LinkListeProduit> wrapper = new ListWrapper<>(allLinkListProduits);
-	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-	        
-	        //response.setContentType("text/xml");	        
-	        StringWriter sw = new StringWriter();
-	        marshaller.marshal(wrapper, sw);
-	        String xmlString = sw.toString();
-	        
-	     // SAVE FICHIER XML POUR TEST
-	        String filePath = "C:\\Users\\Pauline\\Cours\\Projet\\ALLproduitlist.txt";
-	        FileWriter writer = new FileWriter(filePath);
-	        writer.write(xmlString);
-	        writer.close();
-	        request.setAttribute("xmlFilePath", filePath);
-	      // FIN
+		 try {
+		        List<LinkListeProduit> allLinkListProduits = LinkListeProduitDAO.getAllLinkListProduit();
+		        JAXBContext jaxbContext = JAXBContext.newInstance(LinkListeProduit.class, ListWrapper.class);
+		        Marshaller marshaller = jaxbContext.createMarshaller();
+		        ListWrapper<LinkListeProduit> wrapper = new ListWrapper<>(allLinkListProduits);
+		        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		        
+		        StringWriter sw = new StringWriter();
+		        marshaller.marshal(wrapper, sw);
+		        String xmlString = sw.toString();
 
-	        // Set XMLstring comme attribut de la requête (pour une manipulation AJAX)
-	        request.setAttribute("xmlListeProduit", sw.toString());
+		        // Set XMLstring comme attribut de la requête (pour une manipulation AJAX)
+		        request.setAttribute("xmlListeProduit", xmlString);
 
-	        request.getRequestDispatcher("gestionList").forward(request, response);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	    }
+		        request.getRequestDispatcher("gestionList").forward(request, response);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		    }
 	}
 
 }

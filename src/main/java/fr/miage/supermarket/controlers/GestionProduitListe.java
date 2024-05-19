@@ -29,14 +29,14 @@ public class GestionProduitListe extends HttpServlet {
     }
     
     /**
-     * Methode pour récupérer la liste des produits d'une liste depuis un fichier xml 
+     * Methode pour récupérer la liste des produits d'une liste de course depuis un xml de tout les link et retourne un xml
      * @author Pauline
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setContentType("text/xml");
         PrintWriter out = response.getWriter();
         Integer listeId = getIntegerParameter(request, "id");
-        //Log de controle pour l'id de la liste reçu
+        // Log de contrôle pour l'id de la liste reçu
         System.out.println("Request received for list ID: " + listeId);
 
         try {
@@ -57,17 +57,11 @@ public class GestionProduitListe extends HttpServlet {
             }
             xmlContent.append("</produits>");
 
-            // Enregistrement du contenu XML dans un fichier
-            String filePath = "C:\\Users\\Pauline\\Cours\\Projet\\produits.xml";
-            FileWriter fileWriter = new FileWriter(filePath);
-            fileWriter.write(xmlContent.toString());
-            fileWriter.close();
-
             // Écriture du contenu XML dans la réponse
             out.println(xmlContent.toString());
 
-            // Log de controle de la generation du xml et de son enregistrement
-            System.out.println("XML_LinkListeProduits response generated and saved at: " + filePath);
+            // Log de contrôle de la génération du XML
+            System.out.println("XML_LinkListeProduits response generated");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,19 +72,9 @@ public class GestionProduitListe extends HttpServlet {
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	System.out.println("Requête POST reçue");
-
-        // Log all parameter names and values
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String paramName = parameterNames.nextElement();
-            System.out.println("Paramètre reçu: " + paramName + " = " + request.getParameter(paramName));
-        }
-
-        // Récupération de l'ID de la liste
+    	// Récupération de l'ID de la liste
         String listeIdStr = request.getParameter("listeId");
         if (listeIdStr == null) {
-            System.out.println("Paramètre 'listeId' non trouvé");
             response.sendRedirect("central?type_action=gestion_List");
             return;
         }
@@ -99,22 +83,16 @@ public class GestionProduitListe extends HttpServlet {
         try {
             listeId = Integer.parseInt(listeIdStr);
         } catch (NumberFormatException e) {
-            System.out.println("Erreur de conversion de 'listeId': " + listeIdStr);
             response.sendRedirect("central?type_action=gestion_List");
             return;
         }
 
-        System.out.println("ID de la liste: " + listeId);
-
         // Traitement des autres paramètres
-        parameterNames = request.getParameterNames();
+        Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             if (!paramName.equals("listeId")) {
                 String paramValue = request.getParameter(paramName);
-                
-                System.out.println("Paramètre - EAN: " + paramName + ", Quantité: " + paramValue);
-                
                 try {
                     int newQuantity = Integer.parseInt(paramValue);
                     LinkListeProduitDAO.updateProduitsListe(listeId, paramName, newQuantity);
@@ -122,14 +100,12 @@ public class GestionProduitListe extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-        }
-        
-        // Redirection après le traitement
+        }       
+        // Redirection vers la pages des listes de courses
         response.sendRedirect("central?type_action=gestion_List");
     }
+    
 
-
-//        response.sendRedirect("central?type_action=gestion_List");
     
     /**
 	 * Method generique pourconvertir un parametre type INT en STRING

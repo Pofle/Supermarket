@@ -16,6 +16,7 @@ function chargerProduitsListe(idListe, nomListe) {
                         console.error("xmlDoc is null. Check the response format.");
                         return;
                     }
+                    // Generation du HTML
                     var produits = xmlDoc.getElementsByTagName("produit");
                     var produitsHTML = "<ul>";
                     for (var i = 0; i < produits.length; i++) {
@@ -30,13 +31,17 @@ function chargerProduitsListe(idListe, nomListe) {
                     }
                     produitsHTML += "</ul>";
 
+					// Maj de la modale
                     var modalBody = document.querySelector("#modalProduits .modal-body");
                     modalBody.innerHTML = produitsHTML;
+                    // Maj du titre de la modale
                     var modalTitle = document.querySelector("#ModalProduitsLabel");
                     modalTitle.innerText = "La liste " + nomListe + " contient :";
                     
+         			// Récupère l'id de la liste
                     document.getElementById("listeId").value = idListe;
                     
+                    // Initialise la modale
                     var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
                     modal.show();
                 }

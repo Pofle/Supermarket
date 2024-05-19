@@ -56,8 +56,7 @@
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       	<form id="formProduits" action="GestionProduitListe" method="post">
-      		<div class="modal-body">                
-        		  	
+      		<div class="modal-body">                        		  	
       		</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
