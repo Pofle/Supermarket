@@ -20,12 +20,17 @@ h1 {
 
 /* Navbar styling */
 .navbar {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100% !important;
+    background-color: #333 !important;
+    color: white !important;
+    padding: 10px 20px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+	box-sizing: border-box !important;
 }
 
 .navbar-container {
@@ -77,3 +82,45 @@ h1 {
     background-color: #575757;
     border-radius: 5px;
 }
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+}
+
+.navbar-profile {
+    margin-right: 20px;
+    padding: 10px 15px;
+    background-color: #575757;
+    border-radius: 5px;
+}
+
+.fa-shopping-cart {
+    font-size: 1.8em;
+}
+
+.fa-regular fa-user {
+    font-size: 1.8em;
+}
+
+.navbar-badge {
+    position: absolute;
+    top: 5px; /* Ajustez la position verticale du badge */
+    right: 10px; /* Ajustez la position horizontale du badge */
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px; /* Ajustez la taille du badge */
+    font-size: 0.8em;
+}
+
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+body {
+	padding-top: 70px !important;
+}
+
+

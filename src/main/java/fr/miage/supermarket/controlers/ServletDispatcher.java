@@ -195,12 +195,6 @@ public class ServletDispatcher extends HttpServlet {
 			case "gestion_List":
 				try {
 					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists();
-					//RETOUR CONSOLE
-					 System.out.println("Shopping lists retrieved: " + allShoppingLists.size());
-					 for (ShoppingList list : allShoppingLists) {
-	                        System.out.println("List: " + list.getName());
-	                    }
-					 //FIN
 					 request.setAttribute("shoppingLists", allShoppingLists);
 					url= "gestionList";
 				}catch(Exception e) {
@@ -208,6 +202,7 @@ public class ServletDispatcher extends HttpServlet {
 					 e.printStackTrace();
 				}
 				break;
+				
 			case "rayons":
                 url = "rayons";
                 break;
@@ -216,9 +211,6 @@ public class ServletDispatcher extends HttpServlet {
                 break;
             case "listeCourse":
                 url = "listeCourse";
-                break;
-            case "connexionInscription":
-                url = "connexionInscription";
                 break;
             case "panier":
                 url = "panier";

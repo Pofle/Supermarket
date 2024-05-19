@@ -5,8 +5,16 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import fr.miage.supermarket.utils.ImageUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
+
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
@@ -15,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
+import java.util.Objects;
 
-import java.util.Set;
 
 @Entity
 @Table(name="PRODUIT", uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})
@@ -53,7 +61,7 @@ public class Produit {
 	@Column(name="PRIX", nullable=false)
 	private Float prix;
 	
-	@Column(name="CONDITIONNEMENT", length=50, nullable=true)
+	@Column(name="CONDITIONNEMENT", length=50, nullable=false)
 	private String conditionnement;
 	
 	@Column(name="QUANTITE_CONDITIONNEMENT", length=50, nullable=true)
@@ -62,17 +70,16 @@ public class Produit {
 	@Column(name="POIDS", nullable=true)
 	private Float poids;
 	
+	// Relations
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
 	private List<Promotion> promotions;
 	
-	@Transient
-	private String vignetteBase64;
+	@ManyToMany(mappedBy = "produits", fetch = FetchType.LAZY)
+	private List<ShoppingList> listes;
 	
 	@Transient
 	private String imageBase64;
 	
-//	@ManyToMany(mappedBy = "produits")
-//    private Set<ShoppingList> shoppingLists;
 	
 	public String getEan() {
 		return ean;
@@ -139,7 +146,7 @@ public class Produit {
 	}
 	
 	public Float getPrix() {
-		return prix;
+		return this.prix;
 	}
 
 	public void setPrix(Float prix) {
@@ -186,19 +193,20 @@ public class Produit {
 		this.quantiteConditionnement = quantiteConditionnement;
 	}
 
-	public String getVignetteBase64() {
-		return vignetteBase64;
-	}
-
-	public void setVignetteBase64(String vignetteBase64) {
-		this.vignetteBase64 = vignetteBase64;
-	}
-
 	public String getImageBase64() {
 		return imageBase64;
 	}
-
-	public void setImageBase64(String imageBase64) {
-		this.imageBase64 = imageBase64;
+	
+	/**
+	 * Saisit la base64 de l'image contenue dans le répertoire image du produit
+	 * @param fullPath le chemin complet où chercher l'image
+	 * @author EricB
+	 */
+	public void setImageBase64(String fullPath) {
+		try {
+			this.imageBase64 = ImageUtil.writeImageToBase64(this.repertoireImage , fullPath + this.repertoireImage);
+		} catch (IOException e){
+			this.imageBase64 = "";
+		}
 	}
 }

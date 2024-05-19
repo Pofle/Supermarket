@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"><title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 <jsp:include page="/jsp/header.jsp">
 	<jsp:param name="title" value="Accueil" />
@@ -18,7 +18,6 @@
 <link href="css/listeCourse.css" rel="stylesheet" type="text/css" />
 
 </head>
-
 
 <body>
 <%@ include file="navbar.jsp"%>
@@ -31,16 +30,20 @@
    	<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
     	<ul>
         	<c:forEach var="list" items="${shoppingLists}" varStatus="status" >
-            	<li> ${status.index + 1} - ${list.name}</li>
+            	<li> 
+            		<p class="btn" >${status.index + 1} - ${list.name}</p>
+            		<a href="ServletListeCourse?type_action=delete_list&list_id=${list.id}">
+            			<img src="recupererImage?cheminImage=delete_icon.png" class="btn-Delete" Title="Supprimer la liste de course" />
+            		</a>
+            	</li> 
         	</c:forEach>
     	</ul>  
     		<button type="button" class="btn-Add" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter liste</button> 	
-   	</c:if>  
-   
+    		
+   	</c:if>    
    </div>
-   
-    
-    <!-- Modal -->
+      
+    <!-- Modal des listes de courses -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   	<div class="modal-dialog">
     	<div class="modal-content">
@@ -61,10 +64,9 @@
     </div>
   </div>
 </div>
-    
-    
+  
+        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
    </body>
-   
-   
-   </html>
+     
+</html>

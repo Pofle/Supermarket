@@ -6,19 +6,24 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
-import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
- * Management class for ShoppingList datas - Services
+ * Classe permettant de gérer les services liés aux liste de courses
  * @author PaulineF
  */
 public class ShoppingListDAO {
 	
+	/**
+	 * Methode pour récupérer toutes les listes de courses d'un utlisateur
+	 * @return la liste des listes de courses liées à l'utilisateur connecté
+	 * @throws Exception
+	 * @author PaulineF
+	 */
 	 public static List<ShoppingList> getShoppingLists() throws Exception {
 	        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	        Transaction tx = null;
@@ -29,7 +34,7 @@ public class ShoppingListDAO {
 	            shoppingLists = session.createQuery("from ShoppingList sl where sl.utilisateur.id = :userId", ShoppingList.class)
                         //TO-DO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
 	            		// -- Code à remplacer
-	            		.setParameter("userId", 11)
+	            		.setParameter("userId", 1)
 	            		// Fin du code à remplacer
                         .list();
 	        } catch (Exception e) {
@@ -42,6 +47,11 @@ public class ShoppingListDAO {
 	        return shoppingLists;
 	    }
 	 
+	 /**
+	  * Méthode permettant à un utilisateur connecté de créer une nouvelle liste
+	  * @param nomListe, le nom de la liste à ajouter
+	  * @author Pauline
+	  */
 	 public static void ajouterListe(String nomListe)
 	 {
 		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
@@ -49,14 +59,15 @@ public class ShoppingListDAO {
 	     
 	   //TO-DO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
  		// -- Code à remplacer
-	    Utilisateur utilisateur = session.get(Utilisateur.class, 11);
+	    Utilisateur utilisateur = session.get(Utilisateur.class, 1);
 	 // Fin du code à remplacer
+	    
 	     try {
 	    	 tx=session.beginTransaction();
 	    	 ShoppingList listeCourse = new ShoppingList();
 	    	 listeCourse.setName(nomListe);
 	    	 listeCourse.setUtilisateur(utilisateur);
-	    	 session.save(listeCourse);
+	    	 session.persist(listeCourse);
 	    	 
 	    	 tx.commit();
 	     } catch (Exception e) {
@@ -67,8 +78,53 @@ public class ShoppingListDAO {
 	        }
 	     System.out.println("Shopping List succesfully added.");
 	 }
-
-		
+	 
+	 /**
+	  * Methode pour ajouté une quantité de produit à une liste - EN COURS-
+	  * @param quantite
+	  */
+	 public static void ajouterArticleListe(int quantite)
+	 {
+		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	     Transaction tx = null;
+	     
+	     try {
+	    	 tx=session.beginTransaction();
+	    	 LinkListeProduit linkListProduit = new LinkListeProduit();
+	    	 linkListProduit.setQuantite(quantite);
+	    	 
+	     }catch (Exception e) {
+	            if (tx != null) tx.rollback();
+	            throw e;
+	        } finally {
+	            session.close();
+	        }
+	 }
+	 
+	 /**
+	  * Methode pour supprimer une liste de course
+	  * @param listeId, identifiant de la liste de course a supprimer
+	  * @author Pauline
+	  */
+	 public static void supprimerListe(int listeId )
+	 {
+		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	     Transaction tx = null;
+	     
+	     try {
+	    	 tx=session.beginTransaction();
+	    	 ShoppingList liste = session.get(ShoppingList.class, listeId);
+	    	 if (liste != null) {
+	             session.remove(liste);
+	         }
+	    	 tx.commit();
+	     }catch (Exception e) {
+	            if (tx != null) tx.rollback();
+	            throw e;
+	        } finally {
+	            session.close();
+	        }
+	 }
 }
 		
 		
