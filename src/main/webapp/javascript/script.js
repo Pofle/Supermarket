@@ -21,9 +21,15 @@ function chargerProduitsListe(idListe, nomListe) {
             var produitsHTML = "<ul>";
             for (var i = 0; i < produits.length; i++) {
                 var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
-                produitsHTML += "<li>" + libelle + "</li>";
+                var marque = produits[i].getElementsByTagName("marque")[0].textContent;
+                var quantite = produits[i].getElementsByTagName("quantite")[0].textContent;
+                produitsHTML += "<li>";
+                produitsHTML += "<input type='number'  min='0' step='1' class='input_quantite' id='quantite'  name='input_quantite' value='" + quantite + "'>";
+                produitsHTML += "</input>";
+                produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
+                produitsHTML += "</li>";
             }
-            produitsHTML += "<ul>";
+            produitsHTML += "</ul>";
 
             // Mise-a-jour et affichage de la modale
             var modalBody = document.querySelector("#modalProduits .modal-body");

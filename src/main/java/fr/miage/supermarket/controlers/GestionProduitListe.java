@@ -47,12 +47,15 @@ public class GestionProduitListe extends HttpServlet {
 
             for (LinkListeProduit produit : produits) {
                 out.println("<produit>");
-                out.println("<libelle>" + produit.getProduit().getLibelle() + "</libelle>");                
+                out.println("<libelle>" + produit.getProduit().getLibelle() + "</libelle>");
+                out.println("<marque>" + produit.getProduit().getMarque() + "</marque>");
+                out.println("<quantite>" + produit.getQuantite() + "</quantite>");
                 out.println("</produit>");
             }
             out.println("</produits>");
             // Log de controle de la generation du xml
-            System.out.println("XML response generated");           
+            System.out.println("XML_LinkListeProduits response generated");   
+            
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
