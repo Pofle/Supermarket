@@ -3,52 +3,46 @@
  */
 function chargerProduitsListe(idListe, nomListe) {
     // RETOUR CONSOLE pour test
-    console.log("ID requested:" + idListe);
-      console.log("Nom de la liste:" + nomListe);
+    console.log("ID de la liste envoyé dans le js :" + idListe);
+    console.log("Nom de la liste:" + nomListe);
     // FIN RETOUR
-    var xhr = new XMLHttpRequest();
+    
+   var xhr = new XMLHttpRequest();
+            xhr.open("GET", "GestionProduitListe?id=" + idListe);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var xmlDoc = xhr.responseXML;
+                    if (xmlDoc === null) {
+                        console.error("xmlDoc is null. Check the response format.");
+                        return;
+                    }
+                    var produits = xmlDoc.getElementsByTagName("produit");
+                    var produitsHTML = "<ul>";
+                    for (var i = 0; i < produits.length; i++) {
+                        var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
+                        var marque = produits[i].getElementsByTagName("marque")[0].textContent;
+                        var quantite = produits[i].getElementsByTagName("quantite")[0].textContent;
+                        var ean = produits[i].getElementsByTagName("ean")[0].textContent;
+                        produitsHTML += "<li>";
+                        produitsHTML += "<input type='number' min='0' step='1' class='input_quantite' name='" + ean + "' value='" + quantite + "'>";
+                        produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
+                        produitsHTML += "</li>";
+                    }
+                    produitsHTML += "</ul>";
 
-    xhr.open("GET", "GestionProduitListe?id=" + idListe);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var xmlDoc = xhr.responseXML;
-            // Log de controle du chargement du xml
-            if (xmlDoc === null) {
-                console.error("xmlDoc is null. Check the response format.");
-                return;
-            }
-            var produits = xmlDoc.getElementsByTagName("produit");
-            var produitsHTML = "<ul>";
-            for (var i = 0; i < produits.length; i++) {
-                var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
-                var marque = produits[i].getElementsByTagName("marque")[0].textContent;
-                var quantite = produits[i].getElementsByTagName("quantite")[0].textContent;
-                produitsHTML += "<li>";
-                produitsHTML += "<input type='number'  min='0' step='1' class='input_quantite' id='quantite'  name='input_quantite' value='" + quantite + "'>";
-                produitsHTML += "</input>";
-                produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
-                produitsHTML += "</li>";
-            }
-            produitsHTML += "</ul>";
-
-            // Mise-a-jour et affichage de la modale
-            var modalBody = document.querySelector("#modalProduits .modal-body");
-            modalBody.innerHTML = produitsHTML;
-            
-            var modalTitle = document.querySelector("#ModalProduitsLabel");
-            modalTitle.innerText = "La liste " + nomListe +" contient :"; 
-
-            var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
-            modal.show();
+                    var modalBody = document.querySelector("#modalProduits .modal-body");
+                    modalBody.innerHTML = produitsHTML;
+                    var modalTitle = document.querySelector("#ModalProduitsLabel");
+                    modalTitle.innerText = "La liste " + nomListe + " contient :";
+                    
+                    document.getElementById("listeId").value = idListe;
+                    
+                    var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
+                    modal.show();
+                }
+            };
+            xhr.send();
         }
-    };
-    // Log de controle en cas d'échec de la requete
-    xhr.onerror = function() {
-        console.error("Request failed");
-    };
-    //Envoi de la requete
-    xhr.send();
-}
 
 /**
  * Fonction pour forcer la fermeture de la modale boostrap

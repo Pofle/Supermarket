@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import fr.miage.supermarket.dao.LinkListeProduitDAO;
 import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
@@ -14,6 +15,17 @@ import fr.miage.supermarket.utils.HibernateUtil;
 public class main {
 
 	public static void main(String[] args) {
+		
+		 // Définir l'ID de la liste et l'EAN du produit à modifier
+        int listeId = 3;
+        String ean = "1234567890124";
+
+        // Appel de la fonction pour modifier la quantité du produit
+        LinkListeProduitDAO.updateProduitsListe(listeId, ean, 2);
+
+        // Afficher un message pour indiquer que le test est terminé
+        System.out.println("Test terminé.");
+    }
 //		Produit article = new Produit();
 //		article.setEan("oidfjz");
 //		//Récupération de la session 

@@ -38,7 +38,7 @@ public class ServletListeCourse extends HttpServlet {
     }
 	
 	/**
-	 * Methode pour supprimer une liste de course - A COMPLETER AVEC SUPPRESSION DE SES PRODUIT FK 
+	 * Methode pour supprimer une liste de course 
 	 * @request L'objet HttpServletRequest contenant la requête
 	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
 	 * @author Pauline

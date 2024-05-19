@@ -192,7 +192,9 @@ public class ServletDispatcher extends HttpServlet {
 			case "gestion_List":
 				try {
 				// TO-DO:: remplacer par le get de l'id de l'utilisateur connecté
+					// 
 					int userId = 1;
+					//
 				// FIN TOD-DO
 					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists(userId);
 					for (ShoppingList shoppingList : allShoppingLists) {
@@ -253,7 +255,7 @@ public class ServletDispatcher extends HttpServlet {
 	        String xmlString = sw.toString();
 	        
 	     // SAVE FICHIER XML POUR TEST
-	        String filePath = "C:\\Users\\Pauline\\Cours\\Projet\\produitlist.txt";
+	        String filePath = "C:\\Users\\Pauline\\Cours\\Projet\\ALLproduitlist.txt";
 	        FileWriter writer = new FileWriter(filePath);
 	        writer.write(xmlString);
 	        writer.close();

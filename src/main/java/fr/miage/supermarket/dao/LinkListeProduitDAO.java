@@ -67,6 +67,30 @@ public class LinkListeProduitDAO {
         }
         return linkListeProduits;
     }
+	
+	public static void updateProduitsListe(int listeId, String ean, int newQuantity) {
+		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	    Transaction tx = null;
+
+	    try {
+	        tx = session.beginTransaction();
+	        Query<LinkListeProduit> query = session.createQuery(
+	                "from LinkListeProduit where shoppingList.id = :listeId and produit.ean = :ean", LinkListeProduit.class);
+	        query.setParameter("listeId", listeId);
+	        query.setParameter("ean", ean);
+	        LinkListeProduit linkListeProduit = query.uniqueResult();
+	        if (linkListeProduit != null) {
+	            linkListeProduit.setQuantite(newQuantity);
+	            session.update(linkListeProduit);
+	        }
+	        tx.commit();
+	    } catch (Exception e) {
+	        if (tx != null) tx.rollback();
+	        e.printStackTrace();
+	    } finally {
+	        session.close();
+	    }
+	}
 
 	
  /**

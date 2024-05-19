@@ -55,7 +55,7 @@
         	<h1 class="modal-title fs-5" id="ModalProduitsLabel"></h1>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
-      	<form action="" method="">
+      	<form id="formProduits" action="GestionProduitListe" method="post">
       		<div class="modal-body">                
         		  	
       		</div>
@@ -63,6 +63,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
         <button type="submit" class="btn btn-primary">Enregistrer</button>       
       </div>
+       <input type="hidden" name="listeId" id="listeId" value="">
       </form>
     </div>
   </div>
