@@ -36,3 +36,16 @@ function chargerProduitsListe(idListe) {
     // Envoie de la requête.
     xhr.send();
 }
+
+/**
+ * Fonction pour forcer la fermeture de la modale boostrap
+ */
+function forcerFermetureModal() {
+            $('#modalProduits').on('hidden.bs.modal', function () {
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
+        }
+        $(document).ready(function () {
+            forcerFermetureModal();
+        });
