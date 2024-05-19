@@ -68,6 +68,13 @@ public class LinkListeProduitDAO {
         return linkListeProduits;
     }
 	
+	/**
+	 * Methode pour mettre à jour les quantités de produits d'une liste
+	 * @param listeId, l'id de la liste à mettre à jour
+	 * @param ean, ean des produits à mettre à jour
+	 * @param newQuantity, la quanité à mettre à jour
+	 * @author Pauline
+	 */
 	public static void updateProduitsListe(int listeId, String ean, int newQuantity) {
 		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	    Transaction tx = null;
@@ -92,6 +99,12 @@ public class LinkListeProduitDAO {
 	    }
 	}
 	
+	/**
+	 * Methode pour supprimer un produit d'une liste de course
+	 * @param eanProduit, du produit à supprimer
+	 * @param listeId, de la liste où il doit être supprimé
+	 * @author Pauline
+	 */
 	public static void supprimerProduit(String eanProduit, int listeId) {
         Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
         Transaction tx = null;
@@ -120,7 +133,6 @@ public class LinkListeProduitDAO {
             session.close();
         }
     }
-
 	
  /**
   * Methode pour ajouter une quantité de produit à une liste - EN COURS-

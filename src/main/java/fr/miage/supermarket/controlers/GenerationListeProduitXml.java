@@ -14,6 +14,7 @@ import fr.miage.supermarket.models.LinkListeProduit;
 
 /**
  * Servlet implementation class GenerationListeProduitXml
+ * @author Pauline
  */
 public class GenerationListeProduitXml extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +28,9 @@ public class GenerationListeProduitXml extends HttpServlet {
     }
 
 	/**
+	 * Methode pour généré un XML des produits contenu dans une liste, depuis un XML global en back
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @author Pauline
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml");
