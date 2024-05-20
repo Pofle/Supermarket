@@ -4,26 +4,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import fr.miage.supermarket.utils.ImageUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import jakarta.persistence.CascadeType;
-import java.util.Objects;
 
 
 @Entity
@@ -71,6 +67,12 @@ public class Produit {
 	private Float poids;
 	
 	// Relations
+	
+	@ManyToOne
+    @JoinColumn(name = "ID_CATEGORIE", nullable = false)
+	@Cascade(CascadeType.ALL)
+	private Categorie categorie;
+	
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
 	private List<Promotion> promotions;
 	
@@ -208,5 +210,21 @@ public class Produit {
 		} catch (IOException e){
 			this.imageBase64 = "";
 		}
+	}
+
+	public List<ShoppingList> getListes() {
+		return listes;
+	}
+
+	public void setListes(List<ShoppingList> listes) {
+		this.listes = listes;
+	}
+
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
 	}
 }

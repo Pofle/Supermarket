@@ -21,8 +21,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.opencsv.CSVReader;
 
+import fr.miage.supermarket.dao.CategorieDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
+import fr.miage.supermarket.dao.RayonDAO;
+import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.Rayon;
 import fr.miage.supermarket.utils.ListWrapper;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -39,18 +43,25 @@ public class GestionProduitsService extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
     
-	private static final int EXPECTED_COLUMNS = 13;
+	private static final int EXPECTED_COLUMNS = 15;
 	
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 	
-	private ProduitDAO produitDao;
+	private ProduitDAO produitDAO;
+	
+	private CategorieDAO categorieDAO;
+	
+	private RayonDAO rayonDAO;
+	
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public GestionProduitsService() {
         super();
-        this.produitDao = new ProduitDAO();
+        this.produitDAO = new ProduitDAO();
+        this.rayonDAO = new RayonDAO();
+        this.categorieDAO = new CategorieDAO();
     }
 
     /**
@@ -65,9 +76,9 @@ public class GestionProduitsService extends HttpServlet {
 		List<Produit> produits = new ArrayList<>();
 		
 		if(request.getParameter("libelle") != null) {
-	        produits = produitDao.getProduitsByLibelle(request.getParameter("libelle"));
+	        produits = produitDAO.getProduitsByLibelle(request.getParameter("libelle"));
 		} else {
-			produits = produitDao.getAllProduits();
+			produits = produitDAO.getAllProduits();
 		}
 		
 		try {
@@ -105,7 +116,7 @@ public class GestionProduitsService extends HttpServlet {
 			}
 			
 			List<Produit> produits = readCsvFile(filePart.getInputStream());
-			produitDao.registerProduits(produits);			
+			produitDAO.registerProduits(produits);			
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ServletException | IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -196,7 +207,30 @@ public class GestionProduitsService extends HttpServlet {
                     throw new IOException("Si un conditionnement n'est pas saisi, un poids doit être saisi à la ligne " + lineNumber);
                 }
 
+                
+                String categorieLibelle = data[13];
+                String rayonLibelle = data[14];
+
+                Rayon rayon = rayonDAO.findByLibelle(rayonLibelle);
+                if (rayon == null) {
+                    rayon = new Rayon();
+                    rayon.setLibelle(rayonLibelle);
+                    rayonDAO.save(rayon);
+                }
+
+                Categorie categorie = categorieDAO.findByLibelle(categorieLibelle);
+                if (categorie == null) {
+                    categorie = new Categorie();
+                    categorie.setLibelle(categorieLibelle);
+                    categorie.setRayon(rayon);
+                    categorieDAO.save(categorie);
+                }
+
+                produit.setCategorie(categorie);
+
                 produits.add(produit);
+                
+                produitDAO.save(produit);
             }
         }
         return produits;

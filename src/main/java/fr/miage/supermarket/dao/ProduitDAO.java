@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Produit;
@@ -109,4 +110,12 @@ public class ProduitDAO {
 			session.close();
 		}
 	}
+	
+	public void save(Produit produit) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.saveOrUpdate(produit);
+            transaction.commit();
+        }
+    }
 }
