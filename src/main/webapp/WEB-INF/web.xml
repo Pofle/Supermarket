@@ -90,6 +90,30 @@
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.ServletPanier</servlet-class>
     </servlet>
+    <servlet>
+		<servlet-name>AjoutProduitPanier</servlet-name>
+		<display-name>AjoutProduitPanier</display-name>
+		<description>Servlet d'ajout d'un produit dans un panier</description>
+		<servlet-class>fr.miage.supermarket.controlers.AjoutProduitPanier</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionArticleListe</servlet-name>
+		<display-name>GestionArticleListe</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionCategoriesService</servlet-name>
+		<display-name>GestionCategoriesService</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.GestionCategoriesService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionRayonsService</servlet-name>
+		<display-name>GestionRayonsService</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.GestionRayonsService</servlet-class>
+	</servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -148,6 +172,14 @@
     	<servlet-name>ServletPanier</servlet-name>
     	<url-pattern>/panier</url-pattern>
     </servlet-mapping>
+    	<servlet-mapping>
+		<servlet-name>GestionCategoriesService</servlet-name>
+		<url-pattern>/categories</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionRayonsService</servlet-name>
+		<url-pattern>/rayons</url-pattern>
+	</servlet-mapping>
 
     <!-- Welcome File List -->
     <welcome-file-list>
