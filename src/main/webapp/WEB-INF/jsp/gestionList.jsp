@@ -36,21 +36,21 @@
 	</p>
 
 	<div class="listes">
-		<c:if test="${session.getAttribute('utilisateur') eq 'UTILISATEUR'}">
+		<c:if test="${utilisateur.getRole() eq 'UTILISATEUR'}">
 			<ul>
 				<c:forEach var="list" items="${shoppingLists}" varStatus="status">
 					<li>
-						<p class="btn">${status.index + 1}- ${list.name}</p> <a
-						href="ServletListeCourse?type_action=delete_list&list_id=${list.id}">
+						<p class="btn">${status.index + 1}-${list.name}</p> <a
+						href="${pageContext.request.contextPath}/gestionList?type_action=delete_list&list_id=${list.id}">
 							<img src="recupererImage?cheminImage=delete_icon.png"
 							class="btn-Delete" Title="Supprimer la liste de course" />
 					</a>
 					</li>
 				</c:forEach>
 			</ul>
-			<button type="button" class="btn-Add" data-bs-toggle="modal"
+			
+		<button type="button" class="btn-Add" data-bs-toggle="modal"
 				data-bs-target="#exampleModal">Ajouter liste</button>
-
 		</c:if>
 	</div>
 
@@ -65,7 +65,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<form action="ServletListeCourse" method="post">
+				<form action="${pageContext.request.contextPath}/gestionList" method="post">
 					<div class="modal-body">
 						<label for="name">Nom :</label> <input type="text" id="name"
 							name="inputName" required>

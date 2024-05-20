@@ -79,6 +79,20 @@
 		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.ServletListeCourse</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ServletDispatcher</servlet-name>
+		<display-name>ServletDispatcher</display-name>
+		<description>Contrôleur central de l'ensemble des servlets de
+			l'application</description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletDispatcher</servlet-class>
+	</servlet>
+	
+	
+	<!-- Servlet Mappings -->
+	<servlet-mapping>
+		<servlet-name>ServletDispatcher</servlet-name>
+		<url-pattern>/central</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ImportProduitsJSP</servlet-name>
 		<url-pattern>/gestionProduit</url-pattern>
@@ -120,7 +134,6 @@
 		<servlet-name>ServletInscription</servlet-name>
 		<url-pattern>/inscription</url-pattern>
 	</servlet-mapping>
-
 	<servlet-mapping>
 		<servlet-name>GestionArticleListe</servlet-name>
 		<url-pattern>/GestionArticleListe</url-pattern>

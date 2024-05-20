@@ -36,7 +36,7 @@
 					<c:if
 						test="${utilisateur.getRole() eq 'VISITEUR' || utilisateur.getRole() eq null}">
 						<li class="navbar-item"><a
-							href="${pageContext.request.contextPath}/connexionInscription"
+							href="${pageContext.request.contextPath}/login"
 							class="navbar-link">Connexion / Inscription</a></li>
 					</c:if>
 				</c:if>

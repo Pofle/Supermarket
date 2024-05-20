@@ -45,16 +45,17 @@ public class ServletListeCourse extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		String nomListeCourse = request.getParameter("inputName");
+		if (nomListeCourse != null && !nomListeCourse.trim().isEmpty()) {
+			ShoppingListDAO.ajouterListe(nomListeCourse);
+		}
 		try {
 			List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists();
 			request.setAttribute("shoppingLists", allShoppingLists);
 		} catch (Exception e) {
 			request.setAttribute("msgError", e.getMessage());
 			e.printStackTrace();
-		}
-		String nomListeCourse = request.getParameter("inputName");
-		if (nomListeCourse != null && !nomListeCourse.trim().isEmpty()) {
-			ShoppingListDAO.ajouterListe(nomListeCourse);
 		}
 		request.getRequestDispatcher("/WEB-INF/jsp/gestionList.jsp").forward(request, response);
 	}
@@ -62,13 +63,7 @@ public class ServletListeCourse extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists();
-			request.setAttribute("shoppingLists", allShoppingLists);
-		} catch (Exception e) {
-			request.setAttribute("msgError", e.getMessage());
-			e.printStackTrace();
-		}
+		
 		String actionType = request.getParameter("type_action");
 
 		if ("delete_list".equals(actionType)) {
@@ -76,6 +71,14 @@ public class ServletListeCourse extends HttpServlet {
 			if (listeId != null) {
 				ShoppingListDAO.supprimerListe(listeId);
 			}
+		}
+		
+		try {
+			List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists();
+			request.setAttribute("shoppingLists", allShoppingLists);
+		} catch (Exception e) {
+			request.setAttribute("msgError", e.getMessage());
+			e.printStackTrace();
 		}
 		request.getRequestDispatcher("/WEB-INF/jsp/gestionList.jsp").forward(request, response);
 	}
