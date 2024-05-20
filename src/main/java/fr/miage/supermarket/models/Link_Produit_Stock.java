@@ -1,13 +1,6 @@
 package fr.miage.supermarket.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "LINK_PRODUIT_STOCK")
@@ -28,13 +21,20 @@ public class Link_Produit_Stock {
     @ManyToOne
     @JoinColumn(name = "EAN", nullable=false)
     private Produit produit;
+    
+    @ManyToOne
+    @JoinColumn(name = "ID_MAGASIN", nullable=false)
+    private Magasin magasin;
+    
+    public Link_Produit_Stock() {}
 
-	public Link_Produit_Stock(Long id, Long quantite, Stock stock, Produit produit) {
+	public Link_Produit_Stock(Long id, Long quantite, Stock stock, Produit produit, Magasin magasin) {
 		super();
 		this.id = id;
 		this.quantite = quantite;
 		this.stock = stock;
 		this.produit = produit;
+		this.magasin = magasin;
 	}
 
 	public Long getId() {
@@ -68,4 +68,13 @@ public class Link_Produit_Stock {
 	public void setProduit(Produit produit) {
 		this.produit = produit;
 	}
+
+	public Magasin getMagasin() {
+		return magasin;
+	}
+
+	public void setMagasin(Magasin magasin) {
+		this.magasin = magasin;
+	}
+	
 }

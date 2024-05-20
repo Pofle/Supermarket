@@ -1,6 +1,7 @@
 package fr.miage.supermarket.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -82,26 +83,6 @@ public class ProduitDAO {
 		}
 	}
 	
-//	public List<Produit> getProduitsStock15ProchainsJours() {
-//        SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-//        Session session = sessionFactory.getCurrentSession();
-//        
-//        session.beginTransaction();
-//        
-//        try {
-//            Query<Produit> query = session.createQuery("SELECT DISTINCT p FROM Produit p JOIN FETCH p.linkProduitStocks lps JOIN FETCH lps.stock s WHERE s.date BETWEEN CURRENT_DATE AND CURRENT_DATE + 15", Produit.class);
-//            List<Produit> produits = query.getResultList();
-//            
-//            session.getTransaction().commit();
-//            return produits;
-//        } catch (Exception e) {
-//            session.getTransaction().rollback();
-//            e.printStackTrace();
-//            return null;
-//        } finally {
-//            session.close();
-//        }
-//    }
 	
 	public List<Object[]> getProduitsStockDate(Date date) {
         SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
@@ -111,18 +92,25 @@ public class ProduitDAO {
         
         try {
             Query<Object[]> query = session.createQuery(
-                "SELECT p.ean, p.libelle, p.prix, :date, COALESCE(SUM(lps.quantite), 0) " +
+                "SELECT p.ean, p.libelle, p.prix, :date, COALESCE(SUM(lps.quantite), 0), m.nom " +
                 "FROM Produit p " +
                 "LEFT JOIN p.linkProduitStocks lps " +
                 "LEFT JOIN lps.stock s " +
+                "LEFT JOIN lps.magasin m " +
                 "WHERE s.dateStock = :date OR s.dateStock IS NULL " +
-                "GROUP BY p.ean, p.libelle, p.prix " +
+                "GROUP BY p.ean, p.libelle, p.prix, m.nom " +
                 "ORDER BY COALESCE(SUM(lps.quantite), 0)", Object[].class
             );
             query.setParameter("date", date);
             List<Object[]> results = query.getResultList();
             
             session.getTransaction().commit();
+            
+            System.out.println("Number of results: " + results.size());
+            for (Object[] result : results) {
+                System.out.println(Arrays.toString(result));
+            }
+            
             return results;
         } catch (Exception e) {
             session.getTransaction().rollback();

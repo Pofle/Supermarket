@@ -6,6 +6,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Link_Produit_Stock;
+import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 import fr.miage.supermarket.models.ShoppingList;
@@ -39,6 +40,7 @@ public class HibernateUtil {
         	System.out.println("Hibernate serviceRegistry created");
 
         	configuration.addAnnotatedClass(Produit.class);
+        	configuration.addAnnotatedClass(Magasin.class);
         	configuration.addAnnotatedClass(Promotion.class);
         	configuration.addAnnotatedClass(Stock.class);
         	configuration.addAnnotatedClass(Link_Produit_Stock.class);

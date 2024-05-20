@@ -1,19 +1,8 @@
 package fr.miage.supermarket.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Transient;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 
 import java.util.List;
-
-import java.util.Set;
 
 @Entity
 @Table(name="PRODUIT", uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})

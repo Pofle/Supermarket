@@ -29,6 +29,7 @@
                 <th>Prix</th>
                 <th>Date Stock</th>
                 <th>Quantité</th>
+                <th>Magasin</th>
             </tr>
         </thead>
         <tbody id="tableBody">
@@ -37,10 +38,10 @@
                     <c:when test="${produitStock[4] == 0}">
                         <tr class="stock-rupture">
                     </c:when>
-                    <c:when test="${produitStock[4] > 0 && produitStock[4] <= 5}">
+                    <c:when test="${produitStock[4] > 0 && produitStock[4] <= 200}">
                         <tr class="stock-faible">
                     </c:when>
-                    <c:when test="${produitStock[4] > 5 && produitStock[4] <= 10}">
+                    <c:when test="${produitStock[4] > 200 && produitStock[4] <= 250}">
                         <tr class="stock-moyen">
                     </c:when>
                     <c:otherwise>
@@ -52,6 +53,7 @@
                     <td>${produitStock[2]}</td>
                     <td>${produitStock[3]}</td>
                     <td>${produitStock[4]}</td>
+                    <td>${produitStock[5]}</td>
                 </tr>
             </c:forEach>
         </tbody>
