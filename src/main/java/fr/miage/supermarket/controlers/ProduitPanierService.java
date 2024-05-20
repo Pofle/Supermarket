@@ -12,6 +12,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import fr.miage.supermarket.dao.CommandeDAO;
+import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.dao.PromotionDAO;
 import fr.miage.supermarket.dao.UtilisateurDAO;
@@ -22,17 +23,17 @@ import fr.miage.supermarket.models.*;
  * 
  * @author EricB
  */
-public class AjoutProduitPanier extends HttpServlet {
+public class ProduitPanierService extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
+	
 	private ProduitDAO produitDAO;
 	private PromotionDAO promotionDAO;
 	private CommandeDAO commandeDAO;
-	private UtilisateurDAO utilisateurDAO;
 
-	public AjoutProduitPanier() {
+	public ProduitPanierService() {
 		this.produitDAO = new ProduitDAO();
 		this.promotionDAO = new PromotionDAO();
-		this.utilisateurDAO = new UtilisateurDAO();
 		this.commandeDAO = new CommandeDAO();
 	}
 
@@ -56,7 +57,7 @@ public class AjoutProduitPanier extends HttpServlet {
 			panier = new Panier();
 			session.setAttribute("panier", panier);
 		}
-
+		
 		String displayOption = request.getParameter("displayOption");
 		// Si l'intégralité des produits sont demandés (displayOption = all)
 		if (displayOption != null && displayOption.equals("all")) {
