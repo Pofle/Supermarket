@@ -41,7 +41,7 @@ public class FinaliserCommande extends HttpServlet {
                 commande.setHoraireRetrait(horaireStr);
 
                 CommandeDAO commandeDAO = new CommandeDAO();
-                commandeDAO.save(commande);
+                commandeDAO.creerCommande(commande);
 
                 // Utilisez l'ID du magasin pour récupérer les informations du magasin depuis la base de données
                 Magasin magasin = MagasinDAO.getMagasinById(magasinId);

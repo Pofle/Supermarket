@@ -8,16 +8,24 @@ body {
 }
 
 .panier-container {
-	width: 80%;
+	width: 60%;
 }
 
-.produit {
+.produit, .resume-container {
 	background-color: #fff;
 	border: 1px solid #ddd;
 	border-radius: 5px;
 	padding: 20px;
 	margin-bottom: 20px;
 	display: flex;
+}
+
+.resume-container {
+	flex-direction: column;
+}
+
+.prixTotal {
+	font-size: 34px;
 }
 
 .left-container {

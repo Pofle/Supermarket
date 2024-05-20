@@ -11,16 +11,16 @@ public class LinkCommandeProduitId implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "ID_COMMANDE")
-    private int commandeId;
+    private Integer commandeId;
 
     @Column(name = "EAN")
     private String produitId;
 
-    public int getCommandeId() {
+    public Integer getCommandeId() {
         return commandeId;
     }
 
-    public void setCommandeId(int commandeId) {
+    public void setCommandeId(Integer commandeId) {
         this.commandeId = commandeId;
     }
 
