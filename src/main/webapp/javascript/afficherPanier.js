@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				const responseXML = xhr.responseXML;
-				const produits = responseXML.getElementsByTagName("produit");
+				const produits = responseXML.getElementsByTagName("item");
 				const totalPrix = responseXML.getElementsByTagName("prixTotal")[0].textContent;
 				const panierContainer = document.querySelector(".produits-container");
 				panierContainer.innerHTML = '';
