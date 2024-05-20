@@ -34,8 +34,8 @@
     <!-- Button trigger modal -->
     <div style="margin-left: 1cm;">
         <br/>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-          Drive 
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+          Commander votre panier 
         </button>
     </div>
 
