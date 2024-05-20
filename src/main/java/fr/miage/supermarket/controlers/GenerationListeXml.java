@@ -21,7 +21,9 @@ public class GenerationListeXml extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
+     * Servlet de gestion du xml des liste de courses appartenant a l'utilisateur connecté
      * @see HttpServlet#HttpServlet()
+     * @author Pauline
      */
     public GenerationListeXml() {
         super();
@@ -29,17 +31,21 @@ public class GenerationListeXml extends HttpServlet {
     }
 
 	/**
+	 * Methode qui recoit la reponse d'une requete en BD des listes de courses de l'utilisateur connecte et qui la convertit en XML de liste de courses
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @author Pauline
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 // Assume user ID is 1
+		
+	//TO-DO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
+	// -- Code à remplacer
 	    int userId = 1;
-	    String ean = request.getParameter("ean");
-	    System.out.println("ean du produit a visualiser :"+ean);
-	    // Get shopping lists for the user
+	// Fin du code à remplacer
+	   	   
 	    List<ShoppingList> shoppingLists = null;
 	    try {
 	        shoppingLists = ShoppingListDAO.getShoppingLists(userId);
+	        System.out.println("Shopping lists fetched successfully");
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -47,11 +53,20 @@ public class GenerationListeXml extends HttpServlet {
 	    // Save du fichier XML pour TEST
 	    saveXmlToFile(xmlContent);
 	    
-	    // Redirection vers la page de détails
-	    request.getRequestDispatcher("/SupermarketG3/accueil?ean=" + ean).forward(request, response);
+	    // Include XML content in the response
+	    response.setContentType("application/xml");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write(xmlContent);
+	    
+	    System.out.println("XMLListes content sent in response");
 	}
 
-
+	/**
+	 * Methode pour convertir une List de listes de courses en reponse XML
+	 * @param shoppingLists la liste des listes de courses de l'utilisateur
+	 * @return
+	 * @author Pauline
+	 */
 	private String convertShoppingListsToXml(List<ShoppingList> shoppingLists) {
 	    StringBuilder xmlBuilder = new StringBuilder();
 	    xmlBuilder.append("<shoppingLists>");
@@ -73,6 +88,7 @@ public class GenerationListeXml extends HttpServlet {
 	        
 	        // Write XML content to file
 	        Files.write(Paths.get(filePath), xmlContent.getBytes());
+	        System.out.println("XML content saved to file: " + filePath);
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	        // Handle exception

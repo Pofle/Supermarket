@@ -7,14 +7,6 @@ function createProductCard(product) {
 
     const link = document.createElement('a');
     link.href = `/SupermarketG3/accueil?ean=${product.ean}`;
-    link.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevents the default behavior of the link
-
-        // Send request to generate XML
-        generateListeXml();
-        // Redirect to product details page
-        window.location.href = link.href;
-    });
 
     const productInfo = document.createElement('div');
     productInfo.classList.add('product-info');

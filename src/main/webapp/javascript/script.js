@@ -13,7 +13,7 @@ function chargerProduitsListe(idListe, nomListe) {
                 if (xhr.status === 200) {
                     var xmlDoc = xhr.responseXML;
                     if (xmlDoc === null) {
-                        console.error("xmlDoc is null. Check the response format.");
+                        console.error("xmlDocListeProduits is null. Check the response format.");
                         return;
                     }
                     // Generation du HTML

@@ -33,6 +33,7 @@ public class ServletDispatcher extends HttpServlet {
 	 */
 	public ServletDispatcher() {
 		super();
+		 System.out.println("ServletDispatcher initialized");
 	}
 
 	/**

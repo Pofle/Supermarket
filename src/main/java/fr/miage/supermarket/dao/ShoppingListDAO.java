@@ -19,7 +19,7 @@ import fr.miage.supermarket.utils.HibernateUtil;
 public class ShoppingListDAO {
 	
 	/**
-	 * Methode pour récupérer toutes les listes de courses d'un utlisateur
+	 * Methode pour récupérer toutes les listes de courses d'un utlisateur connecté en BD - A COMPLETER AVEC OCNNEXION-
 	 * @return la liste des listes de courses liées à l'utilisateur connecté
 	 * @throws Exception
 	 * @author Pauline
@@ -78,7 +78,7 @@ public class ShoppingListDAO {
 	     System.out.println("Shopping List succesfully added.");
 	 }	 
 	 /**
-	  * Methode pour supprimer une liste de course - GERER LA SUPPRESSION DE FK DES PRODUITS CONTENUS)
+	  * Methode pour supprimer une liste de course et les produits qu'elle contient
 	  * @param listeId, identifiant de la liste de course a supprimer
 	  * @author Pauline
 	  */
