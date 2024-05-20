@@ -11,13 +11,37 @@ import jakarta.persistence.Table;
 public class LinkUtilisateurCommande {
 
 	@EmbeddedId
-    private LinkUtilisateurCommande id;
+    private LinkUtilisateurCommandeId id;
+
+	@ManyToOne
+	@JoinColumn(name = "ID_UTILISATEUR", insertable=false, updatable=false)
+	private Utilisateur utilisateur;
 	
 	@ManyToOne
     @JoinColumn(name = "ID_COMMANDE", insertable=false, updatable=false)
     private Commande commande;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_UTILISATEUR", insertable=false, updatable=false)
-    private Produit produit;
+	public LinkUtilisateurCommande(Utilisateur utilisateur, Commande commande) {
+		super();
+		this.utilisateur = utilisateur;
+		this.commande = commande;
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
+	public Commande getCommande() {
+		return commande;
+	}
+
+	public void setCommande(Commande commande) {
+		this.commande = commande;
+	}
+
+	
 }
