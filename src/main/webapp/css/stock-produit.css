@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+.stock-rupture {
+    background-color: red;
+    color: white;
+}
+
+.stock-faible {
+    background-color: orange;
+    color: white;
+}
+
+.stock-moyen {
+    background-color: yellow;
+    color: black;
+}

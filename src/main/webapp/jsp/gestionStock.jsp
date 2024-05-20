@@ -8,6 +8,7 @@
 		<jsp:param name="title" value="Gestion du Stock" />
 	</jsp:include>
     <title>Gestion des Stocks</title>
+    <link href="css/stock-produit.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
@@ -24,7 +25,20 @@
         </thead>
         <tbody>
             <c:forEach items="${produitsStock}" var="produitStock">
-                <tr>
+                <c:choose>
+                    <c:when test="${produitStock[4] == 0}">
+                        <tr class="stock-rupture">
+                    </c:when>
+                    <c:when test="${produitStock[4] > 0 && produitStock[4] <= 5}">
+                        <tr class="stock-faible">
+                    </c:when>
+                    <c:when test="${produitStock[4] > 5 && produitStock[4] <= 10}">
+                        <tr class="stock-moyen">
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                    </c:otherwise>
+                </c:choose>
                     <td>${produitStock[0]}</td>
                     <td>${produitStock[1]}</td>
                     <td>${produitStock[2]}</td>

@@ -36,12 +36,12 @@ public class GestionStockService extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date0 = null;
-        try {
-            date0 = dateFormat.parse("2024-05-17"); // Date de départ
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Date date0 = new Date(); // Date actuelle
+//        try {
+//            date0 = dateFormat.parse("2024-05-17"); // Date de départ
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         
         List<Date> serieDates = DatesUtils.getSerieDates(date0, 15); // Génère 15 jours de dates
         

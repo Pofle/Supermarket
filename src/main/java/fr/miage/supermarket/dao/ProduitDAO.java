@@ -111,11 +111,12 @@ public class ProduitDAO {
         
         try {
             Query<Object[]> query = session.createQuery(
-                "SELECT p.ean, p.libelle, p.prix, :date, COALESCE(lps.quantite, 0) " +
+                "SELECT p.ean, p.libelle, p.prix, :date, COALESCE(SUM(lps.quantite), 0) " +
                 "FROM Produit p " +
                 "LEFT JOIN p.linkProduitStocks lps " +
                 "LEFT JOIN lps.stock s " +
-                "ON s.dateStock = :date " +
+                "WHERE s.dateStock = :date OR s.dateStock IS NULL " +
+                "GROUP BY p.ean, p.libelle, p.prix " +
                 "ORDER BY p.ean", Object[].class
             );
             query.setParameter("date", date);
