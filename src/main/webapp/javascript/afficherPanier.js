@@ -9,9 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
 				const responseXML = xhr.responseXML;
 				const produits = responseXML.getElementsByTagName("produit");
 				const totalPrix = responseXML.getElementsByTagName("prixTotal")[0].textContent;
-				const panierContainer = document.querySelector(".panier-container");
+				const panierContainer = document.querySelector(".produits-container");
 				panierContainer.innerHTML = '';
 				if (produits.length > 0) {
+					const validateButton = document.getElementById("validerPanier");
+					validateButton.style.display = 'block';
 					const header = document.createElement("h1");
 					header.textContent = "Votre panier";
 					panierContainer.appendChild(header);
@@ -113,13 +115,11 @@ document.addEventListener("DOMContentLoaded", function() {
 						panierContainer.appendChild(produitDiv);
 					});
 
-					const totalDiv = document.createElement("div");
-					totalDiv.classList.add("produit");
-					const totalHeader = document.createElement("h1");
+					const totalHeader = document.getElementById("prixTotal");
 					totalHeader.textContent = `Total: ${Number(totalPrix).toFixed(2)}€`;
-					totalDiv.appendChild(totalHeader);
 					panierContainer.appendChild(totalDiv);
 				} else {
+					document.getElementById("resume-container").style.display = 'none';
 					const emptyMessage = document.createElement("h1");
 					emptyMessage.textContent = "Votre panier est vide...";
 					panierContainer.appendChild(emptyMessage);
@@ -144,6 +144,27 @@ document.addEventListener("DOMContentLoaded", function() {
 		};
 		xhr.send(`ean=${ean}&quantite=${change}`);
 	}
+
+	function validatePanier() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "ajoutPanier", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert("Votre commande a été validée avec succès !");
+                updatePanier();
+            } else {
+                alert(xhr.responseText);
+            }
+        };
+
+        xhr.send('action=validerPanier');
+    }
+    const validateButton = document.getElementById("validerPanier");
+	validateButton.style.display = 'none';
+    validateButton.addEventListener("click", validatePanier);
+    
 	updatePanier();
 });
 
