@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import fr.miage.supermarket.dao.LinkListeProduitDAO;
 import fr.miage.supermarket.models.LinkListeProduit;
 
@@ -33,7 +35,7 @@ public class GenerationListeProduitXml extends HttpServlet {
 	 * @author Pauline
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/xml");
+		response.setContentType("text/xml; charset=UTF-8");
         PrintWriter out = response.getWriter();
         Integer listeId = getIntegerParameter(request, "id");
         // Log de contrôle pour l'id de la liste reçu
@@ -49,9 +51,9 @@ public class GenerationListeProduitXml extends HttpServlet {
 
             for (LinkListeProduit produit : produits) {
                 xmlContent.append("<produit>");
-                xmlContent.append("<ean>").append(produit.getProduit().getEan()).append("</ean>");
-                xmlContent.append("<libelle>").append(produit.getProduit().getLibelle()).append("</libelle>");
-                xmlContent.append("<marque>").append(produit.getProduit().getMarque()).append("</marque>");
+                xmlContent.append("<ean>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getEan())).append("</ean>");
+                xmlContent.append("<libelle>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getLibelle())).append("</libelle>");
+                xmlContent.append("<marque>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getMarque())).append("</marque>");
                 xmlContent.append("<quantite>").append(produit.getQuantite()).append("</quantite>");
                 xmlContent.append("</produit>");
             }
@@ -89,7 +91,4 @@ public class GenerationListeProduitXml extends HttpServlet {
 	    }
 	    return null; 
 	}
-	
-	
-
 }
