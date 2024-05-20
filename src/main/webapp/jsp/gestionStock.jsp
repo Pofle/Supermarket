@@ -24,7 +24,6 @@
     <table class="table-style">
         <thead>
             <tr>
-            	<th>Image</th>
                 <th>EAN</th>
                 <th>Libelle</th>
                 <th>Marque</th>
@@ -53,7 +52,6 @@
                         <tr>
                     </c:otherwise>
                 </c:choose>
-                    <td><img src="data:image/jpeg;base64,${produitStock[0].vignetteBase64}" alt="Image Produit" /></td>
                     <td>${produitStock[0].ean}</td>
                     <td>${produitStock[0].libelle}</td>
                     <td>${produitStock[0].marque}</td>
@@ -78,7 +76,7 @@
         function updateResults(selectedDate) {
             var rows = document.querySelectorAll("#tableBody tr");
             rows.forEach(function(row) {
-                var rowDate = row.querySelector("td:nth-child(11)").textContent;
+                var rowDate = row.querySelector("td:nth-child(10)").textContent;
                 if (selectedDate === "" || selectedDate === rowDate) {
                     row.style.display = "table-row";
                 } else {

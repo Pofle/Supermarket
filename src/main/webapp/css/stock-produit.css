@@ -16,15 +16,6 @@ th, td {
     padding: 5px 0;
 }
 
-tbody tr:nth-child(even) {
-    background: #ECF0F1;
-}
-
-tbody tr:hover {
-    background: #BDC3C7;
-    color: #FFFFFF;
-}
-
 /* Classes pour les différents niveaux de stock */
 .stock-rupture {
     background-color: red;

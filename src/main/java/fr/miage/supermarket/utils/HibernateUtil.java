@@ -5,15 +5,12 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-<<<<<<< HEAD
 import fr.miage.supermarket.models.Link_Produit_Stock;
 import fr.miage.supermarket.models.Magasin;
-=======
 import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.LinkListeProduit;
->>>>>>> developp
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 import fr.miage.supermarket.models.Rayon;
