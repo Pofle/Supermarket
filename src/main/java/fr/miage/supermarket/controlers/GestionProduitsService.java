@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -16,41 +18,86 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.opencsv.CSVReader;
+
+import fr.miage.supermarket.dao.CategorieDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
+import fr.miage.supermarket.dao.RayonDAO;
+import fr.miage.supermarket.dto.CategorieDTO;
+import fr.miage.supermarket.dto.ProduitDTO;
+import fr.miage.supermarket.dto.RayonDTO;
+import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.Rayon;
 import fr.miage.supermarket.utils.ListWrapper;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 
+import java.text.DecimalFormat;
+
 /**
  * Service de gestion de recherche et d'insertion des produits
+ * @author EricB
  */
 @MultipartConfig
 public class GestionProduitsService extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-       
+    
+	private static final int EXPECTED_COLUMNS = 15;
+	
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+	
+	private ProduitDAO produitDAO;
+	
+	private CategorieDAO categorieDAO;
+	
+	private RayonDAO rayonDAO;
+	
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public GestionProduitsService() {
         super();
+        this.produitDAO = new ProduitDAO();
+        this.rayonDAO = new RayonDAO();
+        this.categorieDAO = new CategorieDAO();
     }
 
-	/**
-	 * Renvoit un XML contenant l'intégralité des produits en base.
+    /**
+	 * Méthode GET permettant de récupérer sous forme de XML des informations sur les produits enregistrés en base de données.
+	 * Avec le paramètre libelle renseigné, renvoit l'ensemble des produits détenant ce bout de libelle dans leur libelle.
+	 * Sans le paramètre libelle renseigné, renvoit l'ensemble des produits enregistrés en base de données.
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @author EricB
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ProduitDAO produitDAO = new ProduitDAO();
-        List<Produit> produits = produitDAO.getAllProduits();
+		List<Produit> produits = new ArrayList<>();
+		List<ProduitDTO> produitsDTOs = new ArrayList<>();
+		String libelle = request.getParameter("libelle");
+	    String categorie = request.getParameter("categorie");
+	    String rayon = request.getParameter("rayon");
+		
+		if(libelle != null || categorie != null || rayon != null) {
+	        produits = produitDAO.getProduitsByFilters(libelle, categorie, rayon);
+		} else {
+			produits = produitDAO.getAllProduits();
+		}
+		
+		for(Produit prd: produits) {
+        	produitsDTOs.add(convertToDTO(prd, produitDAO.getQuantiteCommandee(prd)));
+        }
+		
 		try {
-            //Configuration du contexte JAXB pour Produit et lister les produits
-            JAXBContext jaxbContext = JAXBContext.newInstance(Produit.class, ListWrapper.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(ProduitDTO.class, ListWrapper.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
 
-            // Convertir la liste de produits en XML
-            ListWrapper<Produit> wrapper = new ListWrapper<>(produits);
+            ListWrapper<ProduitDTO> wrapper = new ListWrapper<>(produitsDTOs);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
             marshaller.marshal(wrapper, writer);
@@ -59,10 +106,12 @@ public class GestionProduitsService extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 	}
-	
 	/**
-	 * Gère l'insertion de produits à partir de l'import CSV
+	 * Méthode POST permettant de gérer l'ajout de produits à la base de données.
+	 * Paramètre file obligatoire. Ce paramètre est le fichier CSV à importé contenant l'ensemble des produits à enregistrer.
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author EricB
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -79,8 +128,7 @@ public class GestionProduitsService extends HttpServlet {
 			}
 			
 			List<Produit> produits = readCsvFile(filePart.getInputStream());
-			ProduitDAO produitsDao = new ProduitDAO();
-			produitsDao.registerProduits(produits);			
+			produitDAO.registerProduits(produits);			
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ServletException | IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -88,43 +136,144 @@ public class GestionProduitsService extends HttpServlet {
 		}
 	}
 	
-	/**
-	 * Lit le fichier CSV pour en retirer les produits
-	 * @param inputStream
-	 * @return
-	 * @throws IOException
-	 */
-	private List<Produit> readCsvFile(InputStream inputStream) throws IOException{
-		List<Produit> produits = new ArrayList<>();
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-			String line;
-			reader.readLine(); // On fait un premier readLine pour skip le header
-			while((line = reader.readLine()) != null) {
-				String data[] = line.split(",");
-				if(data.length >= 11) {
-					Produit produit = new Produit();
-					produit.setEan(data[0]);
-					produit.setLibelle(data[1]);
-					produit.setDescriptionCourte(data[2]);
-					produit.setDescription(data[3]);
-					produit.setNutriscore(data[4]);
-					produit.setLabel(data[5]);
-					produit.setMarque(data[6]);
-					produit.setRepertoireImage(data[7]);
-					produit.setRepertoireVignette(data[8]);
-					produit.setPrix(Float.valueOf(data[9]));
-					produit.setPoids(data[10].isBlank() ? null : Float.valueOf(data[10]));
-					
-					if(data.length == 12) {
-						produit.setConditionnement(data[11]);
-					}
-					
-					produits.add(produit);
-				} else {
-					throw new IOException("Le fichier est mal formaté");
-				}
-			}
-		}
-		return produits;
-	}
+	
+	
+    /**
+     * Lit le fichier CSV pour en extraire les produits
+     *
+     * @param inputStream {@link InputStream} relatif au fichier CSV importé.
+     * @return une liste de produits extraits du fichier CSV
+     * @throws IOException exception levée si le fichier n'a pas pu être correctement lu
+     * @throws CsvValidationException exception levée si la structure du CSV n'est pas respectée.
+     * @author EricB
+     */
+    public List<Produit> readCsvFile(InputStream inputStream) throws IOException {
+    	
+        List<Produit> produits = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+             CSVReader csvReader = new CSVReader(reader)) {
+
+            String[] header = csvReader.readNext(); // Skip the header
+            if (header.length != EXPECTED_COLUMNS) {
+                throw new IOException("Le fichier est mal formaté. Nombre de colonnes attendu: " + EXPECTED_COLUMNS + ", trouvé: " + header.length);
+            }
+
+            String[] data;
+            int lineNumber = 1;
+            while ((data = csvReader.readNext()) != null) {
+                lineNumber++;
+                if (data.length != EXPECTED_COLUMNS) {
+                    throw new IOException("Le fichier est mal formaté à la ligne " + lineNumber + ". Nombre de colonnes attendu: " + EXPECTED_COLUMNS + ", trouvé: " + data.length);
+                }
+
+                Produit produit = new Produit();
+                produit.setEan(data[0]);
+                produit.setLibelle(data[1]);
+                produit.setDescriptionCourte(data[2]);
+                produit.setDescription(data[3]);
+                produit.setNutriscore(data[4]);
+                produit.setLabel(data[5]);
+                produit.setMarque(data[6]);
+                produit.setRepertoireImage(data[7]);
+                produit.setRepertoireVignette(data[8]);
+
+                // Vérification de la valeur du prix
+                if (data[9] != null && !data[9].isBlank()) {
+                    BigDecimal prix = new BigDecimal(data[9]);
+                    if (prix.compareTo(BigDecimal.ZERO) < 0) {
+                        throw new IOException("Le prix ne peut pas être inférieur à 0 à la ligne " + lineNumber);
+                    }
+                    
+                    //decimalFormat.format(prix)
+                    produit.setPrix(Float.parseFloat(decimalFormat.format(prix).replace(",", ".")));
+                }
+
+                // Vérification du poids
+                if (data[10] != null && !data[10].isBlank()) {
+                	BigDecimal poids = new BigDecimal(data[10]);
+                    if (poids.compareTo(BigDecimal.ZERO) < 0) {
+                        throw new IOException("Le poids ne peut pas être inférieur à 0 à la ligne " + lineNumber);
+                    }
+                    produit.setPoids(Float.parseFloat(decimalFormat.format(poids).replace(",", ".")));
+                }
+
+                // Vérification du conditionnement
+                String conditionnement = data[11].isBlank() ? null : data[11];
+                produit.setConditionnement(conditionnement);
+
+                // Vérification de la quantité de conditionnement
+                int quantiteConditionnement = 0;
+                if (data[12] != null && !data[12].isBlank() && StringUtils.isNumeric(data[12])) {
+                    quantiteConditionnement = Integer.parseInt(data[12]);
+                    if (quantiteConditionnement < 0) {
+                        throw new IOException("La quantité de conditionnement ne peut pas être inférieure à 0 à la ligne " + lineNumber);
+                    }
+                }
+                produit.setQuantiteConditionnement(quantiteConditionnement);
+
+                // Validation des règles de conditionnement et poids
+                if (quantiteConditionnement > 0 && conditionnement == null) {
+                    throw new IOException("Si une quantité de conditionnement est saisie, un conditionnement doit être saisi à la ligne " + lineNumber);
+                }
+                if (conditionnement == null && produit.getPoids() == null) {
+                    throw new IOException("Si un conditionnement n'est pas saisi, un poids doit être saisi à la ligne " + lineNumber);
+                }
+
+                
+                String categorieLibelle = data[13];
+                String rayonLibelle = data[14];
+
+                Rayon rayon = rayonDAO.findByLibelle(rayonLibelle);
+                if (rayon == null) {
+                    rayon = new Rayon();
+                    rayon.setLibelle(rayonLibelle);
+                    rayonDAO.save(rayon);
+                }
+
+                Categorie categorie = categorieDAO.findByLibelle(categorieLibelle);
+                if (categorie == null) {
+                    categorie = new Categorie();
+                    categorie.setLibelle(categorieLibelle);
+                    categorie.setRayon(rayon);
+                    categorieDAO.save(categorie);
+                }
+
+                produit.setCategorie(categorie);
+
+                produits.add(produit);
+                
+                produitDAO.save(produit);
+            }
+        }
+        return produits;
+    }
+    
+    private ProduitDTO convertToDTO(Produit produit, int qtt) {
+        ProduitDTO dto = new ProduitDTO();
+        dto.setEan(produit.getEan());
+        dto.setLibelle(produit.getLibelle());
+        dto.setNutriscore(produit.getNutriscore());
+        dto.setMarque(produit.getMarque());
+        dto.setRepertoireVignette(produit.getRepertoireVignette());
+        dto.setLabel(produit.getLabel());
+        dto.setPrix(produit.getPrix());
+        dto.setConditionnement(produit.getConditionnement());
+        dto.setQuantiteConditionnement(produit.getQuantiteConditionnement());
+        dto.setPoids(produit.getPoids());
+
+        dto.setQuantiteCommandee(qtt);
+
+        if (produit.getCategorie() != null) {
+            CategorieDTO categorieDTO = new CategorieDTO();
+            categorieDTO.setLibelle(produit.getCategorie().getLibelle());
+            dto.setCategorie(categorieDTO);
+            if(produit.getCategorie().getRayon() != null) {
+            	RayonDTO rayonDTO = new RayonDTO();
+            	rayonDTO.setLibelle(produit.getCategorie().getRayon().getLibelle());
+                dto.setRayon(rayonDTO);
+            }
+        }
+
+        return dto;
+    }
 }

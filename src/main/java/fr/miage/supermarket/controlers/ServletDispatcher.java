@@ -7,12 +7,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 //import org.hibernate.mapping.List;
 
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.models.Utilisateur;
+
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
@@ -40,8 +43,15 @@ public class ServletDispatcher extends HttpServlet {
 		String action = request.getParameter("type_action");
 		
 		////// ---> Moyen temporaire de changer d'utilisateur au travers de cette variable. <---\\\\\
-		String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
+		//String categorieCompte = CategorieCompte.VISITEUR.name();
 		// FIN
+		
+		HttpSession session = request.getSession();
+        Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
+        String categorieCompte = CategorieCompte.VISITEUR.name();
+        if (user != null) {
+        	categorieCompte = user.getRole().name();
+		}
 		
 		if (categorieCompte != null) {
 			if (categorieCompte.equals(CategorieCompte.GESTIONNAIRE.name())) {
@@ -153,7 +163,7 @@ public class ServletDispatcher extends HttpServlet {
                 url = "listeCourse";
                 break;
             case "connexionInscription":
-                url = "connexionInscription";
+                url = "login";
                 break;
             case "panier":
                 url = "panier";
@@ -185,12 +195,6 @@ public class ServletDispatcher extends HttpServlet {
 			case "gestion_List":
 				try {
 					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists();
-					//RETOUR CONSOLE
-					 System.out.println("Shopping lists retrieved: " + allShoppingLists.size());
-					 for (ShoppingList list : allShoppingLists) {
-	                        System.out.println("List: " + list.getName());
-	                    }
-					 //FIN
 					 request.setAttribute("shoppingLists", allShoppingLists);
 					url= "gestionList";
 				}catch(Exception e) {
@@ -198,6 +202,7 @@ public class ServletDispatcher extends HttpServlet {
 					 e.printStackTrace();
 				}
 				break;
+				
 			case "rayons":
                 url = "rayons";
                 break;
@@ -206,9 +211,6 @@ public class ServletDispatcher extends HttpServlet {
                 break;
             case "listeCourse":
                 url = "listeCourse";
-                break;
-            case "connexionInscription":
-                url = "connexionInscription";
                 break;
             case "panier":
                 url = "panier";

@@ -1,0 +1,122 @@
+/* Style général de la page */
+h1 {
+    text-align: center; 
+    color: #333; 
+    margin-bottom: 20px; 
+}
+
+p {
+    color: #666; 
+    line-height: 1.5; 
+    margin-bottom: 20px; 
+    text-align: center; 
+}
+/* Style pour la liste des listes de courses */
+.listes {
+    margin: 0 auto;
+    max-width: 30em; 
+    padding: 20px; 
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+.listes ul li {
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8f9fa; 
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.listes ul li p {
+    margin: 0;
+    flex-grow: 1; 
+    transition: transform 0.3s, filter 0.3s; 
+}
+
+.btn-Delete{
+	width : 4ex;
+}
+.btn-Delete:hover {
+    transform: scale(1.2); 
+    filter: brightness(1.5); 
+}
+.btn-Add {
+    padding: 10px 20px;
+    background-color: #333; 
+    color: white; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-Add:hover {
+    background-color: #0056b3; 
+}
+
+/* Style pour la modal */
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+} 
+
+.modal-header .btn-close {
+    position: absolute;
+    right: 1rem;
+}
+
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid #dee2e6; /
+}
+
+.modal-title {
+    text-align: center; 
+}
+
+/* Style pour le formulaire dans la modal */
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da; 
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type="text"]:focus {
+    border-color: #007bff; 
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+	padding: 10px 20px;
+    background-color: #0080ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+

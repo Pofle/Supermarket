@@ -21,6 +21,7 @@ h1 {
 
 /* Styles pour la barre de recherche */
 .search-bar {
+    position: relative;
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
@@ -46,6 +47,7 @@ h1 {
     cursor: pointer;
 }
 
+/* Style des vignettes */
 .article-container {
     display: flex;
     flex-wrap: wrap;
@@ -98,3 +100,51 @@ h1 {
 .nutriscore {
     font-size: 14px;
 }
+
+.product-head {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    text-align: center; 
+    justify-content: space-between; 
+}
+
+.ajouterpanier-bottom-card {
+	display: flex;
+	justify-content: right;
+	align-items: center;
+	cursor: pointer;
+}
+
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.filter-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filter-container select {
+    width: 200px;
+    height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.filter-container select option:hover {
+    background-color: #f0f0f0;
+}
+
+.filter-container select option {
+    padding: 5px;
+}
+
+
+
+
+
+

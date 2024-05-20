@@ -1,8 +1,15 @@
 package fr.miage.supermarket.models;
 
 import jakarta.persistence.*;
-
 import java.util.List;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.IOException;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import fr.miage.supermarket.utils.ImageUtil;
+import fr.miage.supermarket.xml.CategorieXmlAdapter;
+
 
 @Entity
 @Table(name="PRODUIT", uniqueConstraints= {@UniqueConstraint(columnNames= {"EAN"})})
@@ -36,26 +43,34 @@ public class Produit {
 	@Column(name="LABEL", length=50, nullable=true)
 	private String label;
 
-	@Column(name="PRIX", nullable=true)
+	@Column(name="PRIX", nullable=false)
 	private Float prix;
 	
-	@Column(name="CONDITIONNEMENT", length=50, nullable=true)
+	@Column(name="CONDITIONNEMENT", length=50, nullable=false)
 	private String conditionnement;
+	
+	@Column(name="QUANTITE_CONDITIONNEMENT", length=50, nullable=true)
+	private Integer quantiteConditionnement;
 	
 	@Column(name="POIDS", nullable=true)
 	private Float poids;
 	
+	// Relations
+	
+	@ManyToOne
+    @JoinColumn(name = "ID_CATEGORIE", nullable = false)
+	@Cascade(CascadeType.ALL)
+	private Categorie categorie;
+	
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
 	private List<Promotion> promotions;
 	
-	@Transient
-	private String vignetteBase64;
+	@ManyToMany(mappedBy = "produits")
+	private List<ShoppingList> listes;
 	
 	@Transient
 	private String imageBase64;
 	
-//	@ManyToMany(mappedBy = "produits")
-//    private Set<ShoppingList> shoppingLists;
 	
 	@OneToMany(mappedBy = "produit")
 	private List<Link_Produit_Stock> linkProduitStocks;
@@ -125,7 +140,7 @@ public class Produit {
 	}
 	
 	public Float getPrix() {
-		return prix;
+		return this.prix;
 	}
 
 	public void setPrix(Float prix) {
@@ -164,20 +179,47 @@ public class Produit {
 		this.promotions = promotions;
 	}
 
-	public String getVignetteBase64() {
-		return vignetteBase64;
+	public Integer getQuantiteConditionnement() {
+		return quantiteConditionnement;
 	}
 
-	public void setVignetteBase64(String vignetteBase64) {
-		this.vignetteBase64 = vignetteBase64;
+	public void setQuantiteConditionnement(Integer quantiteConditionnement) {
+		this.quantiteConditionnement = quantiteConditionnement;
 	}
 
 	public String getImageBase64() {
 		return imageBase64;
 	}
+	
+	/**
+	 * Saisit la base64 de l'image contenue dans le répertoire image du produit
+	 * @param fullPath le chemin complet où chercher l'image
+	 * @author EricB
+	 */
+	public void setImageBase64(String fullPath) {
+		try {
+			this.imageBase64 = ImageUtil.writeImageToBase64(this.repertoireImage , fullPath + this.repertoireImage);
+		} catch (IOException e){
+			this.imageBase64 = "";
+		}
+	}
 
-	public void setImageBase64(String imageBase64) {
-		this.imageBase64 = imageBase64;
+	@XmlTransient
+	public List<ShoppingList> getListes() {
+		return listes;
+	}
+
+	public void setListes(List<ShoppingList> listes) {
+		this.listes = listes;
+	}
+
+	@XmlJavaTypeAdapter(CategorieXmlAdapter.class)
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
 	}
 
 	public List<Link_Produit_Stock> getLinkProduitStocks() {
