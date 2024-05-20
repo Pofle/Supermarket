@@ -2,17 +2,23 @@ package fr.miage.supermarket.models;
 
 import java.util.Set;
 
+import fr.miage.supermarket.xml.CategorieXmlAdapter;
+import fr.miage.supermarket.xml.RayonXmlAdapter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @Entity
 @Table(name="CATEGORIE", uniqueConstraints= {@UniqueConstraint(columnNames= {"ID_CATEGORIE"})})
@@ -30,9 +36,10 @@ public class Categorie {
     @JoinColumn(name = "ID_RAYON", nullable = false)
 	private Rayon rayon;
 	
-	@OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Produit> produits;
 	
+	@XmlTransient
 	public Integer getId() {
 		return id;
 	}
@@ -48,7 +55,8 @@ public class Categorie {
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
-
+	
+	@XmlTransient
 	public Set<Produit> getProduits() {
 		return produits;
 	}
@@ -57,6 +65,7 @@ public class Categorie {
 		this.produits = produits;
 	}
 
+	@XmlJavaTypeAdapter(RayonXmlAdapter.class)
 	public Rayon getRayon() {
 		return rayon;
 	}

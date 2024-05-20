@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "RAYON", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID_RAYON" }) })
@@ -27,6 +28,7 @@ public class Rayon {
 	@OneToMany(mappedBy = "rayon", cascade = CascadeType.ALL)
 	private Set<Categorie> categories;
 
+	@XmlTransient
 	public Integer getId() {
 		return id;
 	}
@@ -43,6 +45,7 @@ public class Rayon {
 		this.libelle = libelle;
 	}
 
+	@XmlTransient
 	public Set<Categorie> getCategories() {
 		return categories;
 	}

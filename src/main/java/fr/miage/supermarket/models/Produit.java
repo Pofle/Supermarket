@@ -3,6 +3,8 @@ package fr.miage.supermarket.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
@@ -14,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import fr.miage.supermarket.utils.ImageUtil;
+import fr.miage.supermarket.xml.CategorieXmlAdapter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 
@@ -76,7 +79,7 @@ public class Produit {
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
 	private List<Promotion> promotions;
 	
-	@ManyToMany(mappedBy = "produits", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "produits")
 	private List<ShoppingList> listes;
 	
 	@Transient
@@ -212,6 +215,7 @@ public class Produit {
 		}
 	}
 
+	@XmlTransient
 	public List<ShoppingList> getListes() {
 		return listes;
 	}
@@ -220,6 +224,7 @@ public class Produit {
 		this.listes = listes;
 	}
 
+	@XmlJavaTypeAdapter(CategorieXmlAdapter.class)
 	public Categorie getCategorie() {
 		return categorie;
 	}

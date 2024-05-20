@@ -1,11 +1,14 @@
 package fr.miage.supermarket.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Categorie;
+import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 public class CategorieDAO {
@@ -31,4 +34,25 @@ public class CategorieDAO {
             transaction.commit();
         }
     }
+    
+    public List<Categorie> getAllCategorie() {
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction();
+		
+		try {
+			Query<Categorie> query = session.createQuery("FROM Categorie", Categorie.class);
+			List<Categorie> categories = query.getResultList();
+			
+			session.getTransaction().commit();
+			
+			return categories;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }

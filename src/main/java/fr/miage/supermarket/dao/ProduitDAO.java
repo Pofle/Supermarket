@@ -1,6 +1,8 @@
 package fr.miage.supermarket.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +11,7 @@ import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
+import jakarta.persistence.TypedQuery;
 
 /**
  * Classe de gestion des données pour les produits
@@ -64,6 +67,34 @@ public class ProduitDAO {
 		}
 	}
 
+	public List<Produit> getProduitsByFilters(String libelle, String categorie, String rayon) {
+        String query = "SELECT p FROM Produit p WHERE 1=1";
+        Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction();
+        Map<String, Object> params = new HashMap<>();
+
+        if (libelle != null && !libelle.isEmpty()) {
+            query += " AND p.libelle LIKE CONCAT('%',:libelle,'%')";
+            params.put("libelle", "%" + libelle + "%");
+        }
+        if (categorie != null && !categorie.isEmpty()) {
+            query += " AND p.categorie.libelle = :categorie";
+            params.put("categorie", categorie);
+        }
+        if (rayon != null && !rayon.isEmpty()) {
+            query += " AND p.categorie.rayon.libelle = :rayon";
+            params.put("rayon", rayon);
+        }
+
+        TypedQuery<Produit> typedQuery = session.createQuery(query, Produit.class);
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            typedQuery.setParameter(param.getKey(), param.getValue());
+        }
+
+        return typedQuery.getResultList();
+    }
+
 	/**
 	 * Retourne un {@link Produit} en fonction de son EAN
 	 * @param ean l'ean du produit à récupérer
@@ -117,5 +148,13 @@ public class ProduitDAO {
             session.saveOrUpdate(produit);
             transaction.commit();
         }
+    }
+	
+	public int getQuantiteCommandee(Produit produit) {
+		Session session = sessionFactory.openSession();
+        Query query = session.createQuery("SELECT SUM(lp.quantite) FROM LinkCommandeProduit lp WHERE lp.produit = :produit", Long.class);
+        query.setParameter("produit", produit);
+        Long sum = (Long) query.getSingleResult();
+        return sum != null ? sum.intValue() : 0;
     }
 }

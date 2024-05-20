@@ -1,10 +1,13 @@
 package fr.miage.supermarket.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Rayon;
 import fr.miage.supermarket.utils.HibernateUtil;
 
@@ -31,4 +34,25 @@ public class RayonDAO {
             transaction.commit();
         }
     }
+    
+    public List<Rayon> getAllRayons() {
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.beginTransaction();
+		
+		try {
+			Query<Rayon> query = session.createQuery("FROM Rayon", Rayon.class);
+			List<Rayon> categories = query.getResultList();
+			
+			session.getTransaction().commit();
+			
+			return categories;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 }
