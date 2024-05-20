@@ -23,6 +23,7 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "Utilisateur",uniqueConstraints= {@UniqueConstraint(columnNames= {"ID"})})
 public class Utilisateur {
 	
+
 	//Attributs
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +42,9 @@ public class Utilisateur {
 	@Column(name= "ROLE")
 	@Enumerated(EnumType.STRING)
 	private CategorieCompte role;
+	
+	@Column(name = "MDP", nullable = false, unique = false, length = 80)
+	private String motdepasse;
 	
 	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<ShoppingList> listesCourseLst;
@@ -74,6 +78,20 @@ public class Utilisateur {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+	public String getMotdepasse() {
+		return motdepasse;
+	}
+	public void setMotdepasse(String motdepasse) {
+		this.motdepasse = motdepasse;
+	}
+
+	public CategorieCompte getRole() {
+		return role;
+	}
+	public void setRole(CategorieCompte role) {
+		this.role = role;
+	}
+
 	public void setListeCourse(List<ShoppingList> listesCourseLst) {
         this.listesCourseLst = listesCourseLst;
     }

@@ -1,27 +1,25 @@
 package fr.miage.supermarket.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "Commande")
+@Table(name = "Commande", uniqueConstraints = { @UniqueConstraint(columnNames = { "id_commande" }) })
 public class Commande {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id_commande", nullable = false, unique = true, length = 50)
+    private int id_commande;
 
     @ManyToOne
     @JoinColumn(name = "id_magasin")
     private Magasin magasin;
+
+    @OneToMany(mappedBy = "commande")
+    private Set<LinkCommandeProduit> produits = new HashSet<>();
 
     @Column(name = "date_commande")
     private LocalDate dateCommande;
@@ -32,21 +30,24 @@ public class Commande {
     @Column(name = "horaire_retrait")
     private String horaireRetrait;
 
-    // Constructeurs, getters et setters
+    @Column(name="statut", nullable=false)
+    private boolean statut;
 
+    // Constructeurs
     public Commande() {
     }
 
-    public Commande(int id) {
-        this.id = id;
+    public Commande(int id_commande) {
+        this.id_commande = id_commande;
     }
 
-    public int getId() {
-        return id;
+    // Getters et Setters
+    public int getId_commande() {
+        return id_commande;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_commande(int id_commande) {
+        this.id_commande = id_commande;
     }
 
     public Magasin getMagasin() {
@@ -79,6 +80,22 @@ public class Commande {
 
     public void setHoraireRetrait(String horaireRetrait) {
         this.horaireRetrait = horaireRetrait;
+    }
+
+    public boolean isStatut() {
+        return statut;
+    }
+
+    public void setStatut(boolean statut) {
+        this.statut = statut;
+    }
+
+    public Set<LinkCommandeProduit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(Set<LinkCommandeProduit> produits) {
+        this.produits = produits;
     }
 
     public void setIdMagasin(int magasinId) {

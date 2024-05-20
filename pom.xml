@@ -78,7 +78,7 @@
 			<artifactId>taglibs-standard-impl</artifactId>
 			<version>1.2.5</version>
 		</dependency>
-
+    
 		<!--
 		https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
 		<!-- Nécessaire pour le binding entre les objets java et xml -->
@@ -87,6 +87,24 @@
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>4.0.2</version>
 		</dependency>
+		
+		<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>2.13.3</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.13.3</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-annotations</artifactId>
+    <version>2.13.3</version>
+</dependency>
+
+		
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -94,14 +112,11 @@
 			<version>3.14.0</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 			<version>4.1</version>
-		</dependency>
-
-
+    </dependency>
 	</dependencies>
 
 	<build>

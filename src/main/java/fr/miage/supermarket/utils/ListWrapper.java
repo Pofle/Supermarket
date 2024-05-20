@@ -2,7 +2,6 @@ package fr.miage.supermarket.utils;
 
 import java.util.List;
 
-import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
