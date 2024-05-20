@@ -3,6 +3,8 @@ package fr.miage.supermarket.controlers;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -53,6 +55,8 @@ public class PreparerPanier extends HttpServlet {
 		 System.out.println("vers servlet VisuPreparateur");
 	 }
 	 
+	 private static final SimpleDateFormat DF = new SimpleDateFormat("HH:mm:ss:SSS");
+
 	 private void gestionFormu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		 String[] idLinkValide = request.getParameterValues("produitValide");
 		 String prepaChrono = request.getParameter("prepaChrono");
@@ -75,27 +79,53 @@ public class PreparerPanier extends HttpServlet {
 						System.out.println(" - " + l.getProduit().getLibelle());
 					}
 				}
-				//on vérifie que le chrono a été lancé 
-				if(prepaChrono != null && !prepaChrono.isEmpty()) {
-					Date dateDebut = Date.from(Instant.parse(prepaChrono));
-					long debutTemps = dateDebut.getTime();			
-					// on vérifie que le chrono a été arrêté 
-					if (finTempsPrepa != null && !finTempsPrepa.isEmpty()) {
-						Date dateFin = Date.from(Instant.parse(finTempsPrepa));
-						long FinTemps = dateFin.getTime();
-						
-						// on fait la différence entre le lancement et l'arrêt du chrono
-						long differenceTemps = FinTemps - debutTemps;
-						
-						//conversion pour insertion en bd 
-						Instant instant = Instant.ofEpochMilli(differenceTemps);			        
-					    LocalDateTime chronoPanier = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-	
-					    linkValid.get(0).getCommande().setChrono(chronoPanier);  
+//				//on vérifie que le chrono a été lancé 
+//				if(prepaChrono != null && !prepaChrono.isEmpty()) {
+//					Date dateDebut = Date.from(Instant.parse(prepaChrono));
+//					long debutTemps = dateDebut.getTime();			
+//					// on vérifie que le chrono a été arrêté 
+//					if (finTempsPrepa != null && !finTempsPrepa.isEmpty()) {
+//						Date dateFin = Date.from(Instant.parse(finTempsPrepa));
+//						long FinTemps = dateFin.getTime();
+//						
+//						// on fait la différence entre le lancement et l'arrêt du chrono
+//						long differenceTemps = FinTemps - debutTemps;
+//						
+//						//conversion pour insertion en bd 
+//						Instant instant = Instant.ofEpochMilli(differenceTemps);			        
+//					    LocalDateTime chronoPanier = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//	
+//					    linkValid.get(0).getCommande().setChrono(chronoPanier);  
+//					    CommandeDAO.saveCommandechrono(linkValid.get(0).getCommande());
+//					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" enregistrée dans la bd");
+//					}
+//				}
+				
+				// Vérification si le chrono a été lancé
+		        if (prepaChrono != null && !prepaChrono.isEmpty()) {
+		            Date dateDebut = Date.from(Instant.parse(prepaChrono));
+		            long debutTemps = dateDebut.getTime();
+		            
+		            // Vérification si le chrono a été arrêté
+		            if (finTempsPrepa != null && !finTempsPrepa.isEmpty()) {
+		                Date dateFin = Date.from(Instant.parse(finTempsPrepa));
+		                long finTemps = dateFin.getTime();
+		                
+		                // Calcul de la différence entre le lancement et l'arrêt du chrono
+		                long differenceTemps = finTemps - debutTemps;
+		                
+		                // Formattage de la différence de temps
+		                String chronoPanierFormatted = DF.format(new Date(differenceTemps - 3600000));  // Soustraction d'une heure (3600000 ms) pour ajuster le fuseau horaire
+		                System.out.println("Temps de préparation: " + chronoPanierFormatted);
+		                
+		                // Conversion de la différence de temps en java.sql.Time
+		                Time chronoPanierTime = new Time(differenceTemps - 3600000);  // Ajustement pour le fuseau horaire
+		                linkValid.get(0).getCommande().setChrono(chronoPanierTime);  
 					    CommandeDAO.saveCommandechrono(linkValid.get(0).getCommande());
 					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" enregistrée dans la bd");
-					}
-				}
+
+		            }
+		        }
 	        }
 //			 // Envoyer un email de notification
 //	        String to = "utilisateur@example.com"; // Remplacez par l'adresse email du destinataire

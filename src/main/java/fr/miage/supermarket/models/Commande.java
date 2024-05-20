@@ -5,13 +5,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
+import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,8 +29,8 @@ public class Commande {
 	private boolean statut;
 
 	@Column(name="TEMPS_PREPARATION")
-	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
-	private LocalDateTime chrono;
+	@Temporal(jakarta.persistence.TemporalType.TIME)
+	private Time chrono;
 	
 	//temporaire 
 	@Column (name="CRENEAU", nullable=false)
@@ -68,11 +65,11 @@ public class Commande {
         this.produits_panier = produits_panier;
     }
 
-	public LocalDateTime getChrono() {
+	public Time getChrono() {
 		return chrono;
 	}
 
-	public void setChrono(LocalDateTime chrono) {
+	public void setChrono(Time chrono) {
 		this.chrono = chrono;
 	}
 
@@ -84,13 +81,4 @@ public class Commande {
 		this.creneau = creneau;
 	}
     
-    
-    
-//	@ManyToMany
-//	@JoinTable( 
-//			name = "LINK_COMMANDE_PRODUIT", 
-//			joinColumns = @JoinColumn(name = "ID_COMMANDE"), 
-//			inverseJoinColumns = @JoinColumn(name = "EAN") 
-//	)
-//	private Set<Produit> produits_panier = new HashSet<Produit>();
 }
