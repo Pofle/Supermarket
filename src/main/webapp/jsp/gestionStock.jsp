@@ -13,6 +13,14 @@
 <body>
 	<%@ include file="navbar.jsp"%>
     <h1>Gestion des Stocks des 15 prochains jours</h1>
+    
+   <select id="dateStock" name="dateStock">
+        <option value="">Sélectionnez une date</option>
+        <c:forEach var="date" items="${datesStock}">
+            <option value="${date}">${date}</option>
+        </c:forEach>
+    </select>
+    
     <table border="1">
         <thead>
             <tr>
@@ -23,7 +31,7 @@
                 <th>Quantité</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tableBody">
             <c:forEach items="${produitsStock}" var="produitStock">
                 <c:choose>
                     <c:when test="${produitStock[4] == 0}">
@@ -48,5 +56,25 @@
             </c:forEach>
         </tbody>
     </table>
+    
+    <script>
+        document.getElementById("dateStock").addEventListener("change", function() {
+            var selectedDate = this.value;
+            updateResults(selectedDate);
+        });
+
+        function updateResults(selectedDate) {
+            var rows = document.querySelectorAll("#tableBody tr");
+            rows.forEach(function(row) {
+                var rowDate = row.querySelector("td:nth-child(4)").textContent;
+                if (selectedDate === "" || selectedDate === rowDate) {
+                    row.style.display = "table-row";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+    
 </body>
 </html>

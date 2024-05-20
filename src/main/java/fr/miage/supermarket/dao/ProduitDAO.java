@@ -117,7 +117,7 @@ public class ProduitDAO {
                 "LEFT JOIN lps.stock s " +
                 "WHERE s.dateStock = :date OR s.dateStock IS NULL " +
                 "GROUP BY p.ean, p.libelle, p.prix " +
-                "ORDER BY p.ean", Object[].class
+                "ORDER BY COALESCE(SUM(lps.quantite), 0)", Object[].class
             );
             query.setParameter("date", date);
             List<Object[]> results = query.getResultList();
