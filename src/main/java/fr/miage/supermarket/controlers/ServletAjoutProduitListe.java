@@ -22,7 +22,9 @@ public class ServletAjoutProduitListe extends HttpServlet {
     }
 
 	/**
+	 * Methode qui permet j'aout d'un produit et d'une quantité dans une liste de course
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author Pauline
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String actionType = request.getParameter("type_action");
@@ -31,9 +33,6 @@ public class ServletAjoutProduitListe extends HttpServlet {
             String eanProduit = request.getParameter("produit_ean");
             String listeIdStr = request.getParameter("select-liste");
             String quantiteStr = request.getParameter("quantite");
-            
-            //log de controle
-            System.out.println("Requested items by servlet : " +eanProduit +"--" + quantiteStr + "--" + listeIdStr);
 
             Integer listeId = null;
             Integer quantite = null;
@@ -42,7 +41,6 @@ public class ServletAjoutProduitListe extends HttpServlet {
                 quantite = Integer.parseInt(quantiteStr);
             } catch (NumberFormatException e) {
                 System.out.println("Erreur lors de la conversion des paramètres en entier : " + e.getMessage());
-                //response.sendRedirect("central?type_action=accueil"); 
                 return;
             }
 
@@ -52,7 +50,7 @@ public class ServletAjoutProduitListe extends HttpServlet {
             }
         }
 
-        //response.sendRedirect("central?type_action=accueil");
+        response.sendRedirect("central?type_action=accueil");
     }
 	
 }

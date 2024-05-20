@@ -12,17 +12,14 @@ function chargerProduitsListe(idListe, nomListe) {
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     var xmlDoc = xhr.responseXML;
-                    console.log("request Post rreceve : "+xhr.responseXML)
                     if (xmlDoc === null) {
                         console.error("xmlDocListeProduits is null. Check the response format.");
                         return;
                     }
-                    // Generation du HTML
+                    // Generation du HTML selon le contenu du xml
                     var produits = xmlDoc.getElementsByTagName("produit");
                     var produitsHTML = "<ul>";
-                    for (var i = 0; i < produits.length; i++) {
-						console.log("ID de la liste envoyé dans le js, debut boucle :" + idListe);
-						
+                    for (var i = 0; i < produits.length; i++) {						
                         var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
                         var marque = produits[i].getElementsByTagName("marque")[0].textContent;
                         var quantite = produits[i].getElementsByTagName("quantite")[0].textContent;
@@ -34,8 +31,7 @@ function chargerProduitsListe(idListe, nomListe) {
                         produitsHTML += "</li>";
                     }
                     produitsHTML += "</ul>";
-                    console.log("Requested HTML:" + produitsHTML);
-
+                    
 					// Maj de la modale
                     var modalBody = document.querySelector("#modalProduits .modal-body");
                     modalBody.innerHTML = produitsHTML;

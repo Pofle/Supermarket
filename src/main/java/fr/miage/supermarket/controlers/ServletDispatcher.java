@@ -192,18 +192,17 @@ public class ServletDispatcher extends HttpServlet {
 			switch (action) {
 			case "gestion_List":
 				try {
-				// TO-DO:: remplacer par le get de l'id de l'utilisateur connecté
+				// TODO:: remplacer par le get de l'id de l'utilisateur connecté
 					// 
 					int userId = 1;
 					//
-				// FIN TOD-DO
-					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists(userId);
-					for (ShoppingList shoppingList : allShoppingLists) {
+				// FIN TODDO
+					List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(userId);
+					for (ShoppingList shoppingList : shoppingLists) {
                         shoppingList.getUtilisateur();
                     }
-					 request.setAttribute("shoppingLists", allShoppingLists);
-					 
-					 ConvertirListeProduitXml(request, response);
+					 request.setAttribute("shoppingLists", shoppingLists);
+					 request.getRequestDispatcher("gestionList").forward(request, response);
 					return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());
@@ -234,35 +233,6 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
-	/**
-	 * Methode pour convertir la liste de produit reçu en xml et renvoyer vers la page de gestion des listes
-	 *@param request L'objet HttpServletRequest contenant la requête
-	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
-	 * @throws ServletException Si une erreur survient au niveau du servlet
-	 * @throws IOException Si une erreur d'entrée/sortie survient
-	 * @author Pauline
-	 */
-	private void ConvertirListeProduitXml(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-		 try {
-		        List<LinkListeProduit> allLinkListProduits = LinkListeProduitDAO.getAllLinkListProduit();
-		        JAXBContext jaxbContext = JAXBContext.newInstance(LinkListeProduit.class, ListWrapper.class);
-		        Marshaller marshaller = jaxbContext.createMarshaller();
-		        ListWrapper<LinkListeProduit> wrapper = new ListWrapper<>(allLinkListProduits);
-		        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		        
-		        StringWriter sw = new StringWriter();
-		        marshaller.marshal(wrapper, sw);
-		        String xmlString = sw.toString();
-
-		        // Set XMLstring comme attribut de la requête (pour une manipulation AJAX)
-		        request.setAttribute("xmlListeProduit", xmlString);
-
-		        request.getRequestDispatcher("gestionList").forward(request, response);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		    }
-	}
+	
 
 }

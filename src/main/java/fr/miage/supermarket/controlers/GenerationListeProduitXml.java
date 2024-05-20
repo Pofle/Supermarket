@@ -1,5 +1,7 @@
 package fr.miage.supermarket.controlers;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -35,43 +37,49 @@ public class GenerationListeProduitXml extends HttpServlet {
 	 * @author Pauline
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/xml; charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        Integer listeId = getIntegerParameter(request, "id");
-        // Log de contrôle pour l'id de la liste reçu
-        System.out.println("Request received for list ID: " + listeId);
+		 response.setContentType("text/xml; charset=UTF-8");
+	        PrintWriter out = response.getWriter();
+	        Integer listeId = getIntegerParameter(request, "id");
+	        
+	        // Log de contrôle pour l'id de la liste reçu
+	        System.out.println("Request received for list ID: " + listeId);
 
-        try {
-            List<LinkListeProduit> produits = LinkListeProduitDAO.getLinkListeProduitByListeId(listeId);
+	        try {
+	            List<LinkListeProduit> produits = LinkListeProduitDAO.getLinkListeProduitByListeId(listeId);
 
-            // Création du contenu XML
-            StringBuilder xmlContent = new StringBuilder();
-            xmlContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            xmlContent.append("<produits>");
+	            // Création du contenu XML
+	            StringBuilder xmlContent = new StringBuilder();
+	            xmlContent.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+	            xmlContent.append("<produits>");
 
-            for (LinkListeProduit produit : produits) {
-                xmlContent.append("<produit>");
-                xmlContent.append("<ean>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getEan())).append("</ean>");
-                xmlContent.append("<libelle>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getLibelle())).append("</libelle>");
-                xmlContent.append("<marque>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getMarque())).append("</marque>");
-                xmlContent.append("<quantite>").append(produit.getQuantite()).append("</quantite>");
-                xmlContent.append("</produit>");
-            }
-            xmlContent.append("</produits>");
+	            for (LinkListeProduit produit : produits) {
+	                xmlContent.append("<produit>");
+	                xmlContent.append("<ean>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getEan())).append("</ean>");
+	                xmlContent.append("<libelle>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getLibelle())).append("</libelle>");
+	                xmlContent.append("<marque>").append(StringEscapeUtils.escapeXml11(produit.getProduit().getMarque())).append("</marque>");
+	                xmlContent.append("<quantite>").append(produit.getQuantite()).append("</quantite>");
+	                xmlContent.append("</produit>");
+	            }
+	            xmlContent.append("</produits>");
 
-            // Écriture du contenu XML dans la réponse
-            out.println(xmlContent.toString());
+	            // Écriture du contenu XML dans la réponse
+	            out.println(xmlContent.toString());
 
-            // Log de contrôle de la génération du XML
-            System.out.println("XML_LinkListeProduits response generated");
+	            // Log de contrôle de la génération du XML
+	            System.out.println("XML_LinkListeProduits response generated");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } finally {
-            out.close();
-        }
-	}
+	            // Écriture du fichier XML généré dans le chemin spécifié
+	            try (FileWriter fileWriter = new FileWriter(new File("C:/Users/Pauline/Cours/Projet/produitListes.xml"))) {
+	                fileWriter.write(xmlContent.toString());
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        } finally {
+	            out.close();
+	        }
+	    }
 
 	/**
 	 * Method generique pourconvertir un parametre type INT en STRING

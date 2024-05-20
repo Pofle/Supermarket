@@ -1,7 +1,6 @@
 /**
  * JavaScript pour l'affichage dynamique des listes de courses dans la pop-up d'ajout d'un produit dans une liste
  */
-
 function chargerListe() {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/SupermarketG3/GenerationListeXml", true);
@@ -21,11 +20,6 @@ function chargerListe() {
             }
             var selectList = document.getElementById("select_list");
             selectList.innerHTML = optionsHTML;
-            
-            /*// Initialise la modale
-                    var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
-                    modal.show();
-                    */
         } else {
             console.error("Failed to fetch data: " + xhr.status);
         }
@@ -33,13 +27,18 @@ function chargerListe() {
     xhr.send();
 }
 
+/**
+ * Fountion pour forcer la fermture de la modale
+ */
 function forcerFermetureModal() {
     $('#addProduitModal').on('hidden.bs.modal', function() {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
     });
 }
-
+/**
+ * Appel de la fonction de fermeture
+ */
 $(document).ready(function() {
     forcerFermetureModal();
 });
