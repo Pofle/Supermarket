@@ -1,5 +1,31 @@
 @charset "UTF-8";
 
+/* Styles des tableaux */
+table {
+    border-collapse: collapse 1px;
+    width: 95%;
+}
+
+thead {
+    color: white;
+    background: #333
+}
+
+th, td {
+    text-align: center;
+    padding: 5px 0;
+}
+
+tbody tr:nth-child(even) {
+    background: #ECF0F1;
+}
+
+tbody tr:hover {
+    background: #BDC3C7;
+    color: #FFFFFF;
+}
+
+/* Classes pour les différents niveaux de stock */
 .stock-rupture {
     background-color: red;
     color: white;
@@ -14,3 +40,5 @@
     background-color: yellow;
     color: black;
 }
+
+

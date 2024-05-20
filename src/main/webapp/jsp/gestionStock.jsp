@@ -21,7 +21,7 @@
         </c:forEach>
     </select>
     
-    <table border="1">
+    <table class="table-style">
         <thead>
             <tr>
             	<th>Image</th>
@@ -43,10 +43,10 @@
                     <c:when test="${produitStock[1] == 0}">
                         <tr class="stock-rupture">
                     </c:when>
-                    <c:when test="${produitStock[1] > 0 && produitStock[1] <= 200}">
+                    <c:when test="${produitStock[1] > 0 && produitStock[1] <= 5}">
                         <tr class="stock-faible">
                     </c:when>
-                    <c:when test="${produitStock[1] > 200 && produitStock[1] <= 250}">
+                    <c:when test="${produitStock[1] > 5 && produitStock[1] <= 10}">
                         <tr class="stock-moyen">
                     </c:when>
                     <c:otherwise>
