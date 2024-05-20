@@ -1,3 +1,5 @@
+var svgCaddie = null;
+
 /**
  * Création d'une carte de produit et ajout dans le dom
  */
@@ -6,7 +8,7 @@ function createProductCard(product) {
     articleCard.classList.add('article-card');
 
     const link = document.createElement('a');
-    link.href = `/SupermarketG3/accueil?ean=${product.ean}`;
+    link.href = `/SupermarketG3/detailProduit?ean=${product.ean}`;
 
     const productInfo = document.createElement('div');
     productInfo.classList.add('product-info');
@@ -46,10 +48,21 @@ function createProductCard(product) {
     nutriscoreP.textContent = `Nutriscore: ${product.nutriscore}`;
     productDetails.appendChild(nutriscoreP);
 
+	const boutonAjouterPanier = document.createElement("div");
+	boutonAjouterPanier.innerHTML = svgCaddie;
+	boutonAjouterPanier.className = 'ajouterpanier-bottom-card';
+	console.log(svgCaddie);
+	boutonAjouterPanier.addEventListener('click', () => {
+		ajouterProduit(product.ean);
+	})
+	//boutonAjouterPanier.textContent = 'Ajouter au panier';
+ 	
     productInfo.appendChild(productImage);
     productInfo.appendChild(productDetails);
+    
     link.appendChild(productInfo);
     articleCard.appendChild(link);
+    articleCard.appendChild(boutonAjouterPanier);
 
     return articleCard;
 }
@@ -57,12 +70,12 @@ function createProductCard(product) {
 /**
  * Remplace les produits déjà apparaissant afin de mettre les nouveaux produits retournés par le service
  */
-function displayProducts(products, containerId) {
+function displayProducts(products, containerId, svg) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
 
     products.forEach(product => {
-        const productCard = createProductCard(product);
+        const productCard = createProductCard(product, svg);
         container.appendChild(productCard);
     });
 }
@@ -120,13 +133,24 @@ function handleSearch() {
     }
 }
 
+function chargerSVG(url, callback) {
+	fetch(url)
+	.then(response => response.text())
+	.then(svgText => {
+		callback(svgText);
+	})
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     fetch('produits')
         .then(response => response.text())
         .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
         .then(xml => {
-            const products = parseProductsFromXML(xml);
-            displayProducts(products, 'article-container');
+			chargerSVG('recupererImage?cheminImage=caddie_ajout.svg', function(svgText) {
+		        svgCaddie = svgText;
+		        const products = parseProductsFromXML(xml);
+            	displayProducts(products, 'article-container', svgCaddie);
+		    });
         })
         .catch(error => console.error('Erreur:', error));
 

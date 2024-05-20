@@ -32,29 +32,42 @@ import java.text.DecimalFormat;
 
 /**
  * Service de gestion de recherche et d'insertion des produits
+ * @author EricB
  */
 @MultipartConfig
 public class GestionProduitsService extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-       
+    
+	private static final int EXPECTED_COLUMNS = 13;
+	
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+	
+	private ProduitDAO produitDao;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public GestionProduitsService() {
         super();
+        this.produitDao = new ProduitDAO();
     }
 
-	/**
-	 * Renvoit un XML contenant l'intégralité des produits en base.
+    /**
+	 * Méthode GET permettant de récupérer sous forme de XML des informations sur les produits enregistrés en base de données.
+	 * Avec le paramètre libelle renseigné, renvoit l'ensemble des produits détenant ce bout de libelle dans leur libelle.
+	 * Sans le paramètre libelle renseigné, renvoit l'ensemble des produits enregistrés en base de données.
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @author EricB
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ProduitDAO produitDAO = new ProduitDAO();
 		List<Produit> produits = new ArrayList<>();
+		
 		if(request.getParameter("libelle") != null) {
-	        produits = produitDAO.getProduitsByLibelle(request.getParameter("libelle"));
+	        produits = produitDao.getProduitsByLibelle(request.getParameter("libelle"));
 		} else {
-			produits = produitDAO.getAllProduits();
+			produits = produitDao.getAllProduits();
 		}
 		
 		try {
@@ -71,8 +84,11 @@ public class GestionProduitsService extends HttpServlet {
         }
 	}
 	/**
-	 * Gère l'insertion de produits à partir de l'import CSV
+	 * Méthode POST permettant de gérer l'ajout de produits à la base de données.
+	 * Paramètre file obligatoire. Ce paramètre est le fichier CSV à importé contenant l'ensemble des produits à enregistrer.
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author EricB
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -89,8 +105,7 @@ public class GestionProduitsService extends HttpServlet {
 			}
 			
 			List<Produit> produits = readCsvFile(filePart.getInputStream());
-			ProduitDAO produitsDao = new ProduitDAO();
-			produitsDao.registerProduits(produits);			
+			produitDao.registerProduits(produits);			
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ServletException | IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -98,16 +113,16 @@ public class GestionProduitsService extends HttpServlet {
 		}
 	}
 	
-	private static final int EXPECTED_COLUMNS = 13;
-    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+	
 	
     /**
-     * Lit le fichier CSV pour en retirer les produits
+     * Lit le fichier CSV pour en extraire les produits
      *
-     * @param inputStream
-     * @return
-     * @throws IOException
-     * @throws CsvValidationException
+     * @param inputStream {@link InputStream} relatif au fichier CSV importé.
+     * @return une liste de produits extraits du fichier CSV
+     * @throws IOException exception levée si le fichier n'a pas pu être correctement lu
+     * @throws CsvValidationException exception levée si la structure du CSV n'est pas respectée.
+     * @author EricB
      */
     public List<Produit> readCsvFile(InputStream inputStream) throws IOException {
     	
@@ -186,5 +201,4 @@ public class GestionProduitsService extends HttpServlet {
         }
         return produits;
     }
-
 }

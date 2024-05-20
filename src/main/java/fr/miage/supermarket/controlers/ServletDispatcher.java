@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
@@ -19,6 +20,8 @@ import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.utils.ListWrapper;
+import fr.miage.supermarket.models.Utilisateur;
+
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
@@ -48,8 +51,15 @@ public class ServletDispatcher extends HttpServlet {
 		String action = request.getParameter("type_action");
 		
 		////// ---> Moyen temporaire de changer d'utilisateur au travers de cette variable. <---\\\\\
-		String categorieCompte = CategorieCompte.UTILISATEUR.name();
+		//String categorieCompte = CategorieCompte.VISITEUR.name();
 		// FIN
+		
+		HttpSession session = request.getSession();
+        Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
+        String categorieCompte = CategorieCompte.VISITEUR.name();
+        if (user != null) {
+        	categorieCompte = user.getRole().name();
+		}
 		
 		if (categorieCompte != null) {
 			if (categorieCompte.equals(CategorieCompte.GESTIONNAIRE.name())) {
@@ -161,7 +171,7 @@ public class ServletDispatcher extends HttpServlet {
                 url = "listeCourse";
                 break;
             case "connexionInscription":
-                url = "connexionInscription";
+                url = "login";
                 break;
             case "panier":
                 url = "panier";
@@ -218,9 +228,6 @@ public class ServletDispatcher extends HttpServlet {
                 break;
             case "listeCourse":
                 url = "listeCourse";
-                break;
-            case "connexionInscription":
-                url = "connexionInscription";
                 break;
             case "panier":
                 url = "panier";

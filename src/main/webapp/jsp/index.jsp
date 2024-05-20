@@ -3,9 +3,6 @@
 <%@ page import="java.text.DecimalFormat"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- Définion d'un format pour les prix --%>
-<%
-	request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
-%>
 <!DOCTYPE html>
 <html>
 	<head>
