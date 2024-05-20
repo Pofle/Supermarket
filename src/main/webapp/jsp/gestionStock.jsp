@@ -24,36 +24,46 @@
     <table border="1">
         <thead>
             <tr>
+            	<th>Image</th>
                 <th>EAN</th>
                 <th>Libelle</th>
+                <th>Marque</th>
+                <th>Label</th>
                 <th>Prix</th>
-                <th>Date Stock</th>
+                <th>Poids</th>
+                <th>Conditionnement</th>
                 <th>Quantité</th>
                 <th>Magasin</th>
+                <th>Date Stock</th>
             </tr>
         </thead>
         <tbody id="tableBody">
             <c:forEach items="${produitsStock}" var="produitStock">
                 <c:choose>
-                    <c:when test="${produitStock[4] == 0}">
+                    <c:when test="${produitStock[1] == 0}">
                         <tr class="stock-rupture">
                     </c:when>
-                    <c:when test="${produitStock[4] > 0 && produitStock[4] <= 200}">
+                    <c:when test="${produitStock[1] > 0 && produitStock[1] <= 200}">
                         <tr class="stock-faible">
                     </c:when>
-                    <c:when test="${produitStock[4] > 200 && produitStock[4] <= 250}">
+                    <c:when test="${produitStock[1] > 200 && produitStock[1] <= 250}">
                         <tr class="stock-moyen">
                     </c:when>
                     <c:otherwise>
                         <tr>
                     </c:otherwise>
                 </c:choose>
-                    <td>${produitStock[0]}</td>
+                    <td><img src="data:image/jpeg;base64,${produitStock[0].vignetteBase64}" alt="Image Produit" /></td>
+                    <td>${produitStock[0].ean}</td>
+                    <td>${produitStock[0].libelle}</td>
+                    <td>${produitStock[0].marque}</td>
+                    <td>${produitStock[0].label}</td>
+                    <td>${produitStock[0].prix}</td>
+                    <td>${produitStock[0].poids}</td>
+                    <td>${produitStock[0].conditionnement}</td>
                     <td>${produitStock[1]}</td>
                     <td>${produitStock[2]}</td>
                     <td>${produitStock[3]}</td>
-                    <td>${produitStock[4]}</td>
-                    <td>${produitStock[5]}</td>
                 </tr>
             </c:forEach>
         </tbody>
@@ -68,7 +78,7 @@
         function updateResults(selectedDate) {
             var rows = document.querySelectorAll("#tableBody tr");
             rows.forEach(function(row) {
-                var rowDate = row.querySelector("td:nth-child(4)").textContent;
+                var rowDate = row.querySelector("td:nth-child(11)").textContent;
                 if (selectedDate === "" || selectedDate === rowDate) {
                     row.style.display = "table-row";
                 } else {
