@@ -1,6 +1,7 @@
 package fr.miage.supermarket.controlers;
 
 import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.Link_Commande_Produit;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,13 +102,16 @@ public class ServletDispatcher extends HttpServlet {
 				url = "accueil";
 			}
 		}
-		//creation commande fictive 
-		//CommandeDAO.createCommande();
-		//on récupère les commandes à préparer 
-		ArrayList<Commande> listeC = CommandeDAO.AllCommandeTrieParCreneau();
-		request.setAttribute("ListeCommandes", listeC);
+		
+		ArrayList<Commande> commandes = CommandeDAO.getCommandeTrieInLink();
+		
+		// attention set catégorie 
+		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
+		request.setAttribute("commandes", commandes);
+
 		request.getRequestDispatcher(url).forward(request, response);
 	}
+	
 	private void dispatchDefaultFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url ="";

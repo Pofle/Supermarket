@@ -5,10 +5,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Transient;
 import jakarta.persistence.ManyToMany;
@@ -68,9 +70,10 @@ public class Produit {
 	@Transient
 	private String imageBase64;
 	
-	
-	@ManyToMany(mappedBy="Produit")
-	private Set<Commande> commandes = new HashSet<Commande>();
+	@OneToMany(mappedBy = "produit",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Link_Commande_Produit> produits_panier = new HashSet<>();
+//	@ManyToMany(mappedBy="produits_panier")
+//	private Set<Commande> commandes = new HashSet<Commande>();
 	
 //	@ManyToMany(mappedBy = "produits")
 //    private Set<ShoppingList> shoppingLists;

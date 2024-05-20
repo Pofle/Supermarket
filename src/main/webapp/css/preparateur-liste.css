@@ -1,0 +1,65 @@
+/* visuel pour le preparateur */
+.command-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0 30px;
+}
+
+.command-card {
+
+	width: calc(20% - 20px);
+ 	margin-bottom: 20px;
+	border: 1px 1px 1px 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+/*     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */    
+	box-sizing: border-box;
+    cursor: pointer; 
+    transition: box-shadow 0.3s ease, transform 0.3s ease; 
+}
+
+.command-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-2px); 
+}
+
+.command-card.selected { 
+    border-color: #007bff;
+    background-color: #ccc;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); 
+    transform: translateY(-2px); 
+}
+
+.command-card .basket-info {
+    padding: 15px;
+}
+.price {
+    font-size: 16px;
+    font-style: italic;
+}
+
+.libelle-marque {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.additional-info {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+submit {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.article-card p {
+    margin-bottom: 20px;
+}

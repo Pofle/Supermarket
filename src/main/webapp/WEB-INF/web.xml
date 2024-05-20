@@ -35,10 +35,16 @@
         <jsp-file>/jsp/gestionList.jsp</jsp-file>
     </servlet>
     <servlet>
-		<servlet-name>ListePaniers</servlet-name>
-        <display-name>ListePaniers</display-name>
+		<servlet-name>VisuPreparateur</servlet-name>
+        <display-name>VisuPreparateur</display-name>
         <description></description>
-		<jsp-file>/jsp/listePaniers.jsp</jsp-file>
+		<servlet-class>fr.miage.supermarket.controlers.VisuPreparateur</servlet-class>
+    </servlet>
+    <servlet>
+		<servlet-name>PreparerPanier</servlet-name>
+        <display-name>PreparerPanier</display-name>
+        <description></description>
+		<servlet-class>fr.miage.supermarket.controlers.PreparerPanier</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RecupererImage</servlet-name>
@@ -79,8 +85,12 @@
         <url-pattern>/gestionList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-		<servlet-name>ListePaniers</servlet-name>
+		<servlet-name>VisuPreparateur</servlet-name>
 		<url-pattern>/listePaniers</url-pattern>
+	</servlet-mapping>
+    <servlet-mapping>
+		<servlet-name>PreparerPanier</servlet-name>
+		<url-pattern>/preparerPanier</url-pattern>
 	</servlet-mapping>
     <servlet-mapping>
         <servlet-name>GestionProduitsService</servlet-name>
@@ -88,22 +98,23 @@
     </servlet-mapping>
 
 	
-	<servlet-mapping>
+<!-- 	<servlet-mapping>
 		<servlet-name>supermarket</servlet-name>
 		<url-pattern>/accueil</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 	<servlet-mapping>
 		<servlet-name>AjouterProduit</servlet-name>
 		<url-pattern>/ajouterProduit</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
+<!-- 	<servlet-mapping>
 		<servlet-name>GestionProduit</servlet-name>
 		<url-pattern>/gestionProduit</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 	<servlet-mapping>
 		<servlet-name>RecupererProduits</servlet-name>
 		<url-pattern>/recupererProduits</url-pattern>
 	</servlet-mapping>
+	<!-- Welcome File List -->
 	<welcome-file-list>
 		<welcome-file>supermarket</welcome-file>
 	</welcome-file-list>

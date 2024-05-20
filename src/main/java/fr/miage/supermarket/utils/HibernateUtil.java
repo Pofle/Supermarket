@@ -6,6 +6,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.Link_Commande_Produit;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 import fr.miage.supermarket.models.ShoppingList;
@@ -32,6 +33,7 @@ public class HibernateUtil {
 
         	configuration.addAnnotatedClass(Produit.class);
         	configuration.addAnnotatedClass(Commande.class);
+        	configuration.addAnnotatedClass(Link_Commande_Produit.class);
         	configuration.addAnnotatedClass(ShoppingList.class);
         	configuration.addAnnotatedClass(Utilisateur.class);
         	
