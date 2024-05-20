@@ -87,6 +87,18 @@
 		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>GestionCategoriesService</servlet-name>
+		<display-name>GestionCategoriesService</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.GestionCategoriesService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionRayonsService</servlet-name>
+		<display-name>GestionRayonsService</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.GestionRayonsService</servlet-class>
+	</servlet>
 	<!-- Servlet Mappings -->
 	<servlet-mapping>
 		<servlet-name>ServletDispatcher</servlet-name>
@@ -141,5 +153,13 @@
 	<servlet-mapping>
 		<servlet-name>DetailProduit</servlet-name>
 		<url-pattern>/detailProduit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionCategoriesService</servlet-name>
+		<url-pattern>/categories</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionRayonsService</servlet-name>
+		<url-pattern>/rayons</url-pattern>
 	</servlet-mapping>
 </web-app>
