@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
 							infosDiv.textContent += ` - ${(prix * 1000 / poids).toFixed(2)}€/kg`;
 						}
 						centerContainer.appendChild(infosDiv);
-						
+
 						const rightContainer = document.createElement("div");
 						rightContainer.classList.add("right-container");
 
@@ -80,17 +80,17 @@ document.addEventListener("DOMContentLoaded", function() {
 						btnMoins.addEventListener("click", function() {
 							handleQuantiteChange(ean, -1);
 						});
-						
+
 						const prixTotalContainer = document.createElement("div");
 						prixTotalContainer.className = 'prixtotal-container';
-						
-						
+
+
 						const prixTotalProduit = document.createElement("p");
 						prixTotalProduit.textContent = `${prixTotal.toFixed(2)}€`;
 						prixTotalProduit.className = "prixTotalPrd";
 						prixTotalContainer.appendChild(prixTotalProduit);
-						
-						if(promotion != null) {
+
+						if (promotion != null) {
 							const prixTotalProduitPromo = document.createElement("p");
 							prixTotalProduit.className = "prixbarre";
 							prixTotalProduitPromo.className = 'prixTotalPrd';
@@ -145,26 +145,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		xhr.send(`ean=${ean}&quantite=${change}`);
 	}
 
-	function validatePanier() {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "ajoutPanier", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                alert("Votre commande a été validée avec succès !");
-                updatePanier();
-            } else {
-                alert(xhr.responseText);
-            }
-        };
-
-        xhr.send('action=validerPanier');
-    }
-    const validateButton = document.getElementById("validerPanier");
-	validateButton.style.display = 'none';
-    validateButton.addEventListener("click", validatePanier);
-    
 	updatePanier();
 });
 

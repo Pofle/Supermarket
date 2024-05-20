@@ -17,36 +17,36 @@ import org.hibernate.annotations.CascadeType;
 import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "Commande", uniqueConstraints = { @UniqueConstraint(columnNames = { "id_commande" }) })
+@Table(name = "COMMANDE", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID_COMMANDE" }) })
 public class Commande {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_commande", nullable = false, unique = true, length = 50)
+    @Column(name = "ID_COMMANDE", nullable = false, unique = true, length = 50)
     private Integer id_commande;
     
     @OneToMany(mappedBy = "commande")
     @Cascade(CascadeType.ALL)
     private Set<LinkCommandeProduit> produits = new HashSet<>();
 
-    @Column(name = "date_commande")
+    @Column(name = "DATE_COMMANDE")
     private LocalDate dateCommande;
 
-    @Column(name = "date_retrait")
+    @Column(name = "DATE_RETRAIT")
     private LocalDate dateRetrait;
 
-    @Column(name = "horaire_retrait")
+    @Column(name = "HORAIRE_RETRAIT")
     private String horaireRetrait;
 
-    @Column(name = "statut", nullable = false)
+    @Column(name = "STATUT", nullable = false)
     private boolean statut;
 
     @ManyToOne
-    @JoinColumn(name = "id_magasin")
+    @JoinColumn(name = "ID_MAGASIN")
     private Magasin magasin;
 
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur", nullable = false)
+    @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
     @Cascade(CascadeType.ALL)
     private Utilisateur utilisateur;
 

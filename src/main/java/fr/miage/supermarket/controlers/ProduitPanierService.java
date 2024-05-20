@@ -1,7 +1,12 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +151,7 @@ public class ProduitPanierService extends HttpServlet {
 	}
 
 	private void validerPanier(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
         Panier panier = (Panier) session.getAttribute("panier");
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
@@ -161,32 +166,73 @@ public class ProduitPanierService extends HttpServlet {
         	response.getWriter().write("Vous devez vous connecter pour pouvoir valider votre commande.");
         	return;
         }
+    	
+    	String magasinIdStr = request.getParameter("magasin");
+        String dateStr = request.getParameter("date");
+        String horaireStr = request.getParameter("horaire");
 
-        Commande commande = new Commande();
-        commande.setUtilisateur(utilisateur);
-        commande.setStatut(true);
-        commande = commandeDAO.creerCommande(commande);
-        
-        Set<LinkCommandeProduit> linkCommandeProduits = new HashSet<>();
-        for (ProduitPanier produitPanier : panier.getPanier().values()) {
-            Produit produit = produitDAO.getProduitByEan(produitPanier.getEan());
-            LinkCommandeProduit link = new LinkCommandeProduit(commande, produit, produitPanier.getQuantite());
-            linkCommandeProduits.add(link);
+        if (magasinIdStr != null && dateStr != null && horaireStr != null) {
+            try {
+                int magasinId = Integer.parseInt(magasinIdStr);
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+
+                // Convertir Date en LocalDate
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate currentDate = LocalDate.now(); // Date actuelle
+
+                Commande commande = new Commande();
+                commande.setUtilisateur(utilisateur);
+                commande.setStatut(true);
+                commande.setIdMagasin(magasinId);
+                commande.setDateCommande(currentDate); // Date de commande
+                commande.setDateRetrait(localDate);
+                commande.setHoraireRetrait(horaireStr);
+                commande = commandeDAO.creerCommande(commande);
+
+                Set<LinkCommandeProduit> linkCommandeProduits = new HashSet<>();
+                for (ProduitPanier produitPanier : panier.getPanier().values()) {
+                    Produit produit = produitDAO.getProduitByEan(produitPanier.getEan());
+                    LinkCommandeProduit link = new LinkCommandeProduit(commande, produit, produitPanier.getQuantite());
+                    linkCommandeProduits.add(link);
+                }
+                commande.finaliserCommande(panier.calculerPrixTotal());
+                commande.setProduits(linkCommandeProduits);
+                
+                commandeDAO.mettreAJourCommande(commande);
+
+                // Vider le panier après validation
+                session.removeAttribute("panier");
+
+                response.setStatus(HttpServletResponse.SC_OK);
+                
+                // Utilisez l'ID du magasin pour récupérer les informations du magasin depuis la base de données
+                Magasin magasin = MagasinDAO.getMagasinById(magasinId);
+
+                // Vérifiez si le magasin a été trouvé
+                if (magasin != null) {
+                    // Ajoutez le nom et l'adresse du magasin aux attributs de la requête
+                    request.setAttribute("nomMagasin", magasin.getNom());
+                    request.setAttribute("adresseMagasin", magasin.getAdresse());
+                } else {
+                    request.setAttribute("nomMagasin", "Magasin inconnu");
+                    request.setAttribute("adresseMagasin", "Adresse inconnue");
+                }
+
+                // Ajout des informations de la commande aux attributs de la requête
+                request.setAttribute("dateCommande", commande.getDateCommande());
+                request.setAttribute("jourRetrait", commande.getDateRetrait());
+                request.setAttribute("horaireRetrait", commande.getHoraireRetrait());
+
+                // page JSP de succès
+                request.getRequestDispatcher("/jsp/commandeValide.jsp").forward(request, response);
+
+            } catch (NumberFormatException | ParseException | ServletException e) {
+                e.printStackTrace();
+                response.sendRedirect("jsp/error.jsp");
+            }
+        } else {
+            response.sendRedirect("jsp/error.jsp");
         }
-        commande.finaliserCommande(panier.calculerPrixTotal());
-
-        commande.setProduits(linkCommandeProduits);
-        commandeDAO.mettreAJourCommande(commande);
-        
-        // Mise à jour de la cagnotte de l'utilisateur
-        //double totalPrix = panier.calculerPrixTotal();
-        //utilisateur.setCagnotte(utilisateur.getCagnotte() + totalPrix);
-        //utilisateurDAO.updateUtilisateur(utilisateur);
-
-        // Vider le panier après validation
-        session.removeAttribute("panier");
-
-        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 	/**

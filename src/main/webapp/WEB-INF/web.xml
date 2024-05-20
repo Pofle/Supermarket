@@ -85,11 +85,6 @@
         <servlet-class>fr.miage.supermarket.controlers.MagasinService</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>FinaliserCommande</servlet-name>
-        <display-name>FinaliserCommande</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.FinaliserCommande</servlet-class>
-    </servlet>
-    <servlet>
     	<servlet-name>ServletPanier</servlet-name>
     	<display-name>ServletPanier</display-name>
     	<description></description>
@@ -148,10 +143,6 @@
     <servlet-mapping>
         <servlet-name>MagasinService</servlet-name>
         <url-pattern>/MagasinService</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FinaliserCommande</servlet-name>
-        <url-pattern>/FinaliserCommande</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
     	<servlet-name>ServletPanier</servlet-name>
