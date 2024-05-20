@@ -77,6 +77,12 @@
 		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.ServletListeCourse</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>RecupererStatistiques</servlet-name>
+		<display-name>RecupererStatistiques</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.RecupererStatistiques</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>ImportProduitsJSP</servlet-name>
 		<url-pattern>/gestionProduit</url-pattern>
@@ -126,6 +132,10 @@
 	<servlet-mapping>
 		<servlet-name>DetailProduit</servlet-name>
 		<url-pattern>/detailProduit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RecupererStatistiques</servlet-name>
+		<url-pattern>/RecupererStatistiques</url-pattern>
 	</servlet-mapping>
 
 
