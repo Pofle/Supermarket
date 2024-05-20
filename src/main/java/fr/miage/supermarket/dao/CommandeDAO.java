@@ -1,4 +1,14 @@
 package fr.miage.supermarket.dao;
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.LinkCommandeProduit;
+import fr.miage.supermarket.utils.HibernateUtil;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -20,31 +30,59 @@ import fr.miage.supermarket.utils.HibernateUtil;
  */
 public class CommandeDAO {
 
-// les commandes ne sont plus générables manuellement 
-//	private static final SimpleDateFormat DF = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-	
-//	public static void createCommande() {
-//		//ouverture de la session hibernate 
-//		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-//		//ouverture d'une transaction 
-//		Transaction transact = session.getTransaction();
-//		if(!transact.isActive()) {
-//			transact = session.beginTransaction();
-//		}
-//		Commande PanierUn = new Commande(Timestamp.valueOf("2024-05-10 18:30:00"));
-//		Commande PanierDeux = new Commande(Timestamp.valueOf("2024-05-15 09:15:00"));
-//		Commande PanierTrois = new Commande(Timestamp.valueOf("2024-05-18 18:30:00"));
-//		Commande PanierQuatre = new Commande(Timestamp.valueOf("2024-05-12 09:15:00"));
-//		session.save(PanierUn);
-//		session.save(PanierDeux);
-//		session.save(PanierTrois);
-//		session.save(PanierQuatre);
-//		System.out.println("Commande créé : " + PanierUn.getId_commande());
-//		System.out.println("Commande créé : " + PanierUn.getId_commande());
-//		transact.commit();
-//		session.close();
-//	}
-	public static void saveCommandechrono(Commande commande) {
+private SessionFactory sessionFactory;
+    
+    public CommandeDAO() {
+        this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+    }
+    
+    public Commande creerCommande(Commande commande) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(commande);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return commande;
+    }
+    
+    public Commande mettreAJourCommande(Commande commande) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(commande);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return commande;
+    }
+    
+    public void creerLinkCommandeProduit(LinkCommandeProduit linkCommandeProduit) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(linkCommandeProduit);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+/*	public static void saveCommandechrono(Commande commande) {
 		//ouverture de la session hibernate 
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		//ouverture d'une transaction 
@@ -57,6 +95,7 @@ public class CommandeDAO {
 		transact.commit();
 		session.close();
 	}
+*/
 	/**
 	 * Récupération d'une Commande dans la base de données
 	 * @author RR
@@ -89,7 +128,7 @@ public class CommandeDAO {
 	 * @author RR
 	 * @return ArrayList des commandes dans l'ordre croissant des créneaux
 	 */
-	public static ArrayList<Commande> CommandeTrieParCreneau() {
+/*	public static ArrayList<Commande> CommandeTrieParCreneau() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		Transaction transact = session.getTransaction();
 		if(!transact.isActive()) {
@@ -107,6 +146,7 @@ public class CommandeDAO {
 		transact.commit();
 		return commandes;
 	}
+*/
 	/**
 	 * Récupération des lignes de Link_Commande_Produit concernant une commande spécifique
 	 * @param idCommande
@@ -148,23 +188,6 @@ public class CommandeDAO {
 		return idComm;
 	}
 	
-	public static ArrayList<Commande> getCommandeNonTraite() {
-		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-		Transaction transact = session.getTransaction();
-		if(!transact.isActive()) {
-			transact = session.beginTransaction();
-		}
-		Query query = session.createQuery("SELECT DISTINCT commande FROM Link_Commande_Produit WHERE commande.chrono = :null", Commande.class);
-		query.setParameter("null", null);
-		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
-		System.out.println("getCommandeTrieInLink returns : ");
-		for (int i = 0; i<idComm.size(); i++) {
-			System.out.print(" Commande : "+idComm.get(i).getId_commande());
-		}
-		System.out.println(";");
-		transact.commit();
-		return idComm;
-	}
 	public static Link_Commande_Produit loadLink(String id_Commande, String ean) {
 	    Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 	    Transaction transact = session.getTransaction();
