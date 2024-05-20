@@ -24,156 +24,193 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "Utilisateur", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID" }) })
 public class Utilisateur {
 
-	// Attributs
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID", nullable = false, unique = true)
-	private int id;
+    // Attributs
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false, unique = true)
+    private int id;
 
-	@Column(name = "NOM", nullable = false, unique = false, length = 50)
-	private String nom;
+    @Column(name = "NOM", nullable = false, unique = false, length = 50)
+    private String nom;
 
-	@Column(name = "PRENOM", nullable = false, unique = false, length = 80)
-	private String prenom;
+    @Column(name = "PRENOM", nullable = false, unique = false, length = 80)
+    private String prenom;
 
-	@Column(name = "MAIL", nullable = false, unique = false, length = 80)
-	private String mail;
+    @Column(name = "MAIL", nullable = false, unique = false, length = 80)
+    private String mail;
 
-	@Column(name = "ROLE")
-	@Enumerated(EnumType.STRING)
-	private CategorieCompte role;
+    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
+    private CategorieCompte role;
 
-	@Column(name = "MDP", nullable = false, unique = false, length = 80)
-	private String motdepasse;
-	
-	@Column(name="POINTS", nullable = true, length = 50)
-	private Integer points;
+    @Column(name = "MDP", nullable = false, unique = false, length = 80)
+    private String motdepasse;
 
-	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
-	private List<ShoppingList> listesCourseLst;
+    @Column(name = "POINTS", nullable = true)
+    private Integer points;
 
-	/**
-	 * Getter de l'id utilisateur
-	 * @return
-	 * @author Pauline
-	 */
-	 public int getId() {
-	        return id;
-	}
-	 /**
-	  * Getter du nom utilisateur
-	  * @return
-	  * @author Pauline
-	  */
-	public String getNom() {
-		return nom;
-	}
-	/**
-	 * Getter prenom utilisateur
-	 * @return
-	 * @author Pauline
-	 */
-	public String getPrenom() {
-		return prenom;
-	}
-	/**
-	 * Getter mail utilisateur
-	 * @return
-	 * @author Pauline
-	 */
-	public String getMail() {
-		return mail;
-	}
-	/*
-	 * Getter de la relation avec une liste de course
-	 */
-	public List<ShoppingList> getListesCourse() {
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    private List<ShoppingList> listesCourseLst;
+
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    private List<Commande> commandes;
+
+    // Getters et setters
+
+    /**
+     * Getter de l'id utilisateur
+     * @return l'id de l'utilisateur
+     * @author Pauline
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Setter de l'id utilisateur
+     * @param id l'id de l'utilisateur
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Getter du nom utilisateur
+     * @return le nom de l'utilisateur
+     */
+    public String getNom() {
+        return nom;
+    }
+
+    /**
+     * Setter du nom utilisateur
+     * @param nom le nom de l'utilisateur
+     */
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    /**
+     * Getter prenom utilisateur
+     * @return le prenom de l'utilisateur
+     */
+    public String getPrenom() {
+        return prenom;
+    }
+
+    /**
+     * Setter prenom utilisateur
+     * @param prenom le prenom de l'utilisateur
+     */
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    /**
+     * Getter mail utilisateur
+     * @return le mail de l'utilisateur
+     */
+    public String getMail() {
+        return mail;
+    }
+
+    /**
+     * Setter mail utilisateur
+     * @param mail le mail de l'utilisateur
+     */
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    /**
+     * Getter du mot de passe
+     * @return le mot de passe de l'utilisateur
+     */
+    public String getMotdepasse() {
+        return motdepasse;
+    }
+
+    /**
+     * Setter du mot de passe
+     * @param motdepasse le mot de passe de l'utilisateur
+     */
+    public void setMotdepasse(String motdepasse) {
+        this.motdepasse = motdepasse;
+    }
+
+    /**
+     * Getter du role
+     * @return le role de l'utilisateur
+     */
+    public CategorieCompte getRole() {
+        return role;
+    }
+
+    /**
+     * Setter du role
+     * @param role le role de l'utilisateur
+     */
+    public void setRole(CategorieCompte role) {
+        this.role = role;
+    }
+
+    /**
+     * Getter de la relation avec une liste de course
+     * @return la liste de courses de l'utilisateur
+     */
+    public List<ShoppingList> getListesCourse() {
         return listesCourseLst;
     }
-	
-	/**
-	 * Setter du nom utilisateur
-	 * @param nom
-	 * @author Pauline
-	 */
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-	/**
-	 * Setter prenom utlisateur
-	 * @param prenom
-	 * @author Pauline
-	 */
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-	/**
-	 * Setter mail utilisateur
-	 * @param mail
-	 * @author Pauline
-	 */
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
 
-	public String getMotdepasse() {
-		return motdepasse;
-	}
+    /**
+     * Setter de la relation avec une liste de course
+     * @param listesCourseLst la liste de courses de l'utilisateur
+     */
+    public void setListeCourse(List<ShoppingList> listesCourseLst) {
+        this.listesCourseLst = listesCourseLst;
+    }
 
-	public void setMotdepasse(String motdepasse) {
-		this.motdepasse = motdepasse;
-	}
+    /**
+     * Getter de la liste de commandes
+     * @return la liste des commandes de l'utilisateur
+     */
+    public List<Commande> getCommandes() {
+        return commandes;
+    }
 
-	public CategorieCompte getRole() {
-		return role;
-	}
+    /**
+     * Setter de la liste de commandes
+     * @param commandes la liste des commandes de l'utilisateur
+     */
+    public void setCommandes(List<Commande> commandes) {
+        this.commandes = commandes;
+    }
 
-	public void setRole(CategorieCompte role) {
-		this.role = role;
-	}
+    /**
+     * Getter des points
+     * @return les points de l'utilisateur
+     */
+    public Integer getPoints() {
+        return points;
+    }
 
-	/**
-	 * Setter de la relation avec une liste de course
-	 * @param listesCourseLst
-	 * @author Pauline
-	 */
-	public void setListeCourse(List<ShoppingList> listesCourseLst) {
-		this.listesCourseLst = listesCourseLst;
-	}
+    /**
+     * Setter des points
+     * @param points les points de l'utilisateur
+     */
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
 
-	public List<ShoppingList> getListesCourseLst() {
-		return listesCourseLst;
-	}
-
-	public void setListesCourseLst(List<ShoppingList> listesCourseLst) {
-		this.listesCourseLst = listesCourseLst;
-	}
-
-	public List<Commande> getCommandes() {
-		return commandes;
-	}
-
-	public void setCommandes(List<Commande> commandes) {
-		this.commandes = commandes;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Integer getPoints() {
-		return points;
-	}
-
-	public void setPoints(Integer points) {
-		this.points = points;
-	}
-	
-	public void ajouterPoints(int nbPoints) {
-		if(this.points == null) {
-			this.points = nbPoints;
-			return;
-		}
-		this.points+=nbPoints;
-	}
+    /**
+     * Ajouter des points
+     * @param nbPoints le nombre de points à ajouter
+     */
+    public void ajouterPoints(int nbPoints) {
+        if (this.points == null) {
+            this.points = nbPoints;
+            return;
+        }
+        this.points += nbPoints;
+    }
 }
