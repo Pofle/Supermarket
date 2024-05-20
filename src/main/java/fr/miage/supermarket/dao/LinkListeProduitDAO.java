@@ -8,6 +8,8 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.LinkListeProduit;
+import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
@@ -82,7 +84,7 @@ public class LinkListeProduitDAO {
 	    try {
 	        tx = session.beginTransaction();
 	        Query<LinkListeProduit> query = session.createQuery(
-	                "from LinkListeProduit where shoppingList.id = :listeId and produit.ean = :ean", LinkListeProduit.class);
+	                "FROM LinkListeProduit WHERE shoppingList.id = :listeId and produit.ean = :ean", LinkListeProduit.class);
 	        query.setParameter("listeId", listeId);
 	        query.setParameter("ean", ean);
 	        LinkListeProduit linkListeProduit = query.uniqueResult();
@@ -120,7 +122,7 @@ public class LinkListeProduitDAO {
 
             if (link != null) {
                 // Suppression du lien entre le produit et la liste
-                session.delete(link);
+                session.remove(link);
             } else {
                 System.out.println("Le lien entre le produit avec l'EAN " + eanProduit + " et la liste avec l'ID " + listeId + " n'a pas été trouvé.");
             }
@@ -134,27 +136,42 @@ public class LinkListeProduitDAO {
         }
     }
 	
- /**
-  * Methode pour ajouter une quantité de produit à une liste - EN COURS-
-  * @param quantite de produit a ajouter dans la liste
-  * @author Pauline
-  */
- public static void ajouterArticleListe(int quantite)
- {
-	 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
-     Transaction tx = null;
-     
-     try {
-    	 tx=session.beginTransaction();
-    	 LinkListeProduit linkListProduit = new LinkListeProduit();
-    	 linkListProduit.setQuantite(quantite);
-    	 
-     }catch (Exception e) {
+	public static void ajouterProduitListe(int listeId, String ean, int quantite) {
+        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            Query<LinkListeProduit> query = session.createQuery(
+                "FROM LinkListeProduit WHERE shoppingList.id = :listeId and produit.ean = :ean", LinkListeProduit.class);
+            query.setParameter("listeId", listeId);
+            query.setParameter("ean", ean);
+            LinkListeProduit linkListeProduit = query.uniqueResult();
+            
+          //Log de controle
+            System.out.println("EAN requested for add in list : " + ean + "ListeId : "+ listeId+ "And qty : "+quantite);
+
+            if (linkListeProduit != null) {
+                // Si le produit existe déjà dans la liste, mettre à jour la quantité
+                linkListeProduit.setQuantite(linkListeProduit.getQuantite() + quantite);
+                session.update(linkListeProduit);
+            } else {
+                // Sinon, ajouter un nouveau produit à la liste
+                ShoppingList shoppingList = session.get(ShoppingList.class, listeId);
+                Produit produit = session.get(Produit.class, ean);
+                linkListeProduit = new LinkListeProduit();
+                linkListeProduit.setShoppingList(shoppingList);
+                linkListeProduit.setProduit(produit);
+                linkListeProduit.setQuantite(quantite);
+                session.save(linkListeProduit);
+            }
+            tx.commit();
+        } catch (Exception e) {
             if (tx != null) tx.rollback();
-            throw e;
+            e.printStackTrace();
         } finally {
             session.close();
         }
- }
+    }
 
 }

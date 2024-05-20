@@ -1,7 +1,6 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -15,7 +14,7 @@ import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.ShoppingList;
 
 /**
- * Servlet implementation class GenerationListeXml
+ * Servlet qui gere la generation des listes de course de l'utilisatueur en XML
  */
 public class GenerationListeXml extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +26,6 @@ public class GenerationListeXml extends HttpServlet {
      */
     public GenerationListeXml() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -37,7 +35,7 @@ public class GenerationListeXml extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-	//TO-DO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
+	//TODO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
 	// -- Code à remplacer
 	    int userId = 1;
 	// Fin du code à remplacer

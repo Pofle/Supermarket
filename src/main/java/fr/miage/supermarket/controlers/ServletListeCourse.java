@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.miage.supermarket.dao.ShoppingListDAO;
 /**
- * Servlet gérant les listes de course
+ * Servlet gérant les listes de course, leur creation et supression
  * @author Pauline
  */
 public class ServletListeCourse extends HttpServlet {

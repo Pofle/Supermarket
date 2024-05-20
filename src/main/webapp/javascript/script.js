@@ -12,6 +12,7 @@ function chargerProduitsListe(idListe, nomListe) {
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     var xmlDoc = xhr.responseXML;
+                    console.log("request Post rreceve : "+xhr.responseXML)
                     if (xmlDoc === null) {
                         console.error("xmlDocListeProduits is null. Check the response format.");
                         return;
@@ -20,17 +21,20 @@ function chargerProduitsListe(idListe, nomListe) {
                     var produits = xmlDoc.getElementsByTagName("produit");
                     var produitsHTML = "<ul>";
                     for (var i = 0; i < produits.length; i++) {
+						console.log("ID de la liste envoyé dans le js, debut boucle :" + idListe);
+						
                         var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
                         var marque = produits[i].getElementsByTagName("marque")[0].textContent;
                         var quantite = produits[i].getElementsByTagName("quantite")[0].textContent;
-                        var ean = produits[i].getElementsByTagName("ean")[0].textContent;
+                        var ean = produits[i].getElementsByTagName("ean")[0].textContent;                        
                         produitsHTML += "<li>";
                         produitsHTML += "<input type='number' min='0' step='1' class='input_quantite' name='" + ean + "' value='" + quantite + "'>";
                         produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
-                       produitsHTML += "<a href='GestionProduitListe?type_action=delete_produit&produit_ean=" + ean + "&listeId=" + idListe + "'><img src='recupererImage?cheminImage=delete_icon.png' class='btn-DeleteProduit' title='Supprimer le produit'/></a>";
+                       	produitsHTML += "<a href='GestionProduitListe?type_action=delete_produit&produit_ean=" + ean + "&listeId=" + idListe + "'><img src='recupererImage?cheminImage=delete_icon.png' class='btn-DeleteProduit' title='Supprimer le produit'/></a>";
                         produitsHTML += "</li>";
                     }
                     produitsHTML += "</ul>";
+                    console.log("Requested HTML:" + produitsHTML);
 
 					// Maj de la modale
                     var modalBody = document.querySelector("#modalProduits .modal-body");
@@ -59,6 +63,7 @@ function forcerFermetureModal() {
         $('.modal-backdrop').remove();
     });
 }
+
 $(document).ready(function() {
     forcerFermetureModal();
 });

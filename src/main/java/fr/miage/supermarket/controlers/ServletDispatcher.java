@@ -202,6 +202,7 @@ public class ServletDispatcher extends HttpServlet {
                         shoppingList.getUtilisateur();
                     }
 					 request.setAttribute("shoppingLists", allShoppingLists);
+					 
 					 ConvertirListeProduitXml(request, response);
 					return;
 				}catch(Exception e) {

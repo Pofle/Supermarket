@@ -89,5 +89,7 @@ public class GenerationListeProduitXml extends HttpServlet {
 	    }
 	    return null; 
 	}
+	
+	
 
 }

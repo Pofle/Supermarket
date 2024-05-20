@@ -4,9 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.text.DecimalFormat"%>
 <%-- Définion d'un format pour les prix --%>
-<%
-request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
-%>
+<%request.setAttribute("decimalFormat", new DecimalFormat("#.00"));%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +26,8 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 				
 				<!-- Bouton Ajouter produit à une liste -->
 				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
-					 <img onclick="chargerListe()" src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#addProduitModal" />
+					 <img onclick="chargerListe('${produit.getEan()}')" 
+					 src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#addProduitModal" />
 				</c:if>
 				<!-- Fin du bouton	 -->	
 				
@@ -90,24 +89,27 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
         	<h1 class="modal-title fs-5" id="addProduitModalLabel">Ajouter l'article dans une liste </h1>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
-      	<form action="" method="">
+      	
+      	<form action="ServletAjoutProduitListe" method="post">
       		<div class="modal-body">
       			<label for="select-qte"> Choisir une quantité : </label>
-        		<input type="number" id="input_qte" class="input-qte" required>                
+        		<input type="number" id="input_qte" name="quantite" class="input-qte" required>                
         		<label for="select-liste"> Liste :</label>
-        		<select name="select-liste" id="select_list">
-        		
+        		<select name="select-liste" id="select_list">        		
         		</select>
+        		<input type="hidden" name="type_action" value="add_produit">
+        		<input type="hidden" name="produit_ean" value="${produit.getEan()}">	
+      		</div>    		
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        		<button type="submit" class="btn btn-primary">Enregistrer</button>       
       		</div>
-      		
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>       
-      </div>
-      </form>
+      	</form>
+      
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="javascript/listeProduitScript.js"></script>  
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> 
 </body>

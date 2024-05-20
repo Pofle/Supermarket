@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import fr.miage.supermarket.dao.LinkListeProduitDAO;
 
 /**
- * Servlet des services liés à la gestions des produits dans les listes
+ * Servlet des services liés à la gestions des produits dans les listes de course depuis l'écran de gestion des liste de courses. 
+ * Pour modifier la quantité d'un produit, ou le supprimer de la liste
  * @author Pauline
  */
 public class GestionProduitListe extends HttpServlet {

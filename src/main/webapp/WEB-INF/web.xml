@@ -68,6 +68,12 @@
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.GenerationListeXml</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>ServletAjoutProduitListe</servlet-name>
+    	<display-name>ServletAjoutProduitListe</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletAjoutProduitListe</servlet-class>
+    </servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -109,6 +115,10 @@
     <servlet-mapping>
     	<servlet-name>GenerationListeXml</servlet-name>
     	<url-pattern>/GenerationListeXml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>ServletAjoutProduitListe</servlet-name>
+    	<url-pattern>/ServletAjoutProduitListe</url-pattern>
     </servlet-mapping>
     
 
