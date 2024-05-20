@@ -31,7 +31,7 @@
 	<script src="javascript/afficherPanier.js"></script>
 	
 	    
-    <!-- POP UP CHOIX MAGASIN CRENEAUX ------------------------------------------------------------------------------------------------------ -->
+    <%-- <!-- POP UP CHOIX MAGASIN CRENEAUX ------------------------------------------------------------------------------------------------------ -->
     
     <!-- Button trigger modal -->
     <div style="margin-left: 1cm;">
@@ -124,7 +124,7 @@
             }
         });
     });
-</script>
+</script> --%>
 	
 	
 </body>
