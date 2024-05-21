@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				const responseXML = xhr.responseXML;
-				const produits = responseXML.getElementsByTagName("item");
+				const produits = responseXML.getElementsByTagName("produit");
 				const totalPrix = responseXML.getElementsByTagName("prixTotal")[0].textContent;
 				const panierContainer = document.querySelector(".produits-container");
 				panierContainer.innerHTML = '';
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 					const totalHeader = document.getElementById("prixTotal");
 					totalHeader.textContent = `Total: ${Number(totalPrix).toFixed(2)}€`;
-					panierContainer.appendChild(totalDiv);
+					//panierContainer.appendChild(totalDiv);
 				} else {
 					document.getElementById("resume-container").style.display = 'none';
 					const emptyMessage = document.createElement("h1");
