@@ -107,7 +107,5 @@ public class LinkListeProduit {
 		 */
 		public void setQuantite(int quantite) {
 			this.quantite = quantite;
-		}
-	    
-	    
+		}	    
 }

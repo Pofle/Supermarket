@@ -113,6 +113,12 @@
 		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.GestionRayonsService</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ServletConversionListe</servlet-name>
+		<display-name>ServletConversionListe</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletConversionListe</servlet-class>
+	</servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -191,5 +197,9 @@
 	<servlet-mapping>
 		<servlet-name>GestionRayonsService</servlet-name>
 		<url-pattern>/rayons</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletConversionListe</servlet-name>
+		<url-pattern>/ServletConversionListe</url-pattern>
 	</servlet-mapping>
 </web-app>

@@ -155,13 +155,24 @@ input[type="text"]:focus {
     border-top: none; 
 }
 
-/* Fond de la modal */
 #modalProduits .modal-content {
     background-color: rgba(249, 249, 235, 1);
 }
 
-/* Style pour l'input de quantité */
 input[type="number"] {
     width: 60px;
     margin-right: 10px;
+}
+
+.btn-convertir {
+  /*   padding: 10px 20px; */
+    background-color: white;
+    color: white;
+    /* border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer; */
+}
+.btn-convertir:hover {
+    background-color: #218838;
 }
