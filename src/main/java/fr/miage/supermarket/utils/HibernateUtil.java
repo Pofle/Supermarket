@@ -39,18 +39,10 @@ public class HibernateUtil {
         	configuration.configure("hibernate.cfg.xml");
         	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         	System.out.println("Hibernate Configuration loaded");
-        	configuration.addAnnotatedClass(Produit.class);
-        	configuration.addAnnotatedClass(Magasin.class);
-        	configuration.addAnnotatedClass(Commande.class);
         	configuration.addAnnotatedClass(Point.class);
-        	configuration.addAnnotatedClass(ShoppingList.class);
-        	configuration.addAnnotatedClass(Utilisateur.class);
-        	
-        	
         	configuration.addAnnotatedClass(Produit.class);
             configuration.addAnnotatedClass(LinkCommandeProduit.class);
         	configuration.addAnnotatedClass(Promotion.class);
-        	configuration.addAnnotatedClass(ShoppingList.class);
         	configuration.addAnnotatedClass(Commande.class);
         	configuration.addAnnotatedClass(ShoppingList.class);
         	configuration.addAnnotatedClass(Utilisateur.class);

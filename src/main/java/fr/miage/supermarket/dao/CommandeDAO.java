@@ -1,15 +1,24 @@
 package fr.miage.supermarket.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
+import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
+import jakarta.persistence.Tuple;
 
 public class CommandeDAO {
 
@@ -65,4 +74,77 @@ public class CommandeDAO {
             session.close();
         }
     }
+    
+    public List<Commande> getCommandeUtilisateur(Utilisateur utilisateur) {
+		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+		try {
+			session.beginTransaction();
+			List<Commande> listeCommandes = new ArrayList<Commande>();
+			List<Integer> listeIdCommandes = getCommandeIdsByUtilisateurId(utilisateur.getId());
+			if (listeIdCommandes != null) {
+				for (int i = 0; i < listeIdCommandes.size(); i++) {
+					listeCommandes.add(getCommandeById(listeIdCommandes.get(i)));
+				}
+				return listeCommandes;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public Commande getCommandeById(int commandeId) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.getCurrentSession();
+
+		try {
+			session.beginTransaction();
+			Commande commande = (Commande) session.createQuery("FROM Commande WHERE id_commande = :commandeId")
+					.setParameter("commandeId", commandeId).uniqueResult();
+			session.getTransaction().commit();
+			return commande;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+
+	public List<Integer> getCommandeIdsByUtilisateurId(int utilisateurId) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		Session session = sessionFactory.openSession();
+		try {
+
+			String hql = "SELECT commande.id_commande FROM Commande commande WHERE commande.utilisateur.id = :utilisateurId";
+			org.hibernate.query.Query<Integer> query = session.createQuery(hql, Integer.class);
+			query.setParameter("utilisateurId", utilisateurId);
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public Map<Produit, Integer> getProduitsByCommande(Commande commande){
+		Session session = sessionFactory.openSession();
+		Map<Produit, Integer> map = new HashMap<Produit, Integer>();
+		String hql = "SELECT link.produit.ean, link.quantite FROM Commande commande, LinkCommandeProduit link WHERE commande.id_commande = :commandeId AND commande.id_commande = link.commande.id_commande";
+		Query<Tuple> query = session.createQuery(hql, Tuple.class);
+		query.setParameter("commandeId", commande.getId_commande());
+		List<Tuple> results = query.getResultList();
+
+		for (Tuple tuple : results) {
+		    Produit produit = tuple.get(0, Produit.class);
+		    int quantite = tuple.get(1, Integer.class);
+		    map.put(produit, quantite);
+		}
+		return map;
+	}
 }

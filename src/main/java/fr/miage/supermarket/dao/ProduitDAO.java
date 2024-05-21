@@ -9,8 +9,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 
 /**
@@ -157,4 +159,6 @@ public class ProduitDAO {
         Long sum = (Long) query.getSingleResult();
         return sum != null ? sum.intValue() : 0;
     }
+	
+	
 }
