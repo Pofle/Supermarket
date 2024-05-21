@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 					const totalHeader = document.getElementById("prixTotal");
 					totalHeader.textContent = `Total: ${Number(totalPrix).toFixed(2)}€`;
-					panierContainer.appendChild(totalDiv);
+					//panierContainer.appendChild(totalDiv);
 				} else {
 					document.getElementById("resume-container").style.display = 'none';
 					const emptyMessage = document.createElement("h1");
