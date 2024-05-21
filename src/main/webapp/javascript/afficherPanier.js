@@ -65,43 +65,35 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	const pointsUtilisesInput = document.getElementById("pointsUtilises");
-	const maxPoints = pointsUtilisesInput.getAttribute("max");
-	const ptsParEuro = 10;
+	if (pointsUtilisesInput) {
+		const maxPoints = pointsUtilisesInput.getAttribute("max");
+		const ptsParEuro = 10;
 
 
-	function adjustToNearestMultiple(input) {
-		const points = parseInt(input.value);
-		const reduction = points / 10; // Chaque tranche de 10 points équivaut à 1€ de réduction
-		const nouveauPrix = prixTotal - reduction;
-		document.getElementById("prixTotal").textContent = `Total: ${nouveauPrix.toFixed(2)}€`;
-		document.getElementById("reductionPoints").textContent = `Réduction (${points} points): -${reduction.toFixed(2)}€`;
+		pointsUtilisesInput.addEventListener("blur", function() {
+			const valeurInput = this.value.replace(/\D/g, "");
+			this.value = valeurInput;
+			const pointsAjustes = Math.floor(parseInt(valeurInput) / ptsParEuro) * ptsParEuro;
+
+			if (parseInt(pointsAjustes) > parseInt(maxPoints)) {
+				this.value = Math.floor(parseInt(maxPoints) / ptsParEuro) * ptsParEuro;
+			} else {
+				this.value = pointsAjustes;
+			}
+			const reduction = this.value / 10;
+			//document.getElementById("prixTotal").textContent = `Total: ${nouveauPrix.toFixed(2)}€`;
+			if (this.value == 0) {
+				document.getElementById("reductionPoints").style.display = 'none';
+			} else {
+				document.getElementById("reductionPoints").style.display = 'block';
+				document.getElementById("reductionPoints").textContent = `Réduction appliquée (${this.value}pts): -${reduction.toFixed(2)}€`;
+			}
+
+			var pointsUtilises = document.getElementById("pointsUtilises").value;
+			document.getElementById("pointsUtilisesInput").value = pointsUtilises;
+		});
 	}
-
-
-
-	pointsUtilisesInput.addEventListener("blur", function() {
-		const valeurInput = this.value.replace(/\D/g, "");
-		this.value = valeurInput;
-		const pointsAjustes = Math.floor(parseInt(valeurInput) / ptsParEuro) * ptsParEuro;
-		
-		if (parseInt(pointsAjustes) > parseInt(maxPoints)) {
-			this.value = Math.floor(parseInt(maxPoints) / ptsParEuro) * ptsParEuro;
-		} else {
-			this.value = pointsAjustes;
-		}
-		const reduction = this.value  / 10;
-		//document.getElementById("prixTotal").textContent = `Total: ${nouveauPrix.toFixed(2)}€`;
-		if(this.value == 0) {
-			document.getElementById("reductionPoints").style.display = 'none';
-		} else {
-			document.getElementById("reductionPoints").style.display = 'block';
-			document.getElementById("reductionPoints").textContent = `Réduction appliquée (${this.value}pts): -${reduction.toFixed(2)}€`;
-		}
-		
-		var pointsUtilises = document.getElementById("pointsUtilises").value;
-    	document.getElementById("pointsUtilisesInput").value = pointsUtilises;
-	});
-
+	
 	document.querySelectorAll(".btn-plus").forEach(button => {
 		button.addEventListener("click", function() {
 			const ean = this.dataset.ean;
