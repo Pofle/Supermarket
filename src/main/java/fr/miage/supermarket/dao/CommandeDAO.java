@@ -158,7 +158,7 @@ private SessionFactory sessionFactory;
 		if(!transact.isActive()) {
 			transact = session.beginTransaction();
 		}
-		Query query = session.createQuery("FROM Link_Commande_Produit lc WHERE lc.commande.id_commande = :idCommande", LinkCommandeProduit.class);
+		Query query = session.createQuery("FROM LinkCommandeProduit lc WHERE lc.commande.id_commande = :idCommande", LinkCommandeProduit.class);
 		query.setParameter("idCommande", idCommande);
 		ArrayList<LinkCommandeProduit> linkByCommande = (ArrayList<LinkCommandeProduit>) query.getResultList();
 		System.out.println("getLinkByCommande returns : ");
@@ -177,7 +177,7 @@ private SessionFactory sessionFactory;
 		if(!transact.isActive()) {
 			transact = session.beginTransaction();
 		}
-		Query query = session.createQuery("SELECT DISTINCT commande FROM Link_Commande_Produit WHERE commande.chrono IS NULL ORDER BY commande.creneau ASC", Commande.class);
+		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NULL ORDER BY commande.creneau ASC", Commande.class);
 		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
 		System.out.println("getCommandeTrieInLink returns : ");
 		for (int i = 0; i<idComm.size(); i++) {
@@ -196,7 +196,7 @@ private SessionFactory sessionFactory;
 	    }
 	    try {
 //	        Link_Commande_Produit wantedLink = session.get(Link_Commande_Produit.class, id_commande);
-			Query query = session.createQuery("FROM Link_Commande_Produit WHERE commande.id_commande = :id_Commande AND produit.ean = :ean", LinkCommandeProduit.class);
+			Query query = session.createQuery("FROM LinkCommandeProduit WHERE commande.id_commande = :id_Commande AND produit.ean = :ean", LinkCommandeProduit.class);
 			query.setParameter("id_Commande", id_Commande);
 			query.setParameter("ean", ean);
 			LinkCommandeProduit wantedLink = (LinkCommandeProduit) query.getSingleResult();

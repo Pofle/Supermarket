@@ -13,12 +13,12 @@
 					<li class="navbar-item"><a href="central?type_action=statistiques" class="navbar-link">Statistiques</a></li>
 				</c:if>
 				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
-					<li class="navbar-item"><a href="central?type_action=preparationPanier" class="navbar-link">Préparation des paniers</a></li>
+					<li class="navbar-item"><a href="central?type_action=listePaniers" class="navbar-link">Préparation des paniers</a></li>
 				</c:if>
-				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
+				<%-- <c:if test="${requestScope.categorie == 'PREPARATEUR'}">
 					<li class="navbar-item"><a
 						href="central?type_action=listePaniers" class="navbar-link">Préparer les commandes</a></li>
-				</c:if>
+				</c:if> --%>
 				<c:if test="${requestScope.categorie == 'UTILISATEUR'|| requestScope.categorie == 'VISITEUR'}">
 					<li class="navbar-item"><a href="central?type_action=rayons" class="navbar-link">Rayons</a></li>
                     <li class="navbar-item"><a href="central?type_action=promos" class="navbar-link">Promos</a></li>

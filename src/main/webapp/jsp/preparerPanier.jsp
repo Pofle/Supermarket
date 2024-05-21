@@ -1,4 +1,4 @@
-<%@page import="fr.miage.supermarket.models.Link_Commande_Produit"%>
+<%@page import="fr.miage.supermarket.models.LinkCommandeProduit"%>
 <%@page import="fr.miage.supermarket.models.Commande"%>
 <%@page import="fr.miage.supermarket.models.Produit"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -17,7 +17,15 @@
 </jsp:include>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var commandCards = document.querySelectorAll('.command-card');
+	
+	var commandCards = document.querySelectorAll('.command-card');
+    var submitButton = document.querySelector('.button');
+
+    function updateSubmitButtonVisibility() {
+        var selectedCheckboxes = document.querySelectorAll('.hidden-checkbox:checked');
+        submitButton.style.display = selectedCheckboxes.length > 0 ? 'block' : 'none';
+    }
+    
 
     commandCards.forEach(function(card) {
         card.addEventListener('click', function() {
@@ -55,21 +63,21 @@ function finChronoPrepa() {
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
-	<% 	ArrayList<Link_Commande_Produit> linkAsso = (ArrayList<Link_Commande_Produit>) request.getAttribute("linkAsso"); %>
+	<% 	ArrayList<LinkCommandeProduit> linkAsso = (ArrayList<LinkCommandeProduit>) request.getAttribute("linkAsso"); %>
 	<h1>Préparation du panier</h1>
 	<h2>Panier n° <%= linkAsso.get(0).getCommande().getId_commande() %></h2> 
 		<form action="preparerPanier" method="GET" onsubmit="finChronoPrepa()">
 			<div class="command-container" id="command-container">
             	<% 
             		DecimalFormat decimalFormat = new DecimalFormat("#.##");
-					for (Link_Commande_Produit ligne : linkAsso) {
+					for (LinkCommandeProduit ligne : linkAsso) {
 						Produit produit = ligne.getProduit();
 				%>
 				<div class="command-card">
 				 	<input type="checkbox" class="hidden-checkbox" name="produitValide" value="<%= ligne.getCommande().getId_commande() %>,<%= ligne.getProduit().getEan() %>">
 					<div class="basket-info">
 						<div class="basket-details">
-							<p class="libelle-marque"><%= ligne.getQte()%> x <%= produit.getLibelle()%> -
+							<p class="libelle-marque"><%= ligne.getQuantite()%> x <%= produit.getLibelle()%> -
 								<%= produit.getMarque()%></p>
 								<p class="price"><%= decimalFormat.format(produit.getPrix())%>€</p>
 								<%

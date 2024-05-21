@@ -1,8 +1,7 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
+import javax.mail.PasswordAuthentication;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -11,6 +10,28 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import java.io.IOException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import fr.miage.supermarket.dao.CommandeDAO;
+import fr.miage.supermarket.models.LinkCommandeProduit;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,55 +73,53 @@ public class PreparerPanier extends HttpServlet {
 	            throws ServletException, IOException {
 		 System.out.println("Servlet PreparerPanier méthode POST ");
 		 gestionFormu(request, response);
-		 System.out.println("vers servlet VisuPreparateur");
 	 }
 	 
 	 CommandeDAO commandeDAO = new CommandeDAO();
 	 private static final SimpleDateFormat DF = new SimpleDateFormat("HH:mm:ss:SSS");
 
 	 private void gestionFormu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		 /*------- paramètres ------*/
 		 String[] idLinkValide = request.getParameterValues("produitValide");
 		 String prepaChrono = request.getParameter("prepaChrono");
 	     String finTempsPrepa = request.getParameter("finTempsPrepa");
-	     System.out.println(idLinkValide.length);
+	     String valide = "contenu validé de la commande : ";
+	     String manque = "";
+	     /*------ Traitement des valeurs et insertions du chrono en bd */
 	     ArrayList<LinkCommandeProduit> linkValid = new ArrayList<LinkCommandeProduit>();
+	     //vérification que des éléments ont été validé/sélectionné
 	     if(idLinkValide != null) {
+		     // traitement des éléments qui ont été validé/sélectionné
 		        for (String id : idLinkValide) {
 		        	String[] ids = id.split(",");
 	                String idCommande = ids[0];
 	                String ean = ids[1];
 					linkValid.add(CommandeDAO.loadLink(idCommande, ean));
 				}
+		        for(LinkCommandeProduit l : linkValid) {
+		        	valide = valide + l.getProduit().getLibelle() + ", ";
+		        }
+		        valide = valide.substring(0, -2);
+		        System.out.println("Sélection formulaire, " + valide);
+		        // on vérifie si tous les éléments ont été validé/sélectionné
 		        System.out.println("gestionFormu - génération de la commande de base pour comparaison");
-				ArrayList<LinkCommandeProduit> linkCompar = commandeDAO.getLinkByCommande(linkValid.get(linkValid.size()-1).getCommande().getId_commande());
+		        ArrayList<LinkCommandeProduit> linkCompar = commandeDAO.getLinkByCommande(linkValid.get(linkValid.size()-1).getCommande().getId_commande());
 				if(linkCompar.size() != linkValid.size()) {
-					linkCompar.removeAll(linkValid);
-					System.out.println("Attention il manque : ");
-					for (LinkCommandeProduit l : linkCompar) {
-						System.out.println(" - " + l.getProduit().getLibelle());
+					// on ne garde que les éléments qui n'ont pas été validés
+					for(LinkCommandeProduit l : linkValid) {
+						for (int i = 0; i < linkCompar.size();i++) {
+							if(linkCompar.get(i).getProduit().getEan().equals(l.getProduit().getEan())) {
+								linkCompar.remove(linkCompar.get(i));
+							}
+						}
 					}
+					manque = "Attention il manque : ";
+					for (LinkCommandeProduit l : linkCompar) {
+						manque = manque + l.getProduit().getLibelle() + ", " ;
+					}
+					manque = manque.substring(0, -2);
+					System.out.println(manque);
 				}
-//				//on vérifie que le chrono a été lancé 
-//				if(prepaChrono != null && !prepaChrono.isEmpty()) {
-//					Date dateDebut = Date.from(Instant.parse(prepaChrono));
-//					long debutTemps = dateDebut.getTime();			
-//					// on vérifie que le chrono a été arrêté 
-//					if (finTempsPrepa != null && !finTempsPrepa.isEmpty()) {
-//						Date dateFin = Date.from(Instant.parse(finTempsPrepa));
-//						long FinTemps = dateFin.getTime();
-//						
-//						// on fait la différence entre le lancement et l'arrêt du chrono
-//						long differenceTemps = FinTemps - debutTemps;
-//						
-//						//conversion pour insertion en bd 
-//						Instant instant = Instant.ofEpochMilli(differenceTemps);			        
-//					    LocalDateTime chronoPanier = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-//	
-//					    linkValid.get(0).getCommande().setChrono(chronoPanier);  
-//					    CommandeDAO.saveCommandechrono(linkValid.get(0).getCommande());
-//					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" enregistrée dans la bd");
-//					}
-//				}
 				
 				// Vérification si le chrono a été lancé
 		        if (prepaChrono != null && !prepaChrono.isEmpty()) {
@@ -115,12 +134,8 @@ public class PreparerPanier extends HttpServlet {
 		                // Calcul de la différence entre le lancement et l'arrêt du chrono
 		                long differenceTemps = finTemps - debutTemps;
 		                
-		                // Formattage de la différence de temps
-		                String chronoPanierFormatted = DF.format(new Date(differenceTemps - 3600000));  // Soustraction d'une heure (3600000 ms) pour ajuster le fuseau horaire
-		                System.out.println("Temps de préparation: " + chronoPanierFormatted);
-		                
-		                // Conversion de la différence de temps en java.sql.Time
-		                Time chronoPanierTime = new Time(differenceTemps - 3600000);  // Ajustement pour le fuseau horaire
+		                // Conversion pour enregistrement dans la bd 
+		                Time chronoPanierTime = new Time(differenceTemps - 3600000);  
 		                linkValid.get(0).getCommande().setChrono(chronoPanierTime);  
 					    commandeDAO.mettreAJourCommande(linkValid.get(0).getCommande());
 					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" chrono : " + linkValid.get(0).getCommande().getChrono() + "enregistrée dans la bd");
@@ -128,49 +143,53 @@ public class PreparerPanier extends HttpServlet {
 		            }
 		        }
 	        }
-//			 // Envoyer un email de notification
-//	        String to = "utilisateur@example.com"; // Remplacez par l'adresse email du destinataire
-//	        String from = "moi@gmail.com"; // Remplacez par votre adresse email
-//	        String host = "smtp.example.com"; // Remplacez par votre serveur SMTP
-	//
-//	        // Propriétés du mail
-//	        Properties properties = System.getProperties();
-//	        properties.setProperty("mail.smtp.host", host);
-//	        properties.setProperty("mail.smtp.port", "587"); // Utiliser le port approprié pour votre serveur SMTP
-//	        properties.setProperty("mail.smtp.auth", "true");
-//	        properties.setProperty("mail.smtp.starttls.enable", "true");
-	//
-//	        // Authentification de l'expéditeur
-//	        Session session = Session.getDefaultInstance(properties, new Authenticator() {
-//	            protected PasswordAuthentication getPasswordAuthentication() {
-//	                return new PasswordAuthentication("moi@gmail.com", "haha"); // Remplacez par vos identifiants
-//	            }
-//	        }
-//	        );
-	//
-//	        try {
-//	            // Créer un objet MimeMessage
-//	            MimeMessage message = new MimeMessage(session);
-	//
-//	            // De : adresse de l'expéditeur
-//	            message.setFrom(new InternetAddress(from));
-	//
-//	            // À : adresse du destinataire
-//	            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-	//
-//	            // Sujet du mail
-//	            message.setSubject("Notification de soumission");
-	//
-//	            // Corps du message
-//	            message.setText("La soumission a été effectuée avec succès à " + submitTimestamp);
-	//
-//	            // Envoyer le message
-//	            Transport.send(message);
-//	            System.out.println("Message envoyé avec succès...");
-//	        } catch (MessagingException mex) {
-//	            mex.printStackTrace();
-//	        }
-			
+	     
+
+	     	/*------ Envoi du mail de notification au client ------*/
+	        String to = linkValid.get(0).getCommande().getUtilisateur().getMail(); 
+	        String from = "supermarketdai@gmail.com";
+	        String host = "smtp.gmail.com";
+	        String port = "587";
+	        String mdp = "ecxu xbzu lfeu cbgt";
+	        String sujet = "Votre commande " + linkValid.get(0).getCommande().getId_commande() + " est prête";
+	        String corpus = "Bonjour, \n Votre commande " + linkValid.get(0).getCommande().getId_commande() + " est prête, elle vous attend pour le " + linkValid.get(0).getCommande().getCreneau() + " ; \n" + valide + " ; \n"+ manque + " ; \n Au plaisir et à bientôt !";
+	        
+	        // Propriétés du mail
+	        Properties properties = System.getProperties();
+	        properties.setProperty("mail.smtp.host", host);
+	        properties.setProperty("mail.smtp.port", port);
+	        properties.setProperty("mail.smtp.auth", "true");
+	        properties.setProperty("mail.smtp.starttls.enable", "true");
+	
+	        // Authentification de l'expéditeur
+	        javax.mail.Authenticator auth = new javax.mail.Authenticator() {
+	            protected PasswordAuthentication getPasswordAuthentication() {
+	                return new PasswordAuthentication(from, mdp);
+	            }
+	        };
+	        Session session = Session.getDefaultInstance(properties, auth);
+	
+	        try {
+	        	// Création de l'objet MimeMessage
+                Message message = new MimeMessage(session);
+
+                // Paramètres du message
+                message.setFrom(new InternetAddress(from));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+	            // Sujet du mail
+	            message.setSubject(sujet);
+	            // Corps du message
+	            message.setText(corpus);
+	
+	            // Envoi du mail
+	            Transport.send(message);
+	            System.out.println("Message envoyé");
+	            
+	        } catch (MessagingException mex) {
+	            System.out.println("Attention erreur lors de l'envoi du mail : " + mex);
+	        }
+
+			System.out.println("Vers servlet VisuPreparateur");
 			request.getRequestDispatcher("central?type_action=listePaniers").forward(request, response);		 
 			
 	 }
