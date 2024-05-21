@@ -37,15 +37,6 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 	</div>
 
 	<script src="javascript/afficherPanier.js"></script>
-	
-	    
-    <!-- Button trigger modal -->
-    <div style="margin-left: 1cm;">
-        <br/>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-          Commander votre panier 
-        </button>
-    </div>
 
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"

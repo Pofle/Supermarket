@@ -145,7 +145,7 @@ public class ProduitDAO {
 	public void save(Produit produit) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(produit);
+            session.merge(produit);
             transaction.commit();
         }
     }

@@ -73,7 +73,6 @@ public class Produit {
 	
 	@ManyToOne
     @JoinColumn(name = "ID_CATEGORIE", nullable = false)
-	@Cascade(CascadeType.ALL)
 	private Categorie categorie;
 	
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
