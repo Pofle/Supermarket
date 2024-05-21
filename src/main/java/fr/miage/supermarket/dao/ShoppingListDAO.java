@@ -32,10 +32,9 @@ public class ShoppingListDAO {
 	        try {
 	            tx = session.beginTransaction();
 	            shoppingLists = session.createQuery("from ShoppingList sl where sl.utilisateur.id = :userId", ShoppingList.class)
-                        //TO-DO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
-	            		// -- Code à remplacer
+                       
 	            		.setParameter("userId", userId)
-	            		// Fin du code à remplacer
+	            		
                         .list();
 	        } catch (Exception e) {
 	            if (tx != null) tx.rollback();

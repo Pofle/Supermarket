@@ -1,5 +1,6 @@
 package fr.miage.supermarket.controlers;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -15,9 +16,11 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 
 import fr.miage.supermarket.dao.LinkListeProduitDAO;
+import fr.miage.supermarket.dao.MemoDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.LinkListeProduit;
+import fr.miage.supermarket.models.Memo;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.utils.ListWrapper;
 import fr.miage.supermarket.models.Utilisateur;
@@ -211,12 +214,15 @@ public class ServletDispatcher extends HttpServlet {
                     HttpSession session = request.getSession();
                     Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
                     int utilisateurId = utilisateur.getId();
-                    // Récupérer les liste de course de cet utilisateur
-                    List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);
-                    // Ajouter les listes de courses comme attribut de la requête
+                    // Récupérer les liste de course et les memos de cet utilisateur
+                    List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);                    
+                    String xmlMemosIdString = convertMemosToXml(shoppingLists);
+                    
+                    // Ajout des listes de courses et du xml_memo comme attribut de la requête
                     request.setAttribute("shoppingLists", shoppingLists);
+                    request.setAttribute("memosIdXml", xmlMemosIdString);
+                    
                     request.getRequestDispatcher("gestionList").forward(request, response);
-
 					return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());
@@ -247,6 +253,34 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
-	
+	private String convertMemosToXml(List<ShoppingList> shoppingLists) {
+		 List<Memo> memoList = null;
+		 
+		 try {
+		        memoList = MemoDAO.getMemosIds(shoppingLists);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }		
+		
+	    StringBuilder xmlBuilder = new StringBuilder();
+	    
+	    xmlBuilder.append("<memos>");
+	    for (Memo memo : memoList) {
+	        xmlBuilder.append("<memo>");
+	        xmlBuilder.append("<id_liste>").append(memo.getShoppingList().getId()).append("</id_liste>");
+	        xmlBuilder.append("</memo>");
+	    }
+	    xmlBuilder.append("</memos>");
+	    
+	    // Enregistrer le XML dans un fichier POUR TEST A SUPPRIMER APRES
+	    String xmlString = xmlBuilder.toString();
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Pauline\\Cours\\Projet\\memos_id.xml"))) {
+	        writer.write(xmlString);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return xmlString;
+	}
 
 }
