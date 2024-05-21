@@ -61,19 +61,24 @@ public class ServletDispatcher extends HttpServlet {
         	categorieCompte = user.getRole().name();
 		}
 		
-		if (categorieCompte != null) {
-			if (categorieCompte.equals(CategorieCompte.GESTIONNAIRE.name())) {
-				dispatchGestionnaireFuncs(action, request, response);
-			}
-			if (categorieCompte.equals(CategorieCompte.PREPARATEUR.name())) {
-				dispatchPreparateurFuncs(action, request, response);
-			}
-			if (categorieCompte.equals(CategorieCompte.UTILISATEUR.name())) {
-				dispatchUtilisateurFuncs(action, request, response);
-			} else {
-				dispatchDefaultFuncs(action, request, response);
-			}
-		}
+        if (categorieCompte != null) {
+            switch (categorieCompte) {
+                case "GESTIONNAIRE":
+                    dispatchGestionnaireFuncs(action, request, response);
+                    break;
+                case "PREPARATEUR":
+                    dispatchPreparateurFuncs(action, request, response);
+                    break;
+                case "UTILISATEUR":
+                    dispatchUtilisateurFuncs(action, request, response);
+                    break;
+                default:
+                    dispatchDefaultFuncs(action, request, response);
+                    break;
+            }
+        } else {
+            dispatchDefaultFuncs(action, request, response);
+        }
 	}
 
 	/**
