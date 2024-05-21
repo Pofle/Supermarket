@@ -28,7 +28,7 @@ public class Utilisateur {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID_UTILISATEUR", nullable=false, unique=true, length=13)
-	private int id;
+	private int id_utilisateur;
 	
 	@Column(name = "NOM", nullable = false, unique = false, length = 50)
 	private String nom;
@@ -51,7 +51,7 @@ public class Utilisateur {
 
 	//Getters
 	 public int getId() {
-	        return id;
+	        return id_utilisateur;
 	}
 	public String getNom() {
 		return nom;

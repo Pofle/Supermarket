@@ -109,4 +109,6 @@ public class ProduitDAO {
 			session.close();
 		}
 	}
+	
+	
 }
