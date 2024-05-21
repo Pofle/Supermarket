@@ -20,7 +20,6 @@ public class StockDAO {
 	
     /**
      * Récupère les informations de stock pour une date donnée.
-     * <p>
      * Cette méthode utilise une requête HQL pour sélectionner les informations des produits,
      * les quantités en stock, les noms des magasins, et la date de stock selectionnée en paramètre.
      * @param date la date pour laquelle récupérer les informations de stock
