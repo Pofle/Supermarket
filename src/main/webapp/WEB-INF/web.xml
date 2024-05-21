@@ -113,11 +113,12 @@
 		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.GestionRayonsService</servlet-class>
 	</servlet>
-    <servlet>
-        <servlet-name>GestionStockService</servlet-name>
-        <display-name>GestionStocksService</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.GestionStockService</servlet-class>
-    </servlet>
+	<servlet>
+		<servlet-name>HabitudesConsommationUtilisateurServlet</servlet-name>
+		<display-name>HabitudesConsommationUtilisateurServlet</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.HabitudesConsommationUtilisateurServlet</servlet-class>
+	</servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -197,8 +198,13 @@
 		<servlet-name>GestionRayonsService</servlet-name>
 		<url-pattern>/rayons</url-pattern>
 	</servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionStockService</servlet-name>
-        <url-pattern>/gestionStock</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>HabitudesConsommationUtilisateurServlet</servlet-name>
+		<url-pattern>/habitudesConsommation</url-pattern>
+	</servlet-mapping>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>supermarket</welcome-file>
+    </welcome-file-list>
 </web-app>
