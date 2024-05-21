@@ -9,9 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.models.Utilisateur;
 
 /**
  * Servlet qui gere la generation des listes de course de l'utilisatueur en XML
@@ -35,14 +37,14 @@ public class GenerationListeXml extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-	//TODO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
-	// -- Code à remplacer
-	    int userId = 1;
-	// Fin du code à remplacer
+		// Récupérer l'utilisateur connecté
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        int utilisateurId = utilisateur.getId();
 	   	   
 	    List<ShoppingList> shoppingLists = null;
 	    try {
-	        shoppingLists = ShoppingListDAO.getShoppingLists(userId);
+	        shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);
 	        System.out.println("Shopping lists fetched successfully");
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -51,12 +53,12 @@ public class GenerationListeXml extends HttpServlet {
 	    // Save du fichier XML pour TEST
 	    saveXmlToFile(xmlContent);
 	    
-	    // Include XML content in the response
+	    // Ajouter le xml envoyé dans la requête
 	    response.setContentType("application/xml");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write(xmlContent);
 	    
-	    System.out.println("XMLListes content sent in response");
+	    System.out.println("XML_Listes content sent in response");
 	}
 
 	/**

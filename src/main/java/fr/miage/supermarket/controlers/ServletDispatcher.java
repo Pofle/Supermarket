@@ -207,18 +207,16 @@ public class ServletDispatcher extends HttpServlet {
 			switch (action) {
 			case "gestion_List":
 				try {
-				// TODO:: remplacer par le get de l'id de l'utilisateur connecté
-					// 
-					int userId = 1;
-					//
-				// FIN TODDO
-					List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(userId);
-					for (ShoppingList shoppingList : shoppingLists) {
-                        shoppingList.getUtilisateur();
-                    }
-					 request.setAttribute("shoppingLists", shoppingLists);
-					 request.getRequestDispatcher("gestionList").forward(request, response);
-					return;
+					// Récupérer l'utilisateur connecté
+                    HttpSession session = request.getSession();
+                    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+                    int utilisateurId = utilisateur.getId();
+                    // Récupérer les liste de course de cet utilisateur
+                    List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);
+                    // Ajouter les listes de courses comme attribut de la requête
+                    request.setAttribute("shoppingLists", shoppingLists);
+                    request.getRequestDispatcher("gestionList").forward(request, response);
+                    return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());
 					 e.printStackTrace();
@@ -243,8 +241,6 @@ public class ServletDispatcher extends HttpServlet {
 			}
 		}
 		request.getRequestDispatcher(url).forward(request, response);
-	}
-	
-	
+	}	
 
 }
