@@ -130,6 +130,11 @@
         <display-name>RecupererStatistiques</display-name>
         <servlet-class>fr.miage.supermarket.controlers.RecupererStatistiques</servlet-class>
     </servlet>
+    <servlet>
+	    <servlet-name>CommandeUtilisateur</servlet-name>
+	    <servlet-class>fr.miage.supermarket.controlers.CommandeUtilisateur</servlet-class>
+	</servlet>
+    
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -227,6 +232,10 @@
     <servlet-mapping>
         <servlet-name>RecupererStatistiques</servlet-name>
         <url-pattern>/RecupererStatistiques</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>CommandeUtilisateur</servlet-name>
+    	<url-pattern>/CommandeUtilisateur</url-pattern>
     </servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>

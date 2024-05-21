@@ -6,9 +6,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
+import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 public class CommandeDAO {
@@ -17,6 +19,19 @@ public class CommandeDAO {
     
     public CommandeDAO() {
         this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+    }
+    
+    public List<Commande> getAllCommandes() {
+        Session session = sessionFactory.openSession();
+        List<Commande> commandes = null;
+        try {
+            commandes = session.createQuery("FROM Commande", Commande.class).list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return commandes;
     }
     
     public Commande creerCommande(Commande commande) {
@@ -64,5 +79,19 @@ public class CommandeDAO {
         } finally {
             session.close();
         }
+    }
+    
+    public List<Commande> getCommandesByUtilisateur(Utilisateur utilisateur) {
+        Session session = sessionFactory.openSession();
+        List<Commande> commandes = null;
+        try {
+            String hql = "FROM Commande WHERE utilisateur = :utilisateur";
+            Query<Commande> query = session.createQuery(hql, Commande.class);
+            query.setParameter("utilisateur", utilisateur);
+            commandes = query.getResultList();
+        } finally {
+            session.close();
+        }
+        return commandes;
     }
 }
