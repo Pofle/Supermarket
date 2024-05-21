@@ -39,7 +39,7 @@ ul {
     transition: transform 0.3s, filter 0.3s; 
 }
 
-.btn-DeleteListe,.btn-DeleteProduit, .btn-Memo{
+.btn-DeleteListe,.btn-DeleteProduit, .btn-Memo, .btn-addMemo{
 	width : 4ex;
 }
 .btn-DeleteListe:hover , .btn-DeleteProduit:hover {

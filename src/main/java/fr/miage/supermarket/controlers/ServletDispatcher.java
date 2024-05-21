@@ -255,6 +255,12 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
+	/**
+	 * Methode qui récupère une liste de Memos et la convertit en xml
+	 * @param shoppingLists, liste des listes de courses
+	 * @return
+	 * @author Pauline
+	 */
 	private String convertMemosToXml(List<ShoppingList> shoppingLists) {
 		 List<Memo> memosList = null;
 		 

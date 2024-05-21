@@ -1,5 +1,47 @@
 /**
- * Script pour afficher les produits d'une liste de course
+ * Fonction pour générer les boutons "Memo" pour les listes de courses.
+ */
+function generateMemoButtons() {
+if (!memosXml) {
+        console.error("XML_memos not found.");
+        return;
+    }
+    // Parse le texte XML en document XML
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(memosXml, "application/xml");
+
+    // Récupère tous les éléments <id_liste> dans le XML
+    const idListElements = xmlDoc.getElementsByTagName("id_liste");
+    const idListArray = Array.from(idListElements).map(el => el.textContent);
+   
+     // Pour chaque conteneur de bouton dans le DOM, ajoute le bouton approprié
+    document.querySelectorAll('[id^=btn-Memo_container-]').forEach(container => {
+        const id = container.id.split('-')[2]; // Extraire l'ID de liste depuis l'ID du conteneur
+        if (idListArray.includes(id)) {
+            // Génère le bouton "Memo" si l'ID_listeCourse est présent dans le XML
+            const memoButton = document.createElement('a');
+            memoButton.href = "";
+            memoButton.setAttribute('data-bs-toggle', 'modal');
+            memoButton.setAttribute('data-bs-target', '#modalMemo');
+            memoButton.innerHTML = `<img src="recupererImage?cheminImage=icons/memo_icon2.png" class="btn-Memo" onclick="chargerMemo(${id})" title="Memo" />`;
+            container.appendChild(memoButton);
+        } else {
+            // Génère le bouton "Add Memo" si l'ID_ListeCourse n'est pas présent dans le XML
+            const addMemoButton = document.createElement('a');
+            addMemoButton.href = "";
+            addMemoButton.innerHTML = `<img src="recupererImage?cheminImage=icons/addMemo_icon.png" class="btn-addMemo" title="Ajouter Memo" />`;
+            container.appendChild(addMemoButton);
+        }
+    });
+}
+
+// Appel de la fonction de génération au chargement de la page
+window.onload = generateMemoButtons;
+
+
+
+/**
+ * Fonction pour afficher les produits d'une liste de course
  */
 function chargerProduitsListe(idListe, nomListe) {
     // RETOUR CONSOLE pour test
@@ -27,7 +69,7 @@ function chargerProduitsListe(idListe, nomListe) {
                         produitsHTML += "<li>";
                         produitsHTML += "<input type='number' min='0' step='1' class='input_quantite' name='" + ean + "' value='" + quantite + "'>";
                         produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
-                       	produitsHTML += "<a href='gestionProduitListe?type_action=delete_produit&produit_ean=" + ean + "&listeId=" + idListe + "'><img src='recupererImage?cheminImage=delete_icon.png' class='btn-DeleteProduit' title='Supprimer le produit'/></a>";
+                       	produitsHTML += "<a href='gestionProduitListe?type_action=icons/delete_produit&produit_ean=" + ean + "&listeId=" + idListe + "'><img src='recupererImage?cheminImage=delete_icon.png' class='btn-DeleteProduit' title='Supprimer le produit'/></a>";
                         produitsHTML += "</li>";
                     }
                     produitsHTML += "</ul>";
@@ -70,6 +112,10 @@ function forcerFermetureModal() {
     });
 }
 
+
+
 $(document).ready(function() {
     forcerFermetureModal();
 });
+
+

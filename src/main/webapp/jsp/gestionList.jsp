@@ -36,11 +36,15 @@
             		onclick="chargerProduitsListe(${list.id}, '${list.name}')">
             			${status.index + 1} - ${list.name}
             		</p>
-            		<a href="" data-bs-toggle="modal" data-bs-target="#modalMemo">
-            			<img src="recupererImage?cheminImage=memo_icon.png" class="btn-Memo" Title="Memo" />
-            		</a>
+            		
+            		<!-- 	Bouton à générer ici avec le script JS au chargement -->
+            		<div id="btn-Memo_container-${list.id}">
+                        <!-- Le bouton sera généré ici par le script JS -->
+                    </div>
+            		
+            		
             		<a href="servletListeCourse?type_action=delete_list&list_id=${list.id}">
-            			<img src="recupererImage?cheminImage=delete_icon.png" class="btn-DeleteListe" Title="Supprimer la liste de course" />
+            			<img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteListe" Title="Supprimer la liste de course" />
             		</a>
             	</li> 
         	</c:forEach>
@@ -116,6 +120,11 @@
 </div>
 
  <!-- Script -->
+ <script>
+        // Stocker le XML des memos dans une variable JavaScript
+        const memosXml = `<c:out value="${requestScope.memosIdXml}" escapeXml="false"/>`;
+</script>
+    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="javascript/script.js"></script>       
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

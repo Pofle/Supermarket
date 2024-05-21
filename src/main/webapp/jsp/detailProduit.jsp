@@ -27,7 +27,7 @@
 				<!-- Bouton Ajouter produit à une liste -->
 				<%-- <c:if test="${requestScope.categorie == 'UTILISATEUR'}"> --%>
 					 <img onclick="chargerListe('${produit.getEan()}')" 
-					 src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#addProduitModal" />
+					 src="recupererImage?cheminImage=icons/addIntoList_icon.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#addProduitModal" />
 				<%-- </c:if> --%>
 				<!-- Fin du bouton	 -->	
 				
