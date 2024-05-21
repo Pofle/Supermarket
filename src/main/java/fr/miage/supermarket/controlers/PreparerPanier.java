@@ -23,7 +23,7 @@ import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.Commande;
-import fr.miage.supermarket.models.Link_Commande_Produit;
+import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 
@@ -55,6 +55,7 @@ public class PreparerPanier extends HttpServlet {
 		 System.out.println("vers servlet VisuPreparateur");
 	 }
 	 
+	 CommandeDAO commandeDAO = new CommandeDAO();
 	 private static final SimpleDateFormat DF = new SimpleDateFormat("HH:mm:ss:SSS");
 
 	 private void gestionFormu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -62,7 +63,7 @@ public class PreparerPanier extends HttpServlet {
 		 String prepaChrono = request.getParameter("prepaChrono");
 	     String finTempsPrepa = request.getParameter("finTempsPrepa");
 	     System.out.println(idLinkValide.length);
-	     ArrayList<Link_Commande_Produit> linkValid = new ArrayList<Link_Commande_Produit>();
+	     ArrayList<LinkCommandeProduit> linkValid = new ArrayList<LinkCommandeProduit>();
 	     if(idLinkValide != null) {
 		        for (String id : idLinkValide) {
 		        	String[] ids = id.split(",");
@@ -71,11 +72,11 @@ public class PreparerPanier extends HttpServlet {
 					linkValid.add(CommandeDAO.loadLink(idCommande, ean));
 				}
 		        System.out.println("gestionFormu - génération de la commande de base pour comparaison");
-				ArrayList<Link_Commande_Produit> linkCompar = CommandeDAO.getLinkByCommande(linkValid.get(linkValid.size()-1).getCommande().getId_commande());
+				ArrayList<LinkCommandeProduit> linkCompar = commandeDAO.getLinkByCommande(linkValid.get(linkValid.size()-1).getCommande().getId_commande());
 				if(linkCompar.size() != linkValid.size()) {
 					linkCompar.removeAll(linkValid);
 					System.out.println("Attention il manque : ");
-					for (Link_Commande_Produit l : linkCompar) {
+					for (LinkCommandeProduit l : linkCompar) {
 						System.out.println(" - " + l.getProduit().getLibelle());
 					}
 				}
@@ -121,8 +122,8 @@ public class PreparerPanier extends HttpServlet {
 		                // Conversion de la différence de temps en java.sql.Time
 		                Time chronoPanierTime = new Time(differenceTemps - 3600000);  // Ajustement pour le fuseau horaire
 		                linkValid.get(0).getCommande().setChrono(chronoPanierTime);  
-					    CommandeDAO.saveCommandechrono(linkValid.get(0).getCommande());
-					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" enregistrée dans la bd");
+					    commandeDAO.mettreAJourCommande(linkValid.get(0).getCommande());
+					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" chrono : " + linkValid.get(0).getCommande().getChrono() + "enregistrée dans la bd");
 
 		            }
 		        }

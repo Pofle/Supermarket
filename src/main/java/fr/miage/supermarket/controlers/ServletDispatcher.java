@@ -1,7 +1,7 @@
 package fr.miage.supermarket.controlers;
 
 import fr.miage.supermarket.models.Commande;
-import fr.miage.supermarket.models.Link_Commande_Produit;
+import fr.miage.supermarket.models.LinkCommandeProduit;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,23 +116,23 @@ public class ServletDispatcher extends HttpServlet {
 	 * @throws ServletException Si une erreur survient au niveau du servlet
 	 * @throws IOException Si une erreur d'entrée/sortie survient
 	 */
-	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String url;
-		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
-		if (action == null)
-			url = "accueil";
-		else {
-			switch (action) {
-			case "preparationPanier":
-				url = "preparationPanier";
-				break;
-			default:
-				url = "accueil";
-			}
-		}
-		request.getRequestDispatcher(url).forward(request, response);
-	}
+//	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		String url;
+//		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
+//		if (action == null)
+//			url = "accueil";
+//		else {
+//			switch (action) {
+//			case "preparationPanier":
+//				url = "preparationPanier";
+//				break;
+//			default:
+//				url = "accueil";
+//			}
+//		}
+//		request.getRequestDispatcher(url).forward(request, response);
+//	}
 	
 	/**
 	 * gestion de la catégorie PREPARATEUR d'utilisateur 

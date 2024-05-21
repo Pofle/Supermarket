@@ -14,7 +14,7 @@ import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.Commande;
-import fr.miage.supermarket.models.Link_Commande_Produit;
+import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 
@@ -68,7 +68,7 @@ public class VisuPreparateur extends HttpServlet {
 	 */
 	private void displaySpecificPanier(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		System.out.println("displaySpecificPanier - Préparation jsp preparer paniers - affichage de ");
-		ArrayList<Link_Commande_Produit> linkAsso = CommandeDAO.getLinkByCommande(request.getParameter("id_commande").toString());
+		ArrayList<LinkCommandeProduit> linkAsso = CommandeDAO.getLinkByCommande(Integer.parseInt(request.getParameter("id_commande")));
 		
 		// attention set catégorie 
 		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());

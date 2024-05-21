@@ -22,7 +22,7 @@ import org.hibernate.cache.spi.support.SimpleTimestamper;
 import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Commande;
-import fr.miage.supermarket.models.Link_Commande_Produit;
+import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.utils.HibernateUtil;
 /**
  * Gestion des commandes clients pour préparation de panier
@@ -102,7 +102,7 @@ private SessionFactory sessionFactory;
 	 * @param id_Commande
 	 * @return la Commande désigné par son ID
 	 */
-	public static Commande loadCommande(String id_Commande) {
+	public static Commande loadCommande(Integer id_Commande) {
 	    Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 	    Transaction transact = session.getTransaction();
 	    if(!transact.isActive()) {
@@ -152,19 +152,19 @@ private SessionFactory sessionFactory;
 	 * @param idCommande
 	 * @return
 	 */
-	public static ArrayList<Link_Commande_Produit> getLinkByCommande(String idCommande) {
+	public static ArrayList<LinkCommandeProduit> getLinkByCommande(Integer idCommande) {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		Transaction transact = session.getTransaction();
 		if(!transact.isActive()) {
 			transact = session.beginTransaction();
 		}
-		Query query = session.createQuery("FROM Link_Commande_Produit lc WHERE lc.commande.id_commande = :idCommande", Link_Commande_Produit.class);
+		Query query = session.createQuery("FROM Link_Commande_Produit lc WHERE lc.commande.id_commande = :idCommande", LinkCommandeProduit.class);
 		query.setParameter("idCommande", idCommande);
-		ArrayList<Link_Commande_Produit> linkByCommande = (ArrayList<Link_Commande_Produit>) query.getResultList();
+		ArrayList<LinkCommandeProduit> linkByCommande = (ArrayList<LinkCommandeProduit>) query.getResultList();
 		System.out.println("getLinkByCommande returns : ");
-		for (Link_Commande_Produit lcp : linkByCommande) {
+		for (LinkCommandeProduit lcp : linkByCommande) {
 			if (lcp!= null) {
-				System.out.println("Commande : "+lcp.getCommande().getId_commande()+" art : "+lcp.getProduit().getEan() + " * " + lcp.getQte());
+				System.out.println("Commande : "+lcp.getCommande().getId_commande()+" art : "+lcp.getProduit().getEan() + " * " + lcp.getQuantite());
 			}
 		}
 		transact.commit();
@@ -188,7 +188,7 @@ private SessionFactory sessionFactory;
 		return idComm;
 	}
 	
-	public static Link_Commande_Produit loadLink(String id_Commande, String ean) {
+	public static LinkCommandeProduit loadLink(String id_Commande, String ean) {
 	    Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 	    Transaction transact = session.getTransaction();
 	    if(!transact.isActive()) {
@@ -196,11 +196,11 @@ private SessionFactory sessionFactory;
 	    }
 	    try {
 //	        Link_Commande_Produit wantedLink = session.get(Link_Commande_Produit.class, id_commande);
-			Query query = session.createQuery("FROM Link_Commande_Produit WHERE commande.id_commande = :id_Commande AND produit.ean = :ean", Link_Commande_Produit.class);
+			Query query = session.createQuery("FROM Link_Commande_Produit WHERE commande.id_commande = :id_Commande AND produit.ean = :ean", LinkCommandeProduit.class);
 			query.setParameter("id_Commande", id_Commande);
 			query.setParameter("ean", ean);
-			Link_Commande_Produit wantedLink = (Link_Commande_Produit) query.getSingleResult();
-			System.out.println("loadLink returns : cmde " + wantedLink.getCommande().getId_commande() + ", prod " + wantedLink.getProduit().getEan() + ", qte " + wantedLink.getQte());
+			LinkCommandeProduit wantedLink = (LinkCommandeProduit) query.getSingleResult();
+			System.out.println("loadLink returns : cmde " + wantedLink.getCommande().getId_commande() + ", prod " + wantedLink.getProduit().getEan() + ", qte " + wantedLink.getQuantite());
 			transact.commit();
 	        return wantedLink;
 	    } catch (RuntimeException e) {

@@ -19,7 +19,7 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+//import org.hibernate.annotations.CascadeType;
 
 import jakarta.persistence.Column;
 
@@ -32,8 +32,8 @@ public class Commande {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_commande;
 	
-    @OneToMany(mappedBy = "commande")
-    @Cascade(CascadeType.ALL)
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
+//    @Cascade(CascadeType.ALL)
     private Set<LinkCommandeProduit> produits = new HashSet<>();
 
 	@Column(name="STATUT", nullable=false)
@@ -42,10 +42,14 @@ public class Commande {
 	@Column(name="TEMPS_PREPARATION")
 	@Temporal(jakarta.persistence.TemporalType.TIME)
 	private Time chrono;
+	
+	@Column (name="CRENEAU")
+	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
+	private Timestamp creneau;
 
-	@ManyToOne
+	@ManyToOne ( cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
-	@Cascade(CascadeType.ALL)
+//	@Cascade(CascadeType.ALL)
     private Utilisateur utilisateur;
 
 	public void finaliserCommande(float montantTotal) {
@@ -87,6 +91,14 @@ public class Commande {
 
 	public void setChrono(Time chrono) {
 		this.chrono = chrono;
+	}
+	
+	public Timestamp getCreneau() {
+		return creneau;
+	}
+
+	public void setCreneau(Timestamp creneau) {
+		this.creneau = creneau;
 	}
 	
 	public Utilisateur getUtilisateur() {
