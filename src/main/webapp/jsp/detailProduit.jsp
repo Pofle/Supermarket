@@ -25,10 +25,10 @@
 				<h1>${produit.getLibelle()}-${produit.getMarque()}</h1>
 				
 				<!-- Bouton Ajouter produit à une liste -->
-				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
+				<%-- <c:if test="${requestScope.categorie == 'UTILISATEUR'}"> --%>
 					 <img onclick="chargerListe('${produit.getEan()}')" 
 					 src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#addProduitModal" />
-				</c:if>
+				<%-- </c:if> --%>
 				<!-- Fin du bouton	 -->	
 				
 				<div class="description">
