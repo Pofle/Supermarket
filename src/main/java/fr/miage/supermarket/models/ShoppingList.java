@@ -32,11 +32,11 @@ public class ShoppingList {
     private String name;
 	
 	//Relations
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "UTILISATEUR_ID")
     private Utilisateur utilisateur;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "LINK_LISTE_PRODUIT", 
 	           joinColumns = @JoinColumn(name = "ID_LISTE"), 
 	           inverseJoinColumns = @JoinColumn(name = "EAN",  referencedColumnName = "ean"))

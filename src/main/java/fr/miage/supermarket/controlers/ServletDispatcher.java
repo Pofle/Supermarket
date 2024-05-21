@@ -1,6 +1,8 @@
 package fr.miage.supermarket.controlers;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,16 +11,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//import org.hibernate.mapping.List;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
 
+import fr.miage.supermarket.dao.LinkListeProduitDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
+import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.utils.ListWrapper;
 import fr.miage.supermarket.models.Utilisateur;
 
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
+ *
  */
 public class ServletDispatcher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,6 +36,7 @@ public class ServletDispatcher extends HttpServlet {
 	 */
 	public ServletDispatcher() {
 		super();
+		 System.out.println("ServletDispatcher initialized");
 	}
 
 	/**
@@ -194,9 +202,18 @@ public class ServletDispatcher extends HttpServlet {
 			switch (action) {
 			case "gestion_List":
 				try {
-					List<ShoppingList> allShoppingLists = ShoppingListDAO.getShoppingLists();
-					 request.setAttribute("shoppingLists", allShoppingLists);
-					url= "gestionList";
+				// TODO:: remplacer par le get de l'id de l'utilisateur connecté
+					// 
+					int userId = 1;
+					//
+				// FIN TODDO
+					List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(userId);
+					for (ShoppingList shoppingList : shoppingLists) {
+                        shoppingList.getUtilisateur();
+                    }
+					 request.setAttribute("shoppingLists", shoppingLists);
+					 request.getRequestDispatcher("gestionList").forward(request, response);
+					return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());
 					 e.printStackTrace();
@@ -222,5 +239,7 @@ public class ServletDispatcher extends HttpServlet {
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
+	
+	
 
 }
