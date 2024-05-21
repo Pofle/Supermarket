@@ -56,7 +56,7 @@ public class ServletDispatcher extends HttpServlet {
 		
 		HttpSession session = request.getSession();
         Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
-        String categorieCompte = CategorieCompte.GESTIONNAIRE.name();
+        String categorieCompte = CategorieCompte.VISITEUR.name();
         if (user != null) {
         	categorieCompte = user.getRole().name();
 		}
@@ -101,7 +101,7 @@ public class ServletDispatcher extends HttpServlet {
 				url = "gestionProduit";
 				break;
 			case "gestionStock":
-				url = "gestionStock";
+				url = "stocks";
 				break;
 			case "gestionCommande":
 				url = "gestionCommande";

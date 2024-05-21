@@ -65,4 +65,3 @@ public class Magasin {
 		this.linkProduitStocks = linkProduitStocks;
 	}
 }
-

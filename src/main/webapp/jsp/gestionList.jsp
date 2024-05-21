@@ -36,7 +36,7 @@
             		onclick="chargerProduitsListe(${list.id}, '${list.name}')">
             			${status.index + 1} - ${list.name}
             		</p>
-            		<a href="ServletListeCourse?type_action=delete_list&list_id=${list.id}">
+            		<a href="servletListeCourse?type_action=delete_list&list_id=${list.id}">
             			<img src="recupererImage?cheminImage=delete_icon.png" class="btn-DeleteListe" Title="Supprimer la liste de course" />
             		</a>
             	</li> 
@@ -55,7 +55,7 @@
         	<h1 class="modal-title fs-5" id="ModalProduitsLabel"></h1>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
-      	<form id="formProduits" action="GestionProduitListe" method="post">
+      	<form id="formProduits" action="gestionProduitListe" method="post">
       		<div class="modal-body">
       		                        		  	
       		</div>
@@ -76,7 +76,7 @@
         	<h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter une liste</h1>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
-      	<form action="ServletListeCourse" method="post">
+      	<form action="servletListeCourse" method="post">
       		<div class="modal-body">                
         		<label for="name">Nom :</label>
         		<input type="text" id="name" name="inputName" required>  	
