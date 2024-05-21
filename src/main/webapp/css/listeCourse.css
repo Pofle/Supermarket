@@ -39,10 +39,10 @@ ul {
     transition: transform 0.3s, filter 0.3s; 
 }
 
-.btn-Delete{
+.btn-DeleteListe,.btn-DeleteProduit{
 	width : 4ex;
 }
-.btn-Delete:hover {
+.btn-DeleteListe:hover , .btn-DeleteProduit:hover {
     transform: scale(1.2); 
     filter: brightness(1.5); 
 }
@@ -58,7 +58,7 @@ ul {
     background-color: #0056b3; 
 }
 
-/* Style pour la modal */
+/* Style global des modal */
 .modal-header {
     display: flex;
     justify-content: center;
@@ -88,8 +88,6 @@ ul {
 .modal-title {
     text-align: center; 
 }
-
-/* Style pour le formulaire dans la modal */
 label {
     display: block;
     margin-bottom: 5px;
@@ -119,4 +117,51 @@ input[type="text"]:focus {
     margin-left: 10px;
     cursor: pointer;
 }
+/* Style pour la modale des produits dans la liste */
+#modalProduits {
+    font-family: 'Roboto', sans-serif; 
+}
 
+#modalProduits .modal-title {
+    font-size: 1.25rem; 
+    font-weight: bold; 
+}
+
+#modalProduits .modal-body ul {
+    list-style-type: none; 
+    padding: 0; 
+}
+
+#modalProduits .modal-body ul li {
+    padding-left: 20px; 
+    position: relative; 
+    margin-bottom: 5px; 
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+#modalProduits .modal-body ul li:before {
+    content: ""; 
+    position: absolute; 
+    left: 0; 
+    bottom: -1px; 
+    width: 100%; 
+    height: 1px; 
+    background-color: #ddd; 
+}
+
+#modalProduits .modal-footer {
+    border-top: none; 
+}
+
+/* Fond de la modal */
+#modalProduits .modal-content {
+    background-color: rgba(249, 249, 235, 1);
+}
+
+/* Style pour l'input de quantité */
+input[type="number"] {
+    width: 60px;
+    margin-right: 10px;
+}

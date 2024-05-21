@@ -1,28 +1,14 @@
 package fr.miage.supermarket.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
+import java.util.List;
 import jakarta.xml.bind.annotation.XmlTransient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-
 import java.io.IOException;
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
 import fr.miage.supermarket.utils.ImageUtil;
 import fr.miage.supermarket.xml.CategorieXmlAdapter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Transient;
-
-import jakarta.persistence.FetchType;
-
-import java.util.List;
 
 
 @Entity
@@ -84,6 +70,9 @@ public class Produit {
 	@Transient
 	private String imageBase64;
 	
+	
+	@OneToMany(mappedBy = "produit")
+	private List<Link_Produit_Stock> linkProduitStocks;
 	
 	public String getEan() {
 		return ean;
@@ -231,4 +220,13 @@ public class Produit {
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
+
+	public List<Link_Produit_Stock> getLinkProduitStocks() {
+		return linkProduitStocks;
+	}
+
+	public void setLinkProduitStocks(List<Link_Produit_Stock> linkProduitStocks) {
+		this.linkProduitStocks = linkProduitStocks;
+	}
+
 }
