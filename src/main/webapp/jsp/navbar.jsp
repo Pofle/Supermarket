@@ -11,18 +11,20 @@
 					<li class="navbar-item"><a href="central?type_action=gestionStock" class="navbar-link">Gestion du stock</a></li>
 				</c:if>
 				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
-					<li class="navbar-item"><a href="central?type_action=preparationPanier" class="navbar-link">Préparation des paniers</a></li>
+					<li class="navbar-item"><a
+						href="central?type_action=preparationPanier" class="navbar-link">Préparation
+							des paniers</a></li>
 				</c:if>
 				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
                     <li class="navbar-item"><a href="central?type_action=gestion_List" class="navbar-link">Listes des courses</a></li>
+                    <li class="navbar-item"><a href="central?type_action=habitudesConsommation" class="navbar-link">Mes habitudes</a></li>
 				</c:if>
 				<c:if test="${requestScope.categorie == 'VISITEUR'}">
 					<li class="navbar-item"><a href="central?type_action=connexionInscription" class="navbar-link">Connexion / Inscription</a></li>
 				</c:if>
 			</ul>
 		</div>
-		<span class="navbar-right">
-			<span class="navbar-profile">${categorie}</span>
+		<span class="navbar-right"> <span class="navbar-profile">${categorie}</span>
 			<div class="navbar-cart-container">
 				<a href="central?type_action=panier"">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" color="#ffffff" fill="none">

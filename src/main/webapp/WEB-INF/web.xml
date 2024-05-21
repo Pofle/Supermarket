@@ -89,6 +89,11 @@
         <servlet-name>ServletAjoutProduitListe</servlet-name>
         <servlet-class>fr.miage.supermarket.controlers.ServletAjoutProduitListe</servlet-class>
     </servlet>
+	<servlet>
+		<servlet-name>HabitudesConsommationUtilisateurServlet</servlet-name>
+		<display-name>HabitudesConsommationUtilisateurServlet</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.HabitudesConsommationUtilisateurServlet</servlet-class>
+	</servlet>
     <servlet>
         <servlet-name>GestionCategoriesService</servlet-name>
         <display-name>GestionCategoriesService</display-name>
@@ -197,6 +202,10 @@
         <servlet-name>ServletAjoutProduitListe</servlet-name>
         <url-pattern>/ServletAjoutProduitListe</url-pattern>
     </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>HabitudesConsommationUtilisateurServlet</servlet-name>
+		<url-pattern>/habitudesConsommation</url-pattern>
+	</servlet-mapping>
     <servlet-mapping>
         <servlet-name>GestionCategoriesService</servlet-name>
         <url-pattern>/categories</url-pattern>
@@ -233,4 +242,5 @@
     <welcome-file-list>
         <welcome-file>supermarket</welcome-file>
     </welcome-file-list>
+    
 </web-app>
