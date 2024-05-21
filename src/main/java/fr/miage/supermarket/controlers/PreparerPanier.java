@@ -99,7 +99,7 @@ public class PreparerPanier extends HttpServlet {
 		        for(LinkCommandeProduit l : linkValid) {
 		        	valide = valide + l.getProduit().getLibelle() + ", ";
 		        }
-		        valide = valide.substring(0, -2);
+		        valide = valide.substring(0, valide.length()-2);
 		        System.out.println("Sélection formulaire, " + valide);
 		        // on vérifie si tous les éléments ont été validé/sélectionné
 		        System.out.println("gestionFormu - génération de la commande de base pour comparaison");
@@ -117,7 +117,7 @@ public class PreparerPanier extends HttpServlet {
 					for (LinkCommandeProduit l : linkCompar) {
 						manque = manque + l.getProduit().getLibelle() + ", " ;
 					}
-					manque = manque.substring(0, -2);
+					manque = manque.substring(0, manque.length()-2);
 					System.out.println(manque);
 				}
 				

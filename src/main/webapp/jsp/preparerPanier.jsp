@@ -19,11 +19,11 @@
 document.addEventListener('DOMContentLoaded', function() {
 	
 	var commandCards = document.querySelectorAll('.command-card');
-    var submitButton = document.querySelector('.button');
+    var boutonPrepaTermine = document.querySelector('.button');
 
-    function updateSubmitButtonVisibility() {
+    function MajVisibilitePrepaBouton() {
         var selectedCheckboxes = document.querySelectorAll('.hidden-checkbox:checked');
-        submitButton.style.display = selectedCheckboxes.length > 0 ? 'block' : 'none';
+        boutonPrepaTermine.style.display = selectedCheckboxes.length > 0 ? 'block' : 'none';
     }
     
 
@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 hiddenCheckbox.checked = !hiddenCheckbox.checked;
             }
             
-            // Update the preparation time
             MajChronoPrepa();
+            
+            MajVisibilitePrepaBouton();
         });
     });
 });
@@ -58,6 +59,7 @@ function finChronoPrepa() {
     var finTempsPrepa = document.getElementById('finTempsPrepa');
     finTempsPrepa.value = new Date().toISOString();
 }
+MajVisibilitePrepaBouton();
 </script>
 <title>Préparation</title>
 </head>
@@ -100,7 +102,7 @@ function finChronoPrepa() {
 			</div>
 			<input type="hidden" id="prepaChrono" name="prepaChrono">
 	        <input type="hidden" id="finTempsPrepa" name="finTempsPrepa">
-	        <input type="submit" value="Préparation Terminée" class="button">
+	        <input type="submit" value="Préparation Terminée" class="button" style="display:none">
 		</form>
 </body>
 </html>
