@@ -3,7 +3,7 @@
  */
 function chargerListe() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/SupermarketG3/GenerationListeXml", true);
+    xhr.open("GET", "generationListeXml", true);
     xhr.onload = function() {
         if (xhr.status === 200) {
             var xmlDoc = xhr.responseXML;

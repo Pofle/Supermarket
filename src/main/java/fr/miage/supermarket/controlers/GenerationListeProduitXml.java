@@ -68,11 +68,6 @@ public class GenerationListeProduitXml extends HttpServlet {
 	            // Log de contrôle de la génération du XML
 	            System.out.println("XML_LinkListeProduits response generated");
 
-	            // Écriture du fichier XML généré dans le chemin spécifié
-	            try (FileWriter fileWriter = new FileWriter(new File("C:/Users/Pauline/Cours/Projet/produitListes.xml"))) {
-	                fileWriter.write(xmlContent.toString());
-	            }
-
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

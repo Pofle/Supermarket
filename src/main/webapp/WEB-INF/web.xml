@@ -69,12 +69,6 @@
         <servlet-class>fr.miage.supermarket.controlers.GestionProduitsService</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AjoutProduitPanier</servlet-name>
-        <display-name>AjoutProduitPanier</display-name>
-        <description>Servlet d'ajout d'un produit dans un panier</description>
-        <servlet-class>fr.miage.supermarket.controlers.AjoutProduitPanier</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>GestionArticleListe</servlet-name>
         <display-name>GestionArticleListe</display-name>
         <servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
@@ -162,12 +156,8 @@
         <url-pattern>/produits</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AjoutProduitPanier</servlet-name>
-        <url-pattern>/ajoutPanier</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ServletListeCourse</servlet-name>
-        <url-pattern>/ServletListeCourse</url-pattern>
+        <url-pattern>/servletListeCourse</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletAuthentification</servlet-name>
@@ -215,7 +205,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProduitPanierService</servlet-name>
-        <url-pattern>/panier</url-pattern>
+        <url-pattern>/ajoutPanier</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MagasinService</servlet-name>
@@ -223,7 +213,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletPanier</servlet-name>
-        <url-pattern>/ServletPanier</url-pattern>
+        <url-pattern>/panier</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RecupererStatistiques</servlet-name>
