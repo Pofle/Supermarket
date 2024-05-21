@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -21,8 +22,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.opencsv.CSVReader;
 
+import fr.miage.supermarket.dao.CategorieDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
+import fr.miage.supermarket.dao.RayonDAO;
+import fr.miage.supermarket.dto.CategorieDTO;
+import fr.miage.supermarket.dto.ProduitDTO;
+import fr.miage.supermarket.dto.RayonDTO;
+import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.Rayon;
 import fr.miage.supermarket.utils.ListWrapper;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -39,18 +47,25 @@ public class GestionProduitsService extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
     
-	private static final int EXPECTED_COLUMNS = 13;
+	private static final int EXPECTED_COLUMNS = 15;
 	
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 	
-	private ProduitDAO produitDao;
+	private ProduitDAO produitDAO;
+	
+	private CategorieDAO categorieDAO;
+	
+	private RayonDAO rayonDAO;
+	
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public GestionProduitsService() {
         super();
-        this.produitDao = new ProduitDAO();
+        this.produitDAO = new ProduitDAO();
+        this.rayonDAO = new RayonDAO();
+        this.categorieDAO = new CategorieDAO();
     }
 
     /**
@@ -63,18 +78,26 @@ public class GestionProduitsService extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Produit> produits = new ArrayList<>();
+		List<ProduitDTO> produitsDTOs = new ArrayList<>();
+		String libelle = request.getParameter("libelle");
+	    String categorie = request.getParameter("categorie");
+	    String rayon = request.getParameter("rayon");
 		
-		if(request.getParameter("libelle") != null) {
-	        produits = produitDao.getProduitsByLibelle(request.getParameter("libelle"));
+		if(libelle != null || categorie != null || rayon != null) {
+	        produits = produitDAO.getProduitsByFilters(libelle, categorie, rayon);
 		} else {
-			produits = produitDao.getAllProduits();
+			produits = produitDAO.getAllProduits();
 		}
 		
+		for(Produit prd: produits) {
+        	produitsDTOs.add(convertToDTO(prd, produitDAO.getQuantiteCommandee(prd)));
+        }
+		
 		try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Produit.class, ListWrapper.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(ProduitDTO.class, ListWrapper.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
 
-            ListWrapper<Produit> wrapper = new ListWrapper<>(produits);
+            ListWrapper<ProduitDTO> wrapper = new ListWrapper<>(produitsDTOs);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
             marshaller.marshal(wrapper, writer);
@@ -105,7 +128,7 @@ public class GestionProduitsService extends HttpServlet {
 			}
 			
 			List<Produit> produits = readCsvFile(filePart.getInputStream());
-			produitDao.registerProduits(produits);			
+			produitDAO.registerProduits(produits);			
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ServletException | IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -196,9 +219,61 @@ public class GestionProduitsService extends HttpServlet {
                     throw new IOException("Si un conditionnement n'est pas saisi, un poids doit être saisi à la ligne " + lineNumber);
                 }
 
+                
+                String categorieLibelle = data[13];
+                String rayonLibelle = data[14];
+
+                Rayon rayon = rayonDAO.findByLibelle(rayonLibelle);
+                if (rayon == null) {
+                    rayon = new Rayon();
+                    rayon.setLibelle(rayonLibelle);
+                    rayonDAO.save(rayon);
+                }
+
+                Categorie categorie = categorieDAO.findByLibelle(categorieLibelle);
+                if (categorie == null) {
+                    categorie = new Categorie();
+                    categorie.setLibelle(categorieLibelle);
+                    categorie.setRayon(rayon);
+                    categorieDAO.save(categorie);
+                }
+
+                produit.setCategorie(categorie);
+
                 produits.add(produit);
+                
+                produitDAO.save(produit);
             }
         }
         return produits;
+    }
+    
+    private ProduitDTO convertToDTO(Produit produit, int qtt) {
+        ProduitDTO dto = new ProduitDTO();
+        dto.setEan(produit.getEan());
+        dto.setLibelle(produit.getLibelle());
+        dto.setNutriscore(produit.getNutriscore());
+        dto.setMarque(produit.getMarque());
+        dto.setRepertoireVignette(produit.getRepertoireVignette());
+        dto.setLabel(produit.getLabel());
+        dto.setPrix(produit.getPrix());
+        dto.setConditionnement(produit.getConditionnement());
+        dto.setQuantiteConditionnement(produit.getQuantiteConditionnement());
+        dto.setPoids(produit.getPoids());
+
+        dto.setQuantiteCommandee(qtt);
+
+        if (produit.getCategorie() != null) {
+            CategorieDTO categorieDTO = new CategorieDTO();
+            categorieDTO.setLibelle(produit.getCategorie().getLibelle());
+            dto.setCategorie(categorieDTO);
+            if(produit.getCategorie().getRayon() != null) {
+            	RayonDTO rayonDTO = new RayonDTO();
+            	rayonDTO.setLibelle(produit.getCategorie().getRayon().getLibelle());
+                dto.setRayon(rayonDTO);
+            }
+        }
+
+        return dto;
     }
 }

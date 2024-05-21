@@ -84,7 +84,7 @@ public class Panier {
 	 * @return un flottant correspondant au prix total du panier
 	 * @author EricB
 	 */
-	public Float calculerPrixTotal() {
+	public float calculerPrixTotal() {
 		Float prixTotal = 0f;
 		for(ProduitPanier produitPanier: this.panier.values()) {
 			prixTotal += calculerPrixAvecPromotion(produitPanier.getTauxPromotion(),

@@ -1,35 +1,42 @@
 package fr.miage.supermarket.dao;
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
 import com.mysql.cj.Query;
 
 import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 public class CommandeDAO {
-	public void save(Commande commande) {
-		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSessionAnnotationFactory().openSession()) {
-			transaction = session.beginTransaction();
-			session.save(commande);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		}
-	}
+	private SessionFactory sessionFactory;
+	
+	public Commande creerCommande(Commande commande) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(commande);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return commande;
+    }
 
 	public List<Commande> getCommandeUtilisateur() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
@@ -83,5 +90,36 @@ public class CommandeDAO {
 		} finally {
 			session.close();
 		}
-	}
+	}    
+    
+    public Commande mettreAJourCommande(Commande commande) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(commande);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return commande;
+    }
+    
+    public void creerLinkCommandeProduit(LinkCommandeProduit linkCommandeProduit) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(linkCommandeProduit);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
 }
