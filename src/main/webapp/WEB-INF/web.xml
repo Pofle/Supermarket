@@ -87,6 +87,23 @@
 		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
 	</servlet>
+	  <servlet>
+        <servlet-name>GestionProduitListe</servlet-name>
+        <servlet-class>fr.miage.supermarket.controlers.GestionProduitListe</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerationListeProduitXml</servlet-name>
+        <servlet-class>fr.miage.supermarket.controlers.GenerationListeProduitXml</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerationListeXml</servlet-name>
+        <servlet-class>fr.miage.supermarket.controlers.GenerationListeXml</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAjoutProduitListe</servlet-name>
+        <servlet-class>fr.miage.supermarket.controlers.ServletAjoutProduitListe</servlet-class>
+    </servlet>
+	
 	<servlet>
 		<servlet-name>GestionCategoriesService</servlet-name>
 		<display-name>GestionCategoriesService</display-name>
@@ -170,5 +187,17 @@
 	<servlet-mapping>
         <servlet-name>GestionStockService</servlet-name>
         <url-pattern>/gestionStock</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>GestionProduitListe</servlet-name>
+        <url-pattern>/GestionProduitListe</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerationListeProduitXml</servlet-name>
+        <url-pattern>/GenerationListeProduitXml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerationListeXml</servlet-name>
+        <url-pattern>/GenerationListeXml</url-pattern>
     </servlet-mapping>
 </web-app>
