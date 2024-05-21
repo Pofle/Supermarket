@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -254,21 +256,27 @@ public class ServletDispatcher extends HttpServlet {
 	}
 	
 	private String convertMemosToXml(List<ShoppingList> shoppingLists) {
-		 List<Memo> memoList = null;
+		 List<Memo> memosList = null;
 		 
 		 try {
-		        memoList = MemoDAO.getMemosIds(shoppingLists);
+			 
+		        memosList = MemoDAO.getMemos(shoppingLists);
 		    } catch (Exception e) {
 		        e.printStackTrace();
 		    }		
 		
 	    StringBuilder xmlBuilder = new StringBuilder();
+	    // Initialisation d'un set pour ne pas avoir de doublon sur les noeuds
+	    Set<Integer> listeIdUniques = new HashSet<>();
 	    
 	    xmlBuilder.append("<memos>");
-	    for (Memo memo : memoList) {
-	        xmlBuilder.append("<memo>");
-	        xmlBuilder.append("<id_liste>").append(memo.getShoppingList().getId()).append("</id_liste>");
-	        xmlBuilder.append("</memo>");
+	    for (Memo memo : memosList) {
+	    	int listId = memo.getShoppingList().getId();
+	    	if (listeIdUniques.add(listId)) {
+	            xmlBuilder.append("<memo>");
+	            xmlBuilder.append("<id_liste>").append(listId).append("</id_liste>");
+	            xmlBuilder.append("</memo>");
+	        }
 	    }
 	    xmlBuilder.append("</memos>");
 	    

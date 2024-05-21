@@ -19,7 +19,7 @@ import fr.miage.supermarket.utils.HibernateUtil;
  */
 public class MemoDAO {
 	
-	public static List<Memo> getMemosIds(List<ShoppingList> shoppingLists) {
+	public static List<Memo> getMemos(List<ShoppingList> shoppingLists) {
 		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
         Transaction tx = null;        
         List<Memo> memoList = null;
