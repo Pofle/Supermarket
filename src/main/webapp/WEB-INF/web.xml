@@ -73,23 +73,6 @@
         <servlet-class>fr.miage.supermarket.controlers.ServletDispatcher</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletAuthentification</servlet-name>
-        <display-name>ServletAuthentification</display-name>
-        <description>Servlet gérant l'authentification</description>
-        <servlet-class>fr.miage.supermarket.controlers.ServletAuthentification</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletInscription</servlet-name>
-        <display-name>ServletInscription</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.ServletInscription</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GestionProduitsService</servlet-name>
-        <display-name>GestionProduitsService</display-name>
-        <description>Service de gestion de recherche et d'insertion des produits</description>
-        <servlet-class>fr.miage.supermarket.controlers.GestionProduitsService</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProduitPanierService</servlet-name>
         <display-name>ProduitPanierService</display-name>
         <description>Servlet de gestion des produits au sein d'un panier</description>

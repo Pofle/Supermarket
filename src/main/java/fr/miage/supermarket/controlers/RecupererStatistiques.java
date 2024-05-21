@@ -5,6 +5,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import fr.miage.supermarket.models.Utilisateur;
+import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
  * Servlet implementation class RecupererStatistiques
@@ -24,8 +31,8 @@ public class RecupererStatistiques extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		HttpSession session = request.getSession();
+		Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
 	}
 
 	
