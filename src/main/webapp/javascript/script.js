@@ -49,23 +49,14 @@ function chargerProduitsListe(idListe, nomListe) {
             };
             xhr.send();
         }
-        
+/**
+ * Fonction pour envoyer le contenu du formulaire de la modale en Post au Servlet
+ *  */        
 function convertirListeEnPanier() {
-        /// Soumet le formulaire au servlet ServletConversionListe
-        var form = document.getElementById('formProduits');
-        
-        //Log de controle
-        var formData = new FormData(form);
-        for (var pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-    	}
-    	// Fin
-    	
+        var form = document.getElementById('formProduits');           	
         form.action = 'ServletConversionListe';
         form.method = 'post';
         form.submit();
-        //Log de controle
-        console.log("Form_Converstion send for POST");
     }    
 /**
  * Fonction pour forcer la fermeture de la modale boostrap
@@ -77,6 +68,9 @@ function forcerFermetureModal() {
     });
 }
 
+/**
+ * Appel de la fonction de fermeture
+ */
 $(document).ready(function() {
     forcerFermetureModal();
 });

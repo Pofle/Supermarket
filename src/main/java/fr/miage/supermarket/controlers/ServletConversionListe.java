@@ -1,7 +1,6 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,12 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.miage.supermarket.dao.ProduitDAO;
-import fr.miage.supermarket.dao.ShoppingListDAO;
-import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.Panier;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ProduitPanier;
-import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.models.Utilisateur;
 
 /**
@@ -33,14 +29,13 @@ public class ServletConversionListe extends HttpServlet {
         super();
     }
 
-	
-
 	/**
+	 * Methode doPost qui récupère les paramètres du formulaire de la modale liste de course et qui les converti en contenu d'un panier
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author Pauline
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
         // Récupérer l'ID de la liste de courses
         String listeId = request.getParameter("listeId");
