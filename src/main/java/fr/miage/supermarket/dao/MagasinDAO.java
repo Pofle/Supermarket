@@ -1,5 +1,6 @@
 package fr.miage.supermarket.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,7 +14,7 @@ import fr.miage.supermarket.utils.HibernateUtil;
 public class MagasinDAO {
 
     public static List<Magasin> getAllMagasins() {
-        List<Magasin> magasins = null;
+        List<Magasin> magasins = new ArrayList<>();
         SessionFactory sessionFactory = null;
         Session session = null;
         Transaction transaction = null;
