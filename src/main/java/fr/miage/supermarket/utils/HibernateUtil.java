@@ -5,6 +5,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import fr.miage.supermarket.models.Link_Produit_Stock;
+import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Magasin;
@@ -15,6 +17,7 @@ import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Promotion;
 import fr.miage.supermarket.models.Rayon;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.models.Stock;
 import fr.miage.supermarket.models.Utilisateur;
 
 /**
@@ -51,6 +54,9 @@ public class HibernateUtil {
         	configuration.addAnnotatedClass(Commande.class);
         	configuration.addAnnotatedClass(ShoppingList.class);
         	configuration.addAnnotatedClass(Utilisateur.class);
+        	configuration.addAnnotatedClass(Magasin.class);
+        	configuration.addAnnotatedClass(Stock.class);
+        	configuration.addAnnotatedClass(Link_Produit_Stock.class);
         	configuration.addAnnotatedClass(LinkListeProduit.class);
         	configuration.addAnnotatedClass(Categorie.class);
         	configuration.addAnnotatedClass(Rayon.class);

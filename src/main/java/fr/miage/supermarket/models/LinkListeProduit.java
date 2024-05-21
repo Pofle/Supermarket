@@ -22,11 +22,11 @@ public class LinkListeProduit {
 	    @Column(name = "ID")
 	    private Long id;
 
-	    @ManyToOne(fetch = FetchType.LAZY)
+	    @ManyToOne(fetch = FetchType.EAGER)
 	    @JoinColumn(name = "ID_LISTE", referencedColumnName = "ID")
 	    private ShoppingList shoppingList;
 
-	    @ManyToOne(fetch = FetchType.LAZY)
+	    @ManyToOne(fetch = FetchType.EAGER)
 	    @JoinColumn(name = "EAN", referencedColumnName = "EAN")
 	    private Produit produit;
 

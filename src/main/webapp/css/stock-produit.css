@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+/* Styles des tableaux */
+table {
+    border-collapse: collapse 1px;
+    width: 95%;
+}
+
+thead {
+    color: white;
+    background: #333
+}
+
+th, td {
+    text-align: center;
+    padding: 5px 0;
+}
+
+/* Classes pour les différents niveaux de stock */
+.stock-rupture {
+    background-color: red;
+    color: white;
+}
+
+.stock-faible {
+    background-color: orange;
+    color: white;
+}
+
+.stock-moyen {
+    background-color: yellow;
+    color: black;
+}
+
+

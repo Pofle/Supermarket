@@ -12,6 +12,7 @@ import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.ShoppingList;
 
 /**
+<<<<<<< HEAD
  * Servlet gérant les listes de course
  * 
  * @author PaulineF
@@ -41,6 +42,26 @@ public class ServletListeCourse extends HttpServlet {
 	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
+=======
+ * Servlet gérant les listes de course, leur creation et supression
+ * @author Pauline
+ */
+public class ServletListeCourse extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletListeCourse() {
+        super();
+    }
+
+	/**
+	 * Méthode DoPost pour ajouter une liste
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+>>>>>>> developp
 	 * @author PaulineF
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -59,6 +80,7 @@ public class ServletListeCourse extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/jsp/gestionList.jsp").forward(request, response);
 	}
 
+<<<<<<< HEAD
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -86,8 +108,39 @@ public class ServletListeCourse extends HttpServlet {
 	 * 
 	 * @param request
 	 * @param paramName
-	 * @return
+=======
+            response.sendRedirect("central?type_action=gestion_List");
+        }
+    }
+	
+	/**
+	 * Methode pour supprimer une liste de course 
+	 * @request L'objet HttpServletRequest contenant la requête
+	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
+	 * @author Pauline
 	 */
+	@Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       String actionType = request.getParameter("type_action");        
+       if ("delete_list".equals(actionType)) {
+            Integer listeId = getIntegerParameter(request, "list_id");
+            if (listeId != null) {
+                ShoppingListDAO.supprimerListe(listeId);
+            }
+            response.sendRedirect("central?type_action=gestion_List");
+            
+        }
+    }
+	
+	/**
+	 * Method generique pourconvertir un parametre type INT en STRING
+	 * @param request L'objet HttpServletRequest contenant la requête
+	 * @param stringParam parametre string qui sera converti en INT
+>>>>>>> developp
+	 * @return
+	 * @author Pauline
+	 */
+<<<<<<< HEAD
 	private Integer getIntegerParameter(HttpServletRequest request, String paramName) {
 		String paramValue = request.getParameter(paramName);
 		if (paramValue != null && !paramValue.isEmpty()) {
@@ -98,6 +151,18 @@ public class ServletListeCourse extends HttpServlet {
 			}
 		}
 		return null;
+=======
+	private Integer getIntegerParameter(HttpServletRequest request, String stringParam) {
+	    String paramValue = request.getParameter(stringParam);
+	    if (paramValue != null && !paramValue.isEmpty()) {
+	        try {
+	            return Integer.parseInt(paramValue);
+	        } catch (NumberFormatException e) {
+	            
+	        }
+	    }
+	    return null; 
+>>>>>>> developp
 	}
 
 }

@@ -1,25 +1,37 @@
 package fr.miage.supermarket.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.List;
+
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Magasin")
+@Table(name = "MAGASIN", uniqueConstraints= {@UniqueConstraint(columnNames= {"ID_MAGASIN"})})
 public class Magasin {
 
+<<<<<<< HEAD
 	@Id
 	@Column(name = "id")
 	private int id;
+=======
+    @Id
+    @Column(name = "ID_MAGASIN", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+>>>>>>> developp
 
 	@Column(name = "nom")
 	private String nom;
 
+<<<<<<< HEAD
 	@Column(name = "adresse")
 	private String adresse;
+=======
+    @Column(name = "adresse")
+    private String adresse;
+    
+    @OneToMany(mappedBy = "magasin")
+    private List<Link_Produit_Stock> linkProduitStocks;
+>>>>>>> developp
 
 	// Constructeurs, getters et setters
 
@@ -52,7 +64,22 @@ public class Magasin {
 		return adresse;
 	}
 
+<<<<<<< HEAD
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
 }
+=======
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+    
+    public List<Link_Produit_Stock> getLinkProduitStocks() {
+		return linkProduitStocks;
+	}
+
+	public void setLinkProduitStocks(List<Link_Produit_Stock> linkProduitStocks) {
+		this.linkProduitStocks = linkProduitStocks;
+	}
+}
+>>>>>>> developp
