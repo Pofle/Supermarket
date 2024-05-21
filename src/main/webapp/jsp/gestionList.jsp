@@ -36,14 +36,16 @@
             		onclick="chargerProduitsListe(${list.id}, '${list.name}')">
             			${status.index + 1} - ${list.name}
             		</p>
+            		<a href="" data-bs-toggle="modal" data-bs-target="#modalMemo">
+            			<img src="recupererImage?cheminImage=memo_icon.png" class="btn-Memo" Title="Memo" />
+            		</a>
             		<a href="servletListeCourse?type_action=delete_list&list_id=${list.id}">
             			<img src="recupererImage?cheminImage=delete_icon.png" class="btn-DeleteListe" Title="Supprimer la liste de course" />
             		</a>
             	</li> 
         	</c:forEach>
     	</ul>  
-    		<button type="button" class="btn-Add" data-bs-toggle="modal" data-bs-target="#modalAjout">Ajouter liste</button> 	
-    		
+    		<button type="button" class="btn-Add" data-bs-toggle="modal" data-bs-target="#modalAjout">Ajouter liste</button> 	    		
    	</c:if>    
    </div>
   
@@ -86,6 +88,28 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
         <button type="submit" class="btn btn-primary">Enregistrer</button>       
       </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+ <!-- Modal Memo-->
+<div class="modal fade" id="modalMemo" tabindex="-1" aria-labelledby="ModalMemoLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      	<div class="modal-header">
+        	<h1 class="modal-title fs-5" id="ModalMemoLabel"></h1>
+        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      	</div>
+      	<form id="formMemo" action="" method="">
+      		<div class="modal-body">
+      		                        		  	
+      		</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>       
+      </div>
+       <input type="hidden" name="listeId" id="listeId" value="">
       </form>
     </div>
   </div>

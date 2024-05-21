@@ -23,10 +23,12 @@
 		<!-- Names the annotated entity class -->
         <mapping class="fr.miage.supermarket.models.ShoppingList"/>
       	<mapping class="fr.miage.supermarket.models.Produit"/> 
+      	<mapping class="fr.miage.supermarket.models.LinkListeProduit"/>
       	<mapping class="fr.miage.supermarket.models.Utilisateur"/>
       	<mapping class="fr.miage.supermarket.models.Magasin"/>
         <mapping class="fr.miage.supermarket.models.Link_Produit_Stock"/>
         <mapping class="fr.miage.supermarket.models.Stock"/> 
+        <mapping class="fr.miage.supermarket.models.Memo"/> 
 		
 	</session-factory>
 </hibernate-configuration>

@@ -1,5 +1,6 @@
 package fr.miage.supermarket.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -7,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -41,6 +43,10 @@ public class ShoppingList {
 	           joinColumns = @JoinColumn(name = "ID_LISTE"), 
 	           inverseJoinColumns = @JoinColumn(name = "EAN",  referencedColumnName = "ean"))
 	private List<Produit> produits;
+	
+	@OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Memo> memos;
+	
 	
     /**
      * Constructeur par défaut
@@ -84,6 +90,15 @@ public class ShoppingList {
     }
     
     /**
+     * Gette des memos liés à cette liste
+     * @return liste des memos
+     * @author Pauline
+     */
+    public List<Memo> getMemos() {
+        return memos;
+    }
+    
+    /**
      * Setter du nom de la liste
      * @param name de la liste
      * @author Pauline
@@ -98,5 +113,34 @@ public class ShoppingList {
      */
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
+    }
+    
+    /**
+     * Setter de la liqse des memos liés à la liste de course
+     * @param memos
+     * @author Pauline
+     */
+    public void setMemos(List<Memo> memos) {
+        this.memos = memos;
+    }
+    
+    /**
+     * Methode pour ajouter l'objet memo 
+     * @param memo
+     * @author Pauline
+     */
+    public void ajoutMemo(Memo memo) {
+        memos.add(memo);
+        memo.setShoppingList(this);
+    }
+    
+    /**
+     * Methode pour supprimer un memo
+     * @param memo
+     * @author Pauline
+     */
+    public void supprimerMemo(Memo memo) {
+        memos.remove(memo);
+        memo.setShoppingList(null);
     }
 }
