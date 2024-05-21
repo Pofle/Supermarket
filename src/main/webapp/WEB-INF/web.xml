@@ -134,6 +134,12 @@
 	    <servlet-name>CommandeUtilisateur</servlet-name>
 	    <servlet-class>fr.miage.supermarket.controlers.CommandeUtilisateur</servlet-class>
 	</servlet>
+    <servlet>
+    	<servlet-name>ModifierCommandeServlet</servlet-name>
+    	<display-name>ModifierCommandeServlet</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ModifierCommandeServlet</servlet-class>
+    </servlet>
     
 
     <!-- Servlet Mappings -->
@@ -236,6 +242,10 @@
     <servlet-mapping>
     	<servlet-name>CommandeUtilisateur</servlet-name>
     	<url-pattern>/CommandeUtilisateur</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>ModifierCommandeServlet</servlet-name>
+    	<url-pattern>/ModifierCommandeServlet</url-pattern>
     </servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>

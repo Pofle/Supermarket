@@ -94,4 +94,15 @@ public class CommandeDAO {
         }
         return commandes;
     }
+    
+    public Commande getCommandeById(int id) {
+        Session session = sessionFactory.openSession();
+        Commande commande = null;
+        try {
+            commande = session.get(Commande.class, id);
+        } finally {
+            session.close();
+        }
+        return commande;
+    }
 }
