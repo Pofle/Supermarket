@@ -116,6 +116,34 @@ h1 {
 	cursor: pointer;
 }
 
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.filter-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filter-container select {
+    width: 200px;
+    height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.filter-container select option:hover {
+    background-color: #f0f0f0;
+}
+
+.filter-container select option {
+    padding: 5px;
+}
+
+
 
 
 

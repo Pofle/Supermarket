@@ -21,91 +21,144 @@ import jakarta.persistence.FetchType;
 import org.hibernate.annotations.Cascade;
 //import org.hibernate.annotations.CascadeType;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "COMMANDE", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID_COMMANDE" }) })
 public class Commande {
-	
-	@Id
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_COMMANDE", nullable = false, unique = true, length = 50)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_commande;
-	
-    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
-//    @Cascade(CascadeType.ALL)
+    
+    @OneToMany(mappedBy = "commande")
+    @Cascade(CascadeType.ALL)
     private Set<LinkCommandeProduit> produits = new HashSet<>();
 
-	@Column(name="STATUT", nullable=false)
-	private boolean statut;
-	
-	@Column(name="TEMPS_PREPARATION")
+    @Column(name = "DATE_COMMANDE")
+    private LocalDate dateCommande;
+
+    @Column(name = "DATE_RETRAIT")
+    private LocalDate dateRetrait;
+
+    @Column(name = "HORAIRE_RETRAIT")
+    private String horaireRetrait;
+
+    @Column(name = "STATUT", nullable = false)
+    private boolean statut;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_MAGASIN")
+    private Magasin magasin;
+
+    @Column(name="TEMPS_PREPARATION")
 	@Temporal(jakarta.persistence.TemporalType.TIME)
 	private Time chrono;
-	
-	@Column (name="CRENEAU")
-	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
-	private Timestamp creneau;
 
-	@ManyToOne ( cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
-//	@Cascade(CascadeType.ALL)
+    @Cascade(CascadeType.ALL)
     private Utilisateur utilisateur;
 
-	public void finaliserCommande(float montantTotal) {
-		int pointsGagnes = calculerPointsGagnes(montantTotal);
-		utilisateur.ajouterPoints(pointsGagnes);
-	}
-	
-	private int calculerPointsGagnes(float montantTotal) {
-		return (int) (montantTotal / 5);
-	}
-	
-	public Integer getId_commande() {
-		return id_commande;
-	}
+    // Constructeurs
+    public Commande() {}
 
-	public void setId_commande(Integer id_commande) {
-		this.id_commande = id_commande;
-	}
+    public Commande(int id_commande) {
+        this.id_commande = id_commande;
+    }
 
-	public boolean isStatut() {
-		return statut;
-	}
+    // Getters et Setters
+    public Integer getId_commande() {
+        return id_commande;
+    }
 
-	public void setStatut(boolean statut) {
-		this.statut = statut;
-	}
+    public void setId_commande(Integer id_commande) {
+        this.id_commande = id_commande;
+    }
 
-	public Set<LinkCommandeProduit> getProduits() {
-		return produits;
-	}
+    public LocalDate getDateCommande() {
+        return dateCommande;
+    }
 
-	public void setProduits(Set<LinkCommandeProduit> produits) {
-		this.produits = produits;
-	}
+    public void setDateCommande(LocalDate dateCommande) {
+        this.dateCommande = dateCommande;
+    }
 
-	public Time getChrono() {
+    public LocalDate getDateRetrait() {
+        return dateRetrait;
+    }
+
+    public void setDateRetrait(LocalDate dateRetrait) {
+        this.dateRetrait = dateRetrait;
+    }
+
+    public String getHoraireRetrait() {
+        return horaireRetrait;
+    }
+
+    public void setHoraireRetrait(String horaireRetrait) {
+        this.horaireRetrait = horaireRetrait;
+    }
+
+    public boolean isStatut() {
+        return statut;
+    }
+
+    public void setStatut(boolean statut) {
+        this.statut = statut;
+    }
+
+    public Set<LinkCommandeProduit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(Set<LinkCommandeProduit> produits) {
+        this.produits = produits;
+    }
+
+    public Magasin getMagasin() {
+        return magasin;
+    }
+
+    public void setMagasin(Magasin magasin) {
+        this.magasin = magasin;
+    }
+
+    public Time getChrono() {
 		return chrono;
 	}
 
 	public void setChrono(Time chrono) {
 		this.chrono = chrono;
 	}
-	
-	public Timestamp getCreneau() {
-		return creneau;
-	}
 
-	public void setCreneau(Timestamp creneau) {
-		this.creneau = creneau;
-	}
-	
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
 
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public void setIdMagasin(int magasinId) {
+        if (this.magasin == null) {
+            this.magasin = new Magasin();
+        }
+        this.magasin.setId(magasinId);
+    }
+
+    public void finaliserCommande(float montantTotal) {
+        int pointsGagnes = calculerPointsGagnes(montantTotal);
+        utilisateur.ajouterPoints(pointsGagnes);
+    }
+
+    private int calculerPointsGagnes(float montantTotal) {
+        return (int) (montantTotal / 5);
+    }
 }

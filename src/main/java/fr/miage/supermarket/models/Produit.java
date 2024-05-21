@@ -21,10 +21,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
 
 import java.util.HashSet;
+import jakarta.persistence.*;
 import java.util.List;
-import java.util.Set;
-import jakarta.persistence.CascadeType;
-import java.util.Objects;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.IOException;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import fr.miage.supermarket.utils.ImageUtil;
+import fr.miage.supermarket.xml.CategorieXmlAdapter;
 
 
 @Entity
@@ -72,19 +77,24 @@ public class Produit {
 	private Float poids;
 	
 	// Relations
+	
+	@ManyToOne
+    @JoinColumn(name = "ID_CATEGORIE", nullable = false)
+	private Categorie categorie;
+	
 	@ManyToMany(mappedBy = "produits", fetch = FetchType.EAGER)
 	private List<Promotion> promotions;
 	
-	@ManyToMany(mappedBy = "produits", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "produits")
 	private List<ShoppingList> listes;
 	
 	@Transient
 	private String imageBase64;
 	
-/*	RR à vérif 
-	@OneToMany(mappedBy = "produit",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Link_Commande_Produit> produits_panier = new HashSet<>();
-*/
+	
+	@OneToMany(mappedBy = "produit")
+	private List<Link_Produit_Stock> linkProduitStocks;
+	
 	public String getEan() {
 		return ean;
 	}
@@ -213,4 +223,31 @@ public class Produit {
 			this.imageBase64 = "";
 		}
 	}
+
+	@XmlTransient
+	public List<ShoppingList> getListes() {
+		return listes;
+	}
+
+	public void setListes(List<ShoppingList> listes) {
+		this.listes = listes;
+	}
+
+	@XmlJavaTypeAdapter(CategorieXmlAdapter.class)
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
+	public List<Link_Produit_Stock> getLinkProduitStocks() {
+		return linkProduitStocks;
+	}
+
+	public void setLinkProduitStocks(List<Link_Produit_Stock> linkProduitStocks) {
+		this.linkProduitStocks = linkProduitStocks;
+	}
+
 }
