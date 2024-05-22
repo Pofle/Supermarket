@@ -123,7 +123,6 @@ public class CommandeDAO {
                 session.merge(commande);
                 transaction.commit();
             } else {
-                // Gérer le cas où la commande n'existe pas
                 System.out.println("Commande non trouvée avec l'ID: " + idCommande);
             }
         } catch (Exception e) {
