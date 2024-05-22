@@ -1,8 +1,9 @@
 package fr.miage.supermarket.controlers;
 
-import java.io.FileWriter;
+import fr.miage.supermarket.models.Commande;
+
 import java.io.IOException;
-import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,15 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
+import fr.miage.supermarket.dao.CommandeDAO;
+//import org.hibernate.mapping.List;
 
-import fr.miage.supermarket.dao.LinkListeProduitDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
-import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
-import fr.miage.supermarket.utils.ListWrapper;
 import fr.miage.supermarket.models.Utilisateur;
 
 
@@ -118,6 +116,7 @@ public class ServletDispatcher extends HttpServlet {
 	
 	/**
 	 * Gère les fonctionnalités spécifiques aux préparateurs.
+	 * @author RR
 	 * @param action L'action à effectuer
 	 * @param request L'objet HttpServletRequest contenant la requête
 	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
@@ -132,16 +131,23 @@ public class ServletDispatcher extends HttpServlet {
 			url = "accueil";
 		else {
 			switch (action) {
-			case "preparationPanier":
-				url = "preparationPanier";
+			case "listePaniers":
+				url = "listePaniers";
 				break;
 			default:
 				url = "accueil";
 			}
 		}
+		// affichage des commandes dans l'ordre croissant de retrait
+		ArrayList<Commande> commandesTriees = CommandeDAO.getCommandeTrieInLink();
+		
+		// attention set catégorie 
+		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
+		request.setAttribute("commandes", commandesTriees);
+
 		request.getRequestDispatcher(url).forward(request, response);
 	}
-
+	
 	/**
 	 * Gère les fonctionnalités par défaut pour les visiteurs.
 	 * @param action L'action à effectuer
@@ -207,17 +213,16 @@ public class ServletDispatcher extends HttpServlet {
 			switch (action) {
 			case "gestion_List":
 				try {
-				// TODO:: remplacer par le get de l'id de l'utilisateur connecté
-					// 
-					int userId = 1;
-					//
-				// FIN TODDO
-					List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(userId);
-					for (ShoppingList shoppingList : shoppingLists) {
-                        shoppingList.getUtilisateur();
-                    }
-					 request.setAttribute("shoppingLists", shoppingLists);
-					 request.getRequestDispatcher("gestionList").forward(request, response);
+					// Récupérer l'utilisateur connecté
+                    HttpSession session = request.getSession();
+                    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+                    int utilisateurId = utilisateur.getId();
+                    // Récupérer les liste de course de cet utilisateur
+                    List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);
+                    // Ajouter les listes de courses comme attribut de la requête
+                    request.setAttribute("shoppingLists", shoppingLists);
+                    request.getRequestDispatcher("gestionList").forward(request, response);
+
 					return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());

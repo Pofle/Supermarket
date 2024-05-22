@@ -12,7 +12,7 @@
 				</c:if>
 				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
 					<li class="navbar-item"><a
-						href="central?type_action=preparationPanier" class="navbar-link">Préparation
+						href="central?type_action=listePaniers" class="navbar-link">Préparation
 							des paniers</a></li>
 				</c:if>
 				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">

@@ -49,6 +49,16 @@ function chargerProduitsListe(idListe, nomListe) {
             };
             xhr.send();
         }
+        
+/**
+ * Fonction pour envoyer le contenu du formulaire de la modale en Post au Servlet
+ *  */        
+function convertirListeEnPanier() {
+        var form = document.getElementById('formProduits');           	
+        form.action = 'ServletConversionListe';
+        form.method = 'post';
+        form.submit();
+    }    
 
 /**
  * Fonction pour forcer la fermeture de la modale boostrap

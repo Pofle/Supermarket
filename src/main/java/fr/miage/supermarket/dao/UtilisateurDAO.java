@@ -1,16 +1,24 @@
 package fr.miage.supermarket.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
+import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 public class UtilisateurDAO {
 	
+	private SessionFactory sessionFactory;
+	
+	public UtilisateurDAO() {
+		this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+	}
+	
 	//On récupère un object utilisateur d'apres le mail
 	public Utilisateur getUtilisateurByMail(String mail) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
 		Session session = sessionFactory.getCurrentSession();
 		
         try {
@@ -31,7 +39,6 @@ public class UtilisateurDAO {
 	
 	//Ajout d'un utilisateur dans la base
 	public void insertUtilisateur(Utilisateur utilisateur) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			session.beginTransaction();
@@ -57,4 +64,20 @@ public class UtilisateurDAO {
         }
 		return hash.toString().trim();
 	}
+	
+	public Utilisateur mettreAJourUtilisateur(Utilisateur commande) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(commande);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return commande;
+    }
 }

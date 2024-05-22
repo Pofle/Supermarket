@@ -9,7 +9,6 @@ import fr.miage.supermarket.models.Link_Produit_Stock;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Commande;
-import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Point;
 import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.LinkListeProduit;
@@ -41,9 +40,9 @@ public class HibernateUtil {
         	System.out.println("Hibernate Configuration loaded");
         	configuration.addAnnotatedClass(Point.class);
         	configuration.addAnnotatedClass(Produit.class);
+        	configuration.addAnnotatedClass(Commande.class);
             configuration.addAnnotatedClass(LinkCommandeProduit.class);
         	configuration.addAnnotatedClass(Promotion.class);
-        	configuration.addAnnotatedClass(Commande.class);
         	configuration.addAnnotatedClass(ShoppingList.class);
         	configuration.addAnnotatedClass(Utilisateur.class);
         	configuration.addAnnotatedClass(Magasin.class);

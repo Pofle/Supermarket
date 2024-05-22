@@ -40,9 +40,6 @@ public class GenerationListeProduitXml extends HttpServlet {
 		 response.setContentType("text/xml; charset=UTF-8");
 	        PrintWriter out = response.getWriter();
 	        Integer listeId = getIntegerParameter(request, "id");
-	        
-	        // Log de contrôle pour l'id de la liste reçu
-	        System.out.println("Request received for list ID: " + listeId);
 
 	        try {
 	            List<LinkListeProduit> produits = LinkListeProduitDAO.getLinkListeProduitByListeId(listeId);
@@ -61,7 +58,6 @@ public class GenerationListeProduitXml extends HttpServlet {
 	                xmlContent.append("</produit>");
 	            }
 	            xmlContent.append("</produits>");
-
 	            // Écriture du contenu XML dans la réponse
 	            out.println(xmlContent.toString());
 
