@@ -132,19 +132,4 @@ public class CommandeDAO {
 		}
 	}
 	
-	public Map<Produit, Integer> getProduitsByCommande(Commande commande){
-		Session session = sessionFactory.openSession();
-		Map<Produit, Integer> map = new HashMap<Produit, Integer>();
-		String hql = "SELECT link.produit.ean, link.quantite FROM Commande commande, LinkCommandeProduit link WHERE commande.id_commande = :commandeId AND commande.id_commande = link.commande.id_commande";
-		Query<Tuple> query = session.createQuery(hql, Tuple.class);
-		query.setParameter("commandeId", commande.getId_commande());
-		List<Tuple> results = query.getResultList();
-
-		for (Tuple tuple : results) {
-		    Produit produit = tuple.get(0, Produit.class);
-		    int quantite = tuple.get(1, Integer.class);
-		    map.put(produit, quantite);
-		}
-		return map;
-	}
 }

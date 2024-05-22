@@ -89,6 +89,21 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		
+		<h2>Produits les plus achetés (10 max)</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Produit</th>
+					<th>Quantité achetée</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="top10" items="${mapTop10}">
+					<tr><td>${top10.key.getLibelle()}</td><td>${top10.value}</td></tr>
+				</c:forEach>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>
