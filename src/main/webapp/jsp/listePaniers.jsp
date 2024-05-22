@@ -29,7 +29,7 @@
                         <div class="basket-info">
                             <div class="basket-details">
                                 <p class="libelle-marque">ID : <%= commande.getId_commande() %></p>
-                                <p class="price">Créneau : <%= commande.getCreneau() %></p>
+                                <p class="price">Créneau : <%= commande.getHoraireRetrait() %> le <%= commande.getDateRetrait() %></p>
                             </div>
                         </div>
                     </a>

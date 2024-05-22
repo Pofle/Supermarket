@@ -26,7 +26,7 @@ import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.utils.HibernateUtil;
 /**
  * Gestion des commandes clients pour préparation de panier
- * @author RR
+ * @author RR, GL
  */
 public class CommandeDAO {
 
@@ -82,20 +82,6 @@ private SessionFactory sessionFactory;
             session.close();
         }
     }
-/*	public static void saveCommandechrono(Commande commande) {
-		//ouverture de la session hibernate 
-		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-		//ouverture d'une transaction 
-		Transaction transact = session.getTransaction();
-		if(!transact.isActive()) {
-			transact = session.beginTransaction();
-		}
-		session.merge(commande);
-		System.out.println("Commande màj : ID " + commande.getId_commande()+ ", chrono : " + commande.getChrono());
-		transact.commit();
-		session.close();
-	}
-*/
 	/**
 	 * Récupération d'une Commande dans la base de données
 	 * @author RR
@@ -123,32 +109,10 @@ private SessionFactory sessionFactory;
 	         }
 	    }
 	}
-	/**
-	 * Récupération des différentes commandes dans la BD 
-	 * @author RR
-	 * @return ArrayList des commandes dans l'ordre croissant des créneaux
-	 */
-/*	public static ArrayList<Commande> CommandeTrieParCreneau() {
-		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-		Transaction transact = session.getTransaction();
-		if(!transact.isActive()) {
-			transact = session.beginTransaction();
-		}
-		Query query = session.createQuery("FROM Commande ORDER BY creneau ASC", Commande.class);
-		ArrayList<Commande> commandes = (ArrayList<Commande>) query.getResultList();
-		System.out.println("AllCommandeTrieParCreneau returns : ");
-		for (int i = 1; i<commandes.size(); i++) {
-			if (commandes.get(i)!= null) {
-				System.out.print(commandes.get(i).getId_commande()+"  ");
-			}
-		}
-		System.out.println("");
-		transact.commit();
-		return commandes;
-	}
-*/
+	
 	/**
 	 * Récupération des lignes de Link_Commande_Produit concernant une commande spécifique
+	 * @author RR
 	 * @param idCommande
 	 * @return
 	 */
@@ -170,14 +134,18 @@ private SessionFactory sessionFactory;
 		transact.commit();
 		return linkByCommande;
 	}
-	
-	public static ArrayList<Commande> getCommandeTrieInLink() {
+	/**
+	 * Récupère les différentes commandes reliés à LinkCommandeProduit
+	 * @author RR
+	 * @return liste des commandes relié à l'entité LinkCommandeProduit
+	 */
+	public static ArrayList<Commande> getCommandeInLink() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		Transaction transact = session.getTransaction();
 		if(!transact.isActive()) {
 			transact = session.beginTransaction();
 		}
-		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NULL ORDER BY commande.creneau ASC", Commande.class);
+		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit", Commande.class);
 		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
 		System.out.println("getCommandeTrieInLink returns : ");
 		for (int i = 0; i<idComm.size(); i++) {
@@ -187,7 +155,35 @@ private SessionFactory sessionFactory;
 		transact.commit();
 		return idComm;
 	}
-	
+	/**
+	 * Récupère les différentes commandes non traités dans l'ordre croissant de retrait
+	 * @author RR
+	 * @return liste des commandes non traités de LinkCommandeProduit dans l'ordre croissant de retrait
+	 */
+	public static ArrayList<Commande> getCommandeTrieInLink() {
+		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
+		Transaction transact = session.getTransaction();
+		if(!transact.isActive()) {
+			transact = session.beginTransaction();
+		}
+		//on récupère les commandes dans l'ordre croissant des dates et heures (converti en Time) de retrait
+		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NULL ORDER BY commande.dateRetrait ASC, STR_TO_DATE(commande.horaireRetrait, '%H:%i') ASC", Commande.class);
+		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
+		System.out.println("getCommandeTrieInLink returns : ");
+		for (int i = 0; i<idComm.size(); i++) {
+			System.out.print(" Commande : "+idComm.get(i).getId_commande());
+		}
+		System.out.println(";");
+		transact.commit();
+		return idComm;
+	}
+	/**
+	 * Récupère la ligne de LinkCommandeProduit contenant la commande et produit dont les id sont en paramètre
+	 * @author RR
+	 * @param id_Commande
+	 * @param ean
+	 * @return LinkCommandeProduit (Commande,PRoduit,Quantite)
+	 */
 	public static LinkCommandeProduit loadLink(String id_Commande, String ean) {
 	    Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 	    Transaction transact = session.getTransaction();

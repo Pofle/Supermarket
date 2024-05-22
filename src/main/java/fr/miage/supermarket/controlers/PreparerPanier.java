@@ -83,7 +83,7 @@ public class PreparerPanier extends HttpServlet {
 		 String[] idLinkValide = request.getParameterValues("produitValide");
 		 String prepaChrono = request.getParameter("prepaChrono");
 	     String finTempsPrepa = request.getParameter("finTempsPrepa");
-	     String valide = "contenu validé de la commande : ";
+	     String valide = "Contenu validé de la commande : ";
 	     String manque = "";
 	     /*------ Traitement des valeurs et insertions du chrono en bd */
 	     ArrayList<LinkCommandeProduit> linkValid = new ArrayList<LinkCommandeProduit>();
@@ -100,6 +100,7 @@ public class PreparerPanier extends HttpServlet {
 		        	valide = valide + l.getProduit().getLibelle() + ", ";
 		        }
 		        valide = valide.substring(0, valide.length()-2);
+		        valide = valide + ".";
 		        System.out.println("Sélection formulaire, " + valide);
 		        // on vérifie si tous les éléments ont été validé/sélectionné
 		        System.out.println("gestionFormu - génération de la commande de base pour comparaison");
@@ -118,6 +119,7 @@ public class PreparerPanier extends HttpServlet {
 						manque = manque + l.getProduit().getLibelle() + ", " ;
 					}
 					manque = manque.substring(0, manque.length()-2);
+					manque = manque + ".";
 					System.out.println(manque);
 				}
 				
@@ -151,12 +153,13 @@ public class PreparerPanier extends HttpServlet {
 	        String host = "smtp.gmail.com";
 	        String port = "587";
 	        String mdp = "ecxu xbzu lfeu cbgt";
-	        String sujet = "Votre commande " + linkValid.get(0).getCommande().getId_commande() + " est prête";
-	        String corpus = "Bonjour, \n Votre commande " + linkValid.get(0).getCommande().getId_commande() + " est prête, elle vous attend pour le " + linkValid.get(0).getCommande().getCreneau() + " ; \n" + valide + " ; \n"+ manque + " ; \n Au plaisir et à bientôt !";
+	        String sujet = "Votre commande faite le " + linkValid.get(0).getCommande().getDateCommande()+ " est prête";
+	        String corpus = "Bonjour, \n Votre commande faite le " + linkValid.get(0).getCommande().getDateCommande() + " est prête, elle vous attend pour le " + linkValid.get(0).getCommande().getDateRetrait()+" à " + linkValid.get(0).getCommande().getHoraireRetrait() + ". \n \n" + valide + "\n"+ manque + "\n \n Au plaisir et à bientôt !";
 	        
 	        // Propriétés du mail
 	        Properties properties = System.getProperties();
 	        properties.setProperty("mail.smtp.host", host);
+	        properties.setProperty("mail.smtp.ssl.trust", host);
 	        properties.setProperty("mail.smtp.port", port);
 	        properties.setProperty("mail.smtp.auth", "true");
 	        properties.setProperty("mail.smtp.starttls.enable", "true");
@@ -167,7 +170,7 @@ public class PreparerPanier extends HttpServlet {
 	                return new PasswordAuthentication(from, mdp);
 	            }
 	        };
-	        Session session = Session.getDefaultInstance(properties, auth);
+	        Session session = Session.getInstance(properties, auth);
 	
 	        try {
 	        	// Création de l'objet MimeMessage

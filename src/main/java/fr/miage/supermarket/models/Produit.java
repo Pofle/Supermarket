@@ -27,7 +27,6 @@ import jakarta.xml.bind.annotation.XmlTransient;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.IOException;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import fr.miage.supermarket.utils.ImageUtil;
 import fr.miage.supermarket.xml.CategorieXmlAdapter;
 
