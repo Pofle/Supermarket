@@ -99,8 +99,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="top10" items="${mapTop10}">
-					<tr><td>${top10.key.getLibelle()}</td><td>${top10.value}</td></tr>
+				<c:forEach var="top10" items="${mapTop10}" begin="1" end="10">
+					<tr><td>${top10.key.getLibelle()}</td><td>${top10.value}</td> </tr>
 				</c:forEach>
 			</tbody>
 		</table>
