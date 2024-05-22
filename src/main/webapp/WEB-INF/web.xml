@@ -131,6 +131,16 @@
         <servlet-class>fr.miage.supermarket.controlers.RecupererStatistiques</servlet-class>
     </servlet>
     <servlet>
+	    <servlet-name>CommandeUtilisateur</servlet-name>
+	    <servlet-class>fr.miage.supermarket.controlers.CommandeUtilisateur</servlet-class>
+	</servlet>
+    <servlet>
+    	<servlet-name>ModifierCommandeServlet</servlet-name>
+    	<display-name>ModifierCommandeServlet</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ModifierCommandeServlet</servlet-class>
+    </servlet>
+   	<servlet>
     	<servlet-name>ServletConversionListe</servlet-name>
     	<display-name>ServletConversionListe</display-name>
     	<description></description>
@@ -253,6 +263,14 @@
         <url-pattern>/RecupererStatistiques</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+    	<servlet-name>CommandeUtilisateur</servlet-name>
+    	<url-pattern>/CommandeUtilisateur</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>ModifierCommandeServlet</servlet-name>
+    	<url-pattern>/ModifierCommandeServlet</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
     	<servlet-name>ServletConversionListe</servlet-name>
     	<url-pattern>/ServletConversionListe</url-pattern>
     </servlet-mapping>
