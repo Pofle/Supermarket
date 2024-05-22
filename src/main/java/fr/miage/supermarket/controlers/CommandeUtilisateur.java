@@ -11,6 +11,7 @@ import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Magasin;
+import fr.miage.supermarket.models.StatutCommande;
 import fr.miage.supermarket.models.Utilisateur;
 
 public class CommandeUtilisateur extends HttpServlet {
@@ -36,8 +37,11 @@ public class CommandeUtilisateur extends HttpServlet {
 
         List<Commande> commandesUtilisateur = commandeDAO.getCommandesByUtilisateur(utilisateurConnecte);
         List<Magasin> magasins = magasinDAO.getAllMagasins(); // Obtenir la liste des magasins
-
         request.setAttribute("commandes", commandesUtilisateur);
+        request.setAttribute("nonValide", StatutCommande.NON_VALIDE);
+        request.setAttribute("enCours", StatutCommande.EN_COURS);
+        request.setAttribute("pret", StatutCommande.PRET);
+        request.setAttribute("termine", StatutCommande.TERMINE);
         request.setAttribute("magasins", magasins); // Ajouter les magasins comme attribut
 
         request.getRequestDispatcher("/jsp/afficherCommande.jsp").forward(request, response);

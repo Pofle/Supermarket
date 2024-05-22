@@ -137,6 +137,7 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 							<button id="validerPanier" type="button"
 								class="btn btn-primary btn-block" data-toggle="modal"
 								data-target="#exampleModal">Valider le panier</button>
+							<a href="panier?action=vider" id="viderPanier">Vider le panier</a>
 						</div>
 					</div>
 				</div>
