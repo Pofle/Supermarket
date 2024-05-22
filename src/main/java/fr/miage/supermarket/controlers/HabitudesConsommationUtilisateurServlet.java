@@ -63,14 +63,22 @@ public class HabitudesConsommationUtilisateurServlet extends HttpServlet {
         		List<Produit> listeProd = produitDAO.getProduitsParIdCommande(cmde.getId_commande());
         		for (int j = 0; j < listeProd.size(); j++) {
         			//Affectation dans une map du produit et sa quantitée commandée (ou incrémentation)
-        			if (map.get(listeProd.get(j)) != null) {
-        				map.put(listeProd.get(j), map.get(listeProd.get(j)) + produitDAO.getQuantiteCommandee(listeProd.get(j)));
+        			int montant_ajoute = produitDAO.getQuantiteCommandee(listeProd.get(j));
+        			if (map.containsKey(listeProd.get(j))) {
+        				int montant_actuel = map.get(listeProd.get(j));
+        				map.replace(listeProd.get(j), montant_actuel + montant_ajoute);
 					} else {
-						map.put(listeProd.get(j), produitDAO.getQuantiteCommandee(listeProd.get(j)));
+						map.put(listeProd.get(j), montant_ajoute);
 					}
 				}
         		
         	}
+        	
+			/*
+			 * Actuellement, la map renvoie le bon nombre de produits et additionne bien les quantités. 
+			 * Le doublon se créé lors de la phase de tri, debug à faire ce soir
+			*/
+        	
         	List<Map.Entry<Produit, Integer>> entryList = new ArrayList<>(map.entrySet());
             entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
             if (entryList.size() > 10) {
