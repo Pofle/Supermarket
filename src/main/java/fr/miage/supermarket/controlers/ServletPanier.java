@@ -30,6 +30,7 @@ import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Panier;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ProduitPanier;
+import fr.miage.supermarket.models.StatutCommande;
 import fr.miage.supermarket.models.Utilisateur;
 
 /**
@@ -198,7 +199,7 @@ public class ServletPanier extends HttpServlet {
 
 		Commande commande = new Commande();
 		commande.setUtilisateur(utilisateur);
-		commande.setStatut(true);
+		commande.setStatut(StatutCommande.EN_COURS);
 		commande.setIdMagasin(magasinId);
 		commande.setDateCommande(currentDate);
 		commande.setDateRetrait(localDate);
