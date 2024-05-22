@@ -45,9 +45,11 @@ public class GestionStockService extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date0 = new Date(); // Initialise la date de départ
-        List<Date> serieDates = DatesUtils.getSerieDates(date0, 15); // Génération des 15 dates suivant la date de départ
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date(); // Instanciation de la date du jour
+        String todayDate = dateFormat.format(today);
+        //Date date0 = new Date(); // Initialise la date de départ
+        List<Date> serieDates = DatesUtils.getSerieDates(today, 15); // Génération des 15 dates suivant la date de départ
         
         StockDAO stockDAO = new StockDAO();
         List<Object[]> produitsStock = stockDAO.getProduitsStockSerieDates(serieDates);
@@ -67,6 +69,7 @@ public class GestionStockService extends HttpServlet {
         request.setAttribute("produitsStock", produitsStock);
         request.setAttribute("datesStock", datesStock); // Ajout des dates de stock à la requête
         request.setAttribute("magasins", magasins); // Ajout des magasins à la requête
+        request.setAttribute("todayDate", todayDate); // Ajout de la date du jour à la requête
         request.getRequestDispatcher("/jsp/gestionStock.jsp").forward(request, response);
     }
 }
