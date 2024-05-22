@@ -13,12 +13,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
-
-import java.time.LocalDate;
 import jakarta.persistence.Column;
 
 @Entity
@@ -30,7 +29,7 @@ public class Commande {
     @Column(name = "ID_COMMANDE", nullable = false, unique = true, length = 50)
     private Integer id_commande;
     
-    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "commande", cascade=CascadeType.ALL)
     private Set<LinkCommandeProduit> produits = new HashSet<>();
 
     @Column(name = "DATE_COMMANDE")

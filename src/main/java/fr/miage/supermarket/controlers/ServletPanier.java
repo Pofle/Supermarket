@@ -214,7 +214,7 @@ public class ServletPanier extends HttpServlet {
 		commande.finaliserCommande(panier.calculerPrixTotal());
 		commande.setProduits(linkCommandeProduits);
 
-		return commandeDAO.mettreAJourCommande(commande);
+		return commandeDAO.creerOuMajCommande(commande);
 	}
 	
 	/**
