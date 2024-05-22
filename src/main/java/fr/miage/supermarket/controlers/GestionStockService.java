@@ -1,18 +1,17 @@
 package fr.miage.supermarket.controlers;
 
+import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.StockDAO;
-import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.utils.DatesUtils;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +45,7 @@ public class GestionStockService extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date0 = new Date(); // Initialise la date de départ
         List<Date> serieDates = DatesUtils.getSerieDates(date0, 15); // Génération des 15 dates suivant la date de départ
         
@@ -62,8 +61,12 @@ public class GestionStockService extends HttpServlet {
             }
         }
         
+        // Récupération des magasins
+        List<Magasin> magasins = MagasinDAO.getAllMagasins();
+        
         request.setAttribute("produitsStock", produitsStock);
         request.setAttribute("datesStock", datesStock); // Ajout des dates de stock à la requête
+        request.setAttribute("magasins", magasins); // Ajout des magasins à la requête
         request.getRequestDispatcher("/jsp/gestionStock.jsp").forward(request, response);
     }
 }

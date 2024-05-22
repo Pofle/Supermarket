@@ -21,6 +21,13 @@
         </c:forEach>
     </select>
     
+    <select id="magasin" name="magasin">
+        <option value="">Sélectionnez un magasin</option>
+        <c:forEach var="magasin" items="${magasins}">
+            <option value="${magasin.nom}">${magasin.nom}</option>
+        </c:forEach>
+    </select>
+    
     <table class="table-style">
         <thead>
             <tr>
@@ -68,16 +75,21 @@
     </table>
     
     <script>
-        document.getElementById("dateStock").addEventListener("change", function() {
-            var selectedDate = this.value;
-            updateResults(selectedDate);
-        });
+        document.getElementById("dateStock").addEventListener("change", updateResults);
+        document.getElementById("magasin").addEventListener("change", updateResults);
 
-        function updateResults(selectedDate) {
+        function updateResults() {
+        	var selectedDate = document.getElementById("dateStock").value;
+            var selectedMagasin = document.getElementById("magasin").value;
             var rows = document.querySelectorAll("#tableBody tr");
+
             rows.forEach(function(row) {
                 var rowDate = row.querySelector("td:nth-child(10)").textContent;
-                if (selectedDate === "" || selectedDate === rowDate) {
+                var rowMagasin = row.querySelector("td:nth-child(9)").textContent;
+                var dateMatch = selectedDate === "" || selectedDate === rowDate;
+                var magasinMatch = selectedMagasin === "" || selectedMagasin === rowMagasin;
+
+                if (dateMatch && magasinMatch) {
                     row.style.display = "table-row";
                 } else {
                     row.style.display = "none";
