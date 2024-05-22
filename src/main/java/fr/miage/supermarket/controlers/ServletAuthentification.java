@@ -42,11 +42,10 @@ public class ServletAuthentification extends HttpServlet {
         	mdpUser = userConnecting.getMotdepasse();
         	hashedPassword = user.hacherMotdePasse(password);
 		}
-
         // Vérification de l'utilisateur et son MDP
         
         //Si valide, on redirige vers une page de confirmation, et on enregistre l'utilisateur en session HTTP
-        if (mdpUser.equals(hashedPassword) && userConnecting != null) {
+        if (mdpUser.equals(hashedPassword) && userConnecting != null && userConnecting.getMail().equals(mail)) {
         	System.out.println("Connexion réussie");
             request.setAttribute("message", "Authentification réussie ! Bienvenue, " + mail + ".");
             HttpSession session = request.getSession();
@@ -54,7 +53,7 @@ public class ServletAuthentification extends HttpServlet {
             request.getRequestDispatcher("/jsp/confirmLogin.jsp").forward(request, response);
         } else {
         	//Si la connexion n'est pas valide, on explique pourquoi et on propose à nouveau à l'utilisateur de se connecter
-            if (userConnecting == null) {
+            if (userConnecting == null || !userConnecting.getMail().equals(mail)) {
             	System.out.println("Il n'existe pas d'utilisateur avec ce mail");
             	request.setAttribute("message", "Il n'existe pas d'utilisateur avec ce mail");
     		} else {

@@ -1,107 +1,77 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
+<title>CrÃ©ation de compte</title>
 <jsp:include page="/jsp/header.jsp" />
-<title>Création de compte</title>
+	<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+
 </head>
-<style>
-/* Container to position the tooltip relative to the input */
-.tooltip-container {
-	position: relative;
-	display: inline-block;
-}
 
-/* Tooltip text */
-.tooltip-text {
-	visibility: hidden;
-	width: 140px;
-	background-color: white;
-	color: black;
-	text-align: center;
-	border-style: solid;
-	border-radius: 6px;
-	border-color: black;
-	border-width: 2px;
-	padding: 5px;
-	position: absolute;
-	z-index: 1;
-	bottom: 125%; /* Position the tooltip above the input */
-	left: 50%;
-	margin-left: -70px; /* Center the tooltip */
-	opacity: 0;
-/* 	transition: opacity 0.5s; */
-	transition-duration: 0.2s;
-}
-
-/* Tooltip arrow */
-.tooltip-text::after {
-	content: "";
-	position: absolute;
-	top: 100%; /* At the bottom of the tooltip */
-	left: 50%;
-	margin-left: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: black transparent transparent transparent;
-}
-
-/* Show the tooltip text when hovering over the input */
-.tooltip-input:hover+.tooltip-text {
-	visibility: visible;
-	opacity: 1;
-}
-</style>
 <body>
+    <script>
+    function validateForm() {
+		var password = document.getElementById("password").value;
+		var confirmPassword = document.getElementById("confirmPassword").value;
+		if (password !== confirmPassword) {
+			alert("Les mots de passe ne correspondent pas.");
+			return false;
+		}
+		return true;
+	}
+    </script>	
 	<jsp:include page="/jsp/navbar.jsp" />
 	<br>
 
+	<div class="container-sm">
 	<h2>Inscription</h2>
 
-	<script>
-		function validateForm() {
-			var password = document.getElementById("password").value;
-			var confirmPassword = document.getElementById("confirmPassword").value;
-			if (password !== confirmPassword) {
-				alert("Les mots de passe ne correspondent pas.");
-				return false;
-			}
-			return true;
-		}
-	</script>
-	<form method="post" action="/SupermarketG3/inscription"
+	
+	<form method="post" class="form-floating" action="/SupermarketG3/inscription"
 		onsubmit="return validateForm()">
-		<label for="prenom">Prénom:</label> <input type="text" id="prenom"
-			name="prenom" required><br> <br> <label for="nom">Nom:</label>
-		<input type="text" id="nom" name="nom" required><br> <br>
+		<div class="mb-3">
+			<label for="prenom" class="form-label">PrÃ©nom</label> 
+			<input type="text" id="prenom" class="form-control" name="prenom" placeholder="PrÃ©nom" required>
+		</div>
+		<div class="mb-3">
+			<label for="nom" class="form-label">Nom</label>
+			<input type="text" id="nom" class="form-control" name="nom" placeholder="Nom" required>
+		</div>
 
-		<label for="mail">Mail:</label> <input type="text" id="mail"
-			name="mail" required><br> <br> <label
-			for="password">Mot de passe:</label> <input type="password"
-			id="password" name="password" required><br> <br> <label
-			for="confirmPassword">Confirmez le mot de passe:</label> <input
-			type="password" id="confirmPassword" name="confirmPassword" required><br>
-		<br>
+		<div class="mb-3">
+			<label for="mail" class="form-label">Mail</label> 
+			<input type="email" id="mail" class="form-control" name="mail" placeholder="Mail" required>
+		</div>
+		<div class="mb-3">
+			<label for="password" class="form-label">Mot de passe</label> 
+			<input type="password" id="password" class="form-control" name="password" placeholder="Mot de passe" required>
+		</div>
+		<div class="mb-3">
+			<label for="confirmPassword" class="form-label">Confirmez le mot de passe</label>
+			<input type="password" id="confirmPassword" class="form-control" name="confirmPassword" placeholder="Confirmation" required>
+		</div>
 
-		<div class="tooltip-container">
-			<label for="personnalisation">Acceptez-vous la
-				personnalisation ?</label> <input type="checkbox" id="personnalisation"
-				class="tooltip-input"> <span class="tooltip-text">La
-				personnalisation permet de vous proposer des produits de
-				remplacement qui conviennent à vos habitudes en cas de rupture de
-				stock</span>
-		</div><br> <br>
+		<div class="form-check mb-3">
+			<input type="checkbox" id="personnalisation" class="form-check-input" value=""> 
+			<label for="personnalisation" class="form-check-label">Acceptez-vous la personnalisation ?</label> 
+		</div>
 
-		<input type="submit" value="S'inscrire">
+		<div class="mb-3">
+			<button type="submit" class="btn btn-primary">S'inscrire</button>
+		</div>
 	</form>
 	<%
-	// Afficher les messages d'erreur ou de succès
+	// Afficher les messages d'erreur ou de succÃ¨s
 	String message = (String) request.getAttribute("message");
 	if (message != null) {
 		out.println("<p>" + message + "</p>");
 	}
 	%>
+	</div>
 </body>
 </html>

@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
+import java.util.Date;
 
 import java.sql.Time;
 import java.util.HashSet;
@@ -115,6 +117,14 @@ public class Commande {
         this.produits = produits;
     }
 
+    public String getMagasinId() {
+        return magasinId;
+    }
+
+    public void setMagasinId(String magasinId) {
+        this.magasinId = magasinId;
+    }
+    
     public Magasin getMagasin() {
         return magasin;
     }
