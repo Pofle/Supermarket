@@ -3,22 +3,11 @@ package fr.miage.supermarket.controlers;
 import java.io.IOException;
 import javax.mail.PasswordAuthentication;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
-import java.io.IOException;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -32,22 +21,11 @@ import javax.servlet.http.HttpServletResponse;
 import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.models.LinkCommandeProduit;
 
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.internal.build.AllowSysOut;
-
-import fr.miage.supermarket.dao.CommandeDAO;
-import fr.miage.supermarket.dao.ProduitDAO;
-import fr.miage.supermarket.models.CategorieCompte;
-import fr.miage.supermarket.models.Commande;
-import fr.miage.supermarket.models.LinkCommandeProduit;
-import fr.miage.supermarket.models.Produit;
-import fr.miage.supermarket.models.Promotion;
-
+/**
+ * @author RR
+ * servlet pour le traitement de la préparation d'un panier par un préparateur
+ * relié à la jsp de preparerPanier.jsp
+ */
 public class PreparerPanier extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 		/**
@@ -65,8 +43,6 @@ public class PreparerPanier extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("Servlet PreparerPanier méthode GET ");
 		gestionFormu(request, response);
-		 System.out.println("vers servlet VisuPreparateur");
-
 	}
 	
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -76,8 +52,15 @@ public class PreparerPanier extends HttpServlet {
 	 }
 	 
 	 CommandeDAO commandeDAO = new CommandeDAO();
-	 private static final SimpleDateFormat DF = new SimpleDateFormat("HH:mm:ss:SSS");
-
+	 
+	 /**
+	  * Traitement du formulaire de la jsp preparerPanier
+	  * @author RR
+	  * @param request
+	  * @param response
+	  * @throws ServletException
+	  * @throws IOException
+	  */
 	 private void gestionFormu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		 /*------- paramètres ------*/
 		 String[] idLinkValide = request.getParameterValues("produitValide");
@@ -96,6 +79,7 @@ public class PreparerPanier extends HttpServlet {
 	                String ean = ids[1];
 					linkValid.add(CommandeDAO.loadLink(idCommande, ean));
 				}
+		        // préparation pour le corpus du mail : les éléments qui sont validés
 		        for(LinkCommandeProduit l : linkValid) {
 		        	valide = valide + l.getProduit().getLibelle() + ", ";
 		        }
@@ -114,6 +98,7 @@ public class PreparerPanier extends HttpServlet {
 							}
 						}
 					}
+					// préparation pour le corpus du mail : les éléments qui n'ont pas été validé
 					manque = "Attention il manque : ";
 					for (LinkCommandeProduit l : linkCompar) {
 						manque = manque + l.getProduit().getLibelle() + ", " ;
@@ -152,6 +137,7 @@ public class PreparerPanier extends HttpServlet {
 	        String from = "supermarketdai@gmail.com";
 	        String host = "smtp.gmail.com";
 	        String port = "587";
+	        //mot de passe spécifique pour l'app
 	        String mdp = "ecxu xbzu lfeu cbgt";
 	        String sujet = "Votre commande faite le " + linkValid.get(0).getCommande().getDateCommande()+ " est prête";
 	        String corpus = "Bonjour, \n    Votre commande faite le " + linkValid.get(0).getCommande().getDateCommande() + " est prête, elle vous attend pour le " + linkValid.get(0).getCommande().getDateRetrait()+" à " + linkValid.get(0).getCommande().getHoraireRetrait() + ". \n" + valide + "\n"+ manque + "\n \n Au plaisir et à bientôt !";
@@ -179,9 +165,7 @@ public class PreparerPanier extends HttpServlet {
                 // Paramètres du message
                 message.setFrom(new InternetAddress(from));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-	            // Sujet du mail
 	            message.setSubject(sujet);
-	            // Corps du message
 	            message.setText(corpus);
 	
 	            // Envoi du mail
@@ -191,10 +175,8 @@ public class PreparerPanier extends HttpServlet {
 	        } catch (MessagingException mex) {
 	            System.out.println("Attention erreur lors de l'envoi du mail : " + mex);
 	        }
-
 			System.out.println("Vers servlet VisuPreparateur");
 			request.getRequestDispatcher("central?type_action=listePaniers").forward(request, response);		 
-			
 	 }
 	
 		

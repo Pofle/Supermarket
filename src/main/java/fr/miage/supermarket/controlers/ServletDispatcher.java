@@ -1,13 +1,9 @@
 package fr.miage.supermarket.controlers;
 
 import fr.miage.supermarket.models.Commande;
-import fr.miage.supermarket.models.LinkCommandeProduit;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,15 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import fr.miage.supermarket.dao.CommandeDAO;
 //import org.hibernate.mapping.List;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
 
-import fr.miage.supermarket.dao.LinkListeProduitDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
-import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.ShoppingList;
-import fr.miage.supermarket.utils.ListWrapper;
 import fr.miage.supermarket.models.Utilisateur;
 
 
@@ -125,39 +116,12 @@ public class ServletDispatcher extends HttpServlet {
 	
 	/**
 	 * Gère les fonctionnalités spécifiques aux préparateurs.
+	 * @author RR
 	 * @param action L'action à effectuer
 	 * @param request L'objet HttpServletRequest contenant la requête
 	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
 	 * @throws ServletException Si une erreur survient au niveau du servlet
 	 * @throws IOException Si une erreur d'entrée/sortie survient
-	 */
-//	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
-//			throws ServletException, IOException {
-//		String url;
-//		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
-//		if (action == null)
-//			url = "accueil";
-//		else {
-//			switch (action) {
-//			case "preparationPanier":
-//				url = "preparationPanier";
-//				break;
-//			default:
-//				url = "accueil";
-//			}
-//		}
-//		request.getRequestDispatcher(url).forward(request, response);
-//	}
-	
-	/**
-	 * gestion de la catégorie PREPARATEUR d'utilisateur 
-	 * préparation des données pour les pages accessibles par cette catégorie
-	 * @author RR
-	 * @param action
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
 	 */
 	private void dispatchPreparateurFuncs(String action, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

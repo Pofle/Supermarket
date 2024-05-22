@@ -2,8 +2,6 @@ package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,13 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.miage.supermarket.dao.CommandeDAO;
-import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
-import fr.miage.supermarket.models.Produit;
-import fr.miage.supermarket.models.Promotion;
 
+/**
+ * Servlet relié à la jsp listPaniers.jsp 
+ * @author RR
+ */
 public class VisuPreparateur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 		/**
@@ -38,10 +37,8 @@ public class VisuPreparateur extends HttpServlet {
 		
 		if(request.getParameter("id_commande") == null) {
 			displayAllCommandes(request, response);
-			System.out.println("Vers JSP listPaniers ");
 		} else {
 			displaySpecificPanier(request, response);
-			System.out.println("Vers JSP preparerPaniers ");
 
 		}
 		
@@ -53,14 +50,14 @@ public class VisuPreparateur extends HttpServlet {
 		
 		if(request.getParameter("id_commande") == null) {
 			displayAllCommandes(request, response);
-			System.out.println("Vers JSP listPaniers ");
 		} else {
 			displaySpecificPanier(request, response);
 		}
     }
 	
 	/**
-	 * Affichage du détail d'un panier
+	 * Affichage du détail d'un panier de la commande dont id_commande a été récupéré
+	 * @author RR
 	 * @param request
 	 * @param response
 	 * @throws ServletException
@@ -88,9 +85,6 @@ public class VisuPreparateur extends HttpServlet {
 	private void displayAllCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
 		ArrayList<Commande> commandes = CommandeDAO.getCommandeTrieInLink();
-		for(Commande c : commandes) {
-			System.out.println("préparation jsp listePaniers visualisation commande " + c.getId_commande());
-		}
 		System.out.println("");
 		// attention set catégorie 
 		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());

@@ -24,6 +24,7 @@ public class LinkCommandeProduit {
 
 	@Column(name = "QUANTITE")
 	private int quantite;
+	
 	public LinkCommandeProduit(){}	
 	public LinkCommandeProduit(Commande commande, Produit produit, int quantite) {
 		super();

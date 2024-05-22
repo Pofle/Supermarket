@@ -13,21 +13,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import org.hibernate.annotations.Cascade;
-//import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Set;
-import org.hibernate.annotations.Cascade;
 import jakarta.persistence.Column;
 
 @Entity
@@ -142,7 +133,7 @@ public class Commande {
 	}
     /**
      * @author RR
-     * @param chrono
+     * @param chrono Time colonne temps de preparation
      */
 	public void setChrono(Time chrono) {
 		this.chrono = chrono;
