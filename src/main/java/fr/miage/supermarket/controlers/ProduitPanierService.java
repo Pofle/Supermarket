@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,26 +27,30 @@ import fr.miage.supermarket.models.*;
 /**
  * Servlet de gestion du panier.
  * 
- * @author EricB
  */
 public class ProduitPanierService extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private ProduitDAO produitDAO;
 	private PromotionDAO promotionDAO;
 	private CommandeDAO commandeDAO;
+
+	private Map<String, Float> promotions;
 
 	public ProduitPanierService() {
 		this.produitDAO = new ProduitDAO();
 		this.promotionDAO = new PromotionDAO();
 		this.commandeDAO = new CommandeDAO();
+		this.promotions = new HashMap<>();
 	}
 
 	/**
-	 * Méthode GET permettant de récupérer sous forme de XML des informations sur les produits contenus dans le panier en session.
-	 * Avec le paramètre displayOption renseigné à "all", renvoit l'ensemble des produits contenus en session, et le prix total du panier.
-	 * Sans le paramètre displayOption renseigné à "all", renvoit le nombre de produits enregistrés dans le panier.
+	 * Méthode GET permettant de récupérer sous forme de XML des informations sur
+	 * les produits contenus dans le panier en session. Avec le paramètre
+	 * displayOption renseigné à "all", renvoit l'ensemble des produits contenus en
+	 * session, et le prix total du panier. Sans le paramètre displayOption
+	 * renseigné à "all", renvoit le nombre de produits enregistrés dans le panier.
 	 * 
 	 * @see {@link HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)};
 	 * 
@@ -62,92 +67,67 @@ public class ProduitPanierService extends HttpServlet {
 			panier = new Panier();
 			session.setAttribute("panier", panier);
 		}
-		
-		String displayOption = request.getParameter("displayOption");
-		// Si l'intégralité des produits sont demandés (displayOption = all)
-		if (displayOption != null && displayOption.equals("all")) {
-			response.getWriter().write(constructAllProduitsXML(panier));
-			response.setStatus(HttpServletResponse.SC_OK);
-			return;
-		}
 
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter()
 				.write("<response><nombreProduits>" + panier.getPanier().size() + "</nombreProduits></response>");
 	}
 
-	/**
-	 * Méthode POST permettant de gérer l'ajout d'un produit au panier contenu en session.
-	 * Avec le paramètre quantite renseigné, ajuste la quantité du produit dont l'ean est celui passé en paramètres, en session.
-	 * Sans le paramètre quantite renseigné, ajoute le produit dont l'ean est celui passé en paramètre, en session.
-	 * 
-	 * @see {@link HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)};
-	 * 
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("application/xml");
-		response.setCharacterEncoding("UTF-8");
-		String action = request.getParameter("action");
-        if ("validerPanier".equals(action)) {
-            validerPanier(request, response);
-        } else {
-			HttpSession session = request.getSession();
-			Panier panier = (Panier) session.getAttribute("panier");
-	
-			String ean = request.getParameter("ean");
-			String quantiteProduit = request.getParameter("quantite");
-	
-			if (ean != null) {
-				// Si le panier n'existe pas en session, on le crée
-				if (panier == null) {
-					panier = new Panier();
-					session.setAttribute("panier", panier);
+	    response.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		Panier panier = getOrCreatePanier(session);
+		String ean = request.getParameter("ean");
+		String quantiteProduit = request.getParameter("quantite");
+		ProduitPanier produitPanier = null;
+		if (ean != null) {
+			if (quantiteProduit != null) {
+				int qttProduit = Integer.parseInt(quantiteProduit);
+				if (qttProduit != 0) {
+					produitPanier = panier.ajusterProduit(ean, qttProduit);
 				}
-	
-				if (quantiteProduit != null) {
-					int qttProduit = Integer.parseInt(quantiteProduit);
-					if (qttProduit != 0) {
-						panier.ajusterProduit(ean, qttProduit);
-					}
-				} else {
-					ajouterProduitSession(panier, ean, response);
-				}
-	
-				if(panier.getPanier().isEmpty()) {
-					session.removeAttribute("panier");
-				}
-				response.getWriter()
-						.write("<response><nombreProduits>" + panier.getPanier().size() + "</nombreProduits></response>");
 			} else {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				produitPanier = ajouterProduitSession(panier, ean, response);
 			}
-        }
+			if (panier.getPanier().isEmpty()) {
+				session.removeAttribute("panier");
+			}
+			response.getWriter()
+					.write("<response><nombreProduits>" + panier.getPanier().size() + "</nombreProduits><prixTotal>"
+							+ panier.calculerPrixTotal() + "</prixTotal>" + constructProduit(produitPanier)
+							+ "</response>");
+		} else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 	}
 
-	/**
-	 * Ajoute un produit dans le panier en session s'il n'existe pas déjà.
-	 * 
-	 * @param panier le panier contenu en session
-	 * @param ean l'ean du produit à ajouter
-	 * @param response la réponse donnée par le servlet
-	 */
-	private void ajouterProduitSession(Panier panier, String ean, HttpServletResponse response) {
-		if (panier.produitExiste(ean)) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
+	private Panier getOrCreatePanier(HttpSession session) {
+		Panier panier = (Panier) session.getAttribute("panier");
+		if (panier == null) {
+			panier = new Panier();
+			session.setAttribute("panier", panier);
 		}
-		// On vérifie que le produit recherche existe
+		return panier;
+	}
+
+	private ProduitPanier ajouterProduitSession(Panier panier, String ean, HttpServletResponse response) {
+		if (panier.produitExiste(ean)) {
+			//response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return panier.getPanier().get(ean);
+		}
 		Produit produit = produitDAO.getProduitByEan(ean);
 		if (produit == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
+			return null;
 		}
 
-		// Création de notre produitpanier, on ajoute le produit au panier
-		ProduitPanier produitPanier = new ProduitPanier(produit.getLibelle(), ean, 1, produit.getPrix(), null,
+		Float promotion = promotionDAO.getPromotionPourProduit(produit.getEan());
+	
+		ProduitPanier produitPanier = new ProduitPanier(produit.getLibelle(), ean, 1, produit.getPrix(), promotion,
 				produit.getConditionnement(), produit.getPoids(), produit.getRepertoireImage());
 		panier.ajouterProduit(produitPanier);
+		return produitPanier;
 	}
 
 	private void validerPanier(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -271,5 +251,29 @@ public class ProduitPanierService extends HttpServlet {
 		xmlResponse.append("<prixTotal>").append(panier.calculerPrixTotal()).append("</prixTotal>");
 		xmlResponse.append("</panier>");
 		return xmlResponse.toString();
+	}
+		
+
+	private String constructProduit(ProduitPanier produitPanier) {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append("<produit>");
+		strBuilder.append("<ean>").append(produitPanier.getEan()).append("</ean>");
+		strBuilder.append("<libelle>").append(produitPanier.getLibelle()).append("</libelle>");
+		strBuilder.append("<quantite>").append(produitPanier.getQuantite()).append("</quantite>");
+		strBuilder.append("<prix>").append(produitPanier.getPrix()).append("</prix>");
+		if (promotions.get(produitPanier.getEan()) != null) {
+			produitPanier.setTauxPromotion(promotions.get(produitPanier.getEan()));
+			strBuilder.append("<promotion>").append(promotions.get(produitPanier.getEan())).append("</promotion>");
+		}
+		strBuilder.append("<conditionnement>").append(produitPanier.getConditionnement()).append("</conditionnement>");
+		if (produitPanier.getPoids() != null) {
+			strBuilder.append("<poids>").append(produitPanier.getPoids()).append("</poids>");
+		}
+		if (produitPanier.getTauxPromotion() != null) {
+			strBuilder.append("<promotion>").append(produitPanier.getTauxPromotion()).append("</promotion>");
+		}
+		strBuilder.append("<imageLocation>").append(produitPanier.getImage()).append("</imageLocation>");
+		strBuilder.append("</produit>");
+		return strBuilder.toString();
 	}
 }

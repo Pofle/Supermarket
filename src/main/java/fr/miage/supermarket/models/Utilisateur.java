@@ -48,8 +48,19 @@ public class Utilisateur {
 
     @Column(name = "POINTS", nullable = true)
     private Integer points;
+    
+    @Column(name = "PERSONNALISATION", nullable = true)
+    private boolean personnalisation;
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    public boolean isPersonnalisation() {
+		return personnalisation;
+	}
+
+	public void setPersonnalisation(boolean personnalisation) {
+		this.personnalisation = personnalisation;
+	}
+
+	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<ShoppingList> listesCourseLst;
 
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)

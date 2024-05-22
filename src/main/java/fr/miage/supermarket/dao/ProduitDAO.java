@@ -9,8 +9,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 
 /**
@@ -157,4 +159,24 @@ public class ProduitDAO {
         Long sum = (Long) query.getSingleResult();
         return sum != null ? sum.intValue() : 0;
     }
+	
+	public List<Produit> getProduitsParIdCommande(int commandeId) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try {
+			TypedQuery<Produit> query = session.createQuery(
+					"SELECT p FROM Produit p JOIN LinkCommandeProduit lcp ON p.ean = lcp.produit.ean WHERE lcp.commande.id_commande = :commandeId", 
+					Produit.class);
+			query.setParameter("commandeId", commandeId);
+			return query.getResultList();
+			
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+			finally {
+			session.close();
+		}
+    }
+	
 }
