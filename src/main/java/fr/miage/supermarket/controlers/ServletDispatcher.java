@@ -107,6 +107,9 @@ public class ServletDispatcher extends HttpServlet {
 			case "statistiques":
 				url = "statistiques";
 				break;
+			case "visuTempsPrepaMoyen":
+				url="visuTempsPrepaMoyen";
+				break;
 			default:
 				url = "accueil";
 			}

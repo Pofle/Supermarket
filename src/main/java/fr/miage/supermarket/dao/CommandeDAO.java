@@ -16,6 +16,7 @@ import org.hibernate.query.Query;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.StatutCommande;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
@@ -194,9 +195,9 @@ private SessionFactory sessionFactory;
 		return linkByCommande;
 	}
 	/**
-	 * Récupère les différentes commandes reliés à LinkCommandeProduit
+	 * Récupère les différentes commandes reliés à LinkCommandeProduit qui ont un chrono différent de null 
 	 * @author RR
-	 * @return liste des commandes relié à l'entité LinkCommandeProduit
+	 * @return liste des commandes prête relié à l'entité LinkCommandeProduit
 	 */
 	public static ArrayList<Commande> getCommandeInLink() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
@@ -204,15 +205,15 @@ private SessionFactory sessionFactory;
 		if(!transact.isActive()) {
 			transact = session.beginTransaction();
 		}
-		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit", Commande.class);
-		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
+		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NOT NULL", Commande.class);
+		ArrayList<Commande> commande = (ArrayList<Commande>) query.getResultList();
 		System.out.println("getCommandeTrieInLink returns : ");
-		for (int i = 0; i<idComm.size(); i++) {
-			System.out.print(" Commande : "+idComm.get(i).getId_commande());
+		for (int i = 0; i<commande.size(); i++) {
+			System.out.print(" Commande : "+commande.get(i).getId_commande());
 		}
 		System.out.println(";");
 		transact.commit();
-		return idComm;
+		return commande;
 	}
 	/**
 	 * Récupère les différentes commandes non traités dans l'ordre croissant de retrait
@@ -227,14 +228,14 @@ private SessionFactory sessionFactory;
 		}
 		//on récupère les commandes dans l'ordre croissant des dates et heures (converti en Time) de retrait
 		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NULL ORDER BY commande.dateRetrait ASC, STR_TO_DATE(commande.horaireRetrait, '%H:%i') ASC", Commande.class);
-		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
+		ArrayList<Commande> commande = (ArrayList<Commande>) query.getResultList();
 		System.out.println("getCommandeTrieInLink returns : ");
-		for (int i = 0; i<idComm.size(); i++) {
-			System.out.print(" Commande : "+idComm.get(i).getId_commande());
+		for (int i = 0; i<commande.size(); i++) {
+			System.out.print(" Commande : "+commande.get(i).getId_commande());
 		}
 		System.out.println(";");
 		transact.commit();
-		return idComm;
+		return commande;
 	}
 	/**
 	 * Récupère la ligne de LinkCommandeProduit contenant la commande et produit dont les id sont en paramètre

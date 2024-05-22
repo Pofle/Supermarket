@@ -148,6 +148,12 @@
         <description></description>
 		<servlet-class>fr.miage.supermarket.controlers.PreparerPanier</servlet-class>
     </servlet>
+    <servlet>
+		<servlet-name>ServletTempsMoyen</servlet-name>
+        <display-name>ServletTempsMoyen</display-name>
+        <description></description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletTempsMoyen</servlet-class>
+    </servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -257,6 +263,10 @@
 	<servlet-mapping>
 		<servlet-name>PreparerPanier</servlet-name>
 		<url-pattern>/preparerPanier</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletTempsMoyen</servlet-name>
+		<url-pattern>/visuTempsPrepaMoyen</url-pattern>
 	</servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>
