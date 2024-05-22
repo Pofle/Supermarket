@@ -163,6 +163,8 @@
         <display-name>ServletTempsMoyen</display-name>
         <description></description>
 		<servlet-class>fr.miage.supermarket.controlers.ServletTempsMoyen</servlet-class>
+	</servlet>
+    <servlet>
     	<servlet-name>ServletDeconnexion</servlet-name>
     	<display-name>ServletDeconnexion</display-name>
     	<description></description>
@@ -290,6 +292,7 @@
 		<servlet-name>ServletTempsMoyen</servlet-name>
 		<url-pattern>/visuTempsPrepaMoyen</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>ServletDeconnexion</servlet-name>
 		<url-pattern>/deconnexion</url-pattern>
 	</servlet-mapping>

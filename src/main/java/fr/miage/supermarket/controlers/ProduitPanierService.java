@@ -162,7 +162,7 @@ public class ProduitPanierService extends HttpServlet {
 
                 Commande commande = new Commande();
                 commande.setUtilisateur(utilisateur);
-                commande.setStatut(true);
+                commande.setStatut(StatutCommande.EN_COURS);
                 commande.setIdMagasin(magasinId);
                 commande.setDateCommande(currentDate);
                 commande.setDateRetrait(localDate);

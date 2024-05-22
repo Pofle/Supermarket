@@ -116,14 +116,6 @@ public class Commande {
     public void setProduits(Set<LinkCommandeProduit> produits) {
         this.produits = produits;
     }
-
-    public String getMagasinId() {
-        return magasinId;
-    }
-
-    public void setMagasinId(String magasinId) {
-        this.magasinId = magasinId;
-    }
     
     public Magasin getMagasin() {
         return magasin;
