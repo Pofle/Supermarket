@@ -154,7 +154,7 @@ public class PreparerPanier extends HttpServlet {
 	        String port = "587";
 	        String mdp = "ecxu xbzu lfeu cbgt";
 	        String sujet = "Votre commande faite le " + linkValid.get(0).getCommande().getDateCommande()+ " est prête";
-	        String corpus = "Bonjour, \n Votre commande faite le " + linkValid.get(0).getCommande().getDateCommande() + " est prête, elle vous attend pour le " + linkValid.get(0).getCommande().getDateRetrait()+" à " + linkValid.get(0).getCommande().getHoraireRetrait() + ". \n \n" + valide + "\n"+ manque + "\n \n Au plaisir et à bientôt !";
+	        String corpus = "Bonjour, \n    Votre commande faite le " + linkValid.get(0).getCommande().getDateCommande() + " est prête, elle vous attend pour le " + linkValid.get(0).getCommande().getDateRetrait()+" à " + linkValid.get(0).getCommande().getHoraireRetrait() + ". \n" + valide + "\n"+ manque + "\n \n Au plaisir et à bientôt !";
 	        
 	        // Propriétés du mail
 	        Properties properties = System.getProperties();
