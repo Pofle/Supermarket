@@ -1,6 +1,7 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <nav class="navbar">
 	<div class="navbar-container">
 		<div class="navbar-left">
@@ -24,6 +25,7 @@
 				</c:if>
 			</ul>
 		</div>
+		<a href="/SupermarketG3/deconnexion"><i class="fas fa-sign-out-alt">LOGOUT</i></a>
 		<span class="navbar-right"> <span class="navbar-profile">${categorie}</span>
 			<div class="navbar-cart-container">
 				<a href="central?type_action=panier"">
