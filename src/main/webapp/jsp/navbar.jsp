@@ -26,7 +26,7 @@
 		</div>
 		<span class="navbar-right"> <span class="navbar-profile">${categorie}</span>
 			<div class="navbar-cart-container">
-				<a href="central?type_action=panier"">
+				<a href="central?type_action=panier">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" color="#ffffff" fill="none">
     <path d="M8 16L16.7201 15.2733C19.4486 15.046 20.0611 14.45 20.3635 11.7289L21 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
     <path d="M6 6H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

@@ -136,6 +136,12 @@ public class LinkListeProduitDAO {
         }
     }
 	
+	/**
+	 * Service pour ajouter un produit à une liste de course
+	 * @param listeId, liste dans laquelle est ajouté le produit
+	 * @param ean, ean du pr, quantité de produit à ajouter dans la liste
+	 * @author Pauline
+	 */
 	public static void ajouterProduitListe(int listeId, String ean, int quantite) {
         Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
         Transaction tx = null;
@@ -148,8 +154,6 @@ public class LinkListeProduitDAO {
             query.setParameter("ean", ean);
             LinkListeProduit linkListeProduit = query.uniqueResult();
             
-          //Log de controle
-            System.out.println("EAN requested for add in list : " + ean + "ListeId : "+ listeId+ "And qty : "+quantite);
 
             if (linkListeProduit != null) {
                 // Si le produit existe déjà dans la liste, mettre à jour la quantité

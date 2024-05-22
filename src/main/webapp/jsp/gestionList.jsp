@@ -36,13 +36,9 @@
             		onclick="chargerProduitsListe(${list.id}, '${list.name}')">
             			${status.index + 1} - ${list.name}
             		</p>
-            		
-            		<!-- 	Bouton à générer ici avec le script JS au chargement -->
             		<div id="btn-Memo_container-${list.id}">
-                        <!-- Le bouton sera généré ici par le script JS -->
-                    </div>
-            		
-            		
+                        <!--Contenu généré par JS JS -->
+                    </div>          		
             		<a href="servletListeCourse?type_action=delete_list&list_id=${list.id}">
             			<img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteListe" Title="Supprimer la liste de course" />
             		</a>
@@ -63,18 +59,19 @@
       	</div>
       	<form id="formProduits" action="gestionProduitListe" method="post">
       		<div class="modal-body">
-      		                        		  	
+      		    <!--  Contenu généré par JS  -->                  		  	
       		</div>
-      <div class="modal-footer">
-      	<button type="button" class="btn btn-convertir" onclick="convertirListeEnPanier()">Convertir en Panier</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>       
-      </div>
-       <input type="hidden" name="listeId" id="listeId" value="">
+      	<div class="modal-footer">
+      		<button type="button" class="btn btn-convertir" onclick="convertirListeEnPanier()">Convertir en Panier</button>
+        	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        	<button type="submit" class="btn btn-primary">Enregistrer</button>       
+      	</div>
+       	<input type="hidden" name="listeId" id="listeId" value="">
       </form>
     </div>
   </div>
 </div>
+
  <!-- Modal d'ajout d'une liste -->
   <div class="modal fade" id="modalAjout" tabindex="-1" aria-labelledby="modalAjoutLabel" aria-hidden="true">
   	<div class="modal-dialog">
@@ -107,7 +104,7 @@
       	</div>
       	<form id="formMemo" action="" method="">
       		<div class="modal-body">
-      		                        		  	
+      		   <!--  Contenu généré par JS  -->                      		  	
       		</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -121,13 +118,11 @@
 
  <!-- Script -->
  <script>
-        // Stocker le XML des memos dans une variable JavaScript
+        // Stocker le XML_ memos dans une variable JS
         const memosXml = `<c:out value="${requestScope.memosIdXml}" escapeXml="false"/>`;
-</script>
-    
+</script>    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="javascript/script.js"></script>       
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   </body>
-     
+   </body>     
 </html>

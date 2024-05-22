@@ -106,28 +106,6 @@ public class ShoppingListDAO {
 	            session.close();
 	        }
 	 }
-	 
-	 /**
-	  * Methode pour ajouté une quantité de produit à une liste - EN COURS-
-	  * @param quantite
-	  */
-	 public static void ajouterArticleListe(int quantite)
-	 {
-		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
-	     Transaction tx = null;
-	     
-	     try {
-	    	 tx=session.beginTransaction();
-	    	 LinkListeProduit linkListProduit = new LinkListeProduit();
-	    	 linkListProduit.setQuantite(quantite);
-	    	 
-	     }catch (Exception e) {
-	            if (tx != null) tx.rollback();
-	            throw e;
-	        } finally {
-	            session.close();
-	        }
-	 }
 }
 		
 		
