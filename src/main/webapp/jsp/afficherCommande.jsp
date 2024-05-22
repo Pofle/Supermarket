@@ -34,7 +34,7 @@
                         <td>${commande.magasin.nom}</td>
                         <td>${commande.dateRetrait}</td>
                         <td>${commande.horaireRetrait}</td>
-                        <td>${commande.statut ? 'En cours' : 'Terminée'}</td>
+                        <td>${commande.statut}</td>
                         <td>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal"
                                     data-id="${commande.id_commande}"

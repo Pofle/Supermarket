@@ -32,26 +32,6 @@ function traiterReponse(xml) {
 	}
 }
 
-function ajouterProduit(x){
-	var key = x.toString()
-	var valueAdded = parseInt(document.getElementById(x).value)
-	
-	if (panier.get(key) == null){
-		panier.set(key, valueAdded)
-	} else{
-		panier.set(key, panier.get(key)+valueAdded)
-	}
-	
-	console.log(panier)
-	var totalArticles = 0
-	for (let [key, value] of  panier.entries()) {
-    	totalArticles+=value
-	}
-	document.getElementById("panier-compteur").innerHTML = "Nb articles: "+totalArticles
-	
-	
-}
-
 // Appel de la fonction pour charger les produits lors du chargement de la page
 window.onload = function() {
     chargerProduits();

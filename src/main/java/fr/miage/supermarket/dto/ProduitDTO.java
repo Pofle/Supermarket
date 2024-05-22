@@ -23,6 +23,8 @@ public class ProduitDTO {
 	private Float poids;
 
 	private int quantiteCommandee;
+	
+	private Float tauxPromotion;
 
 	private CategorieDTO categorie;
 	
@@ -131,4 +133,14 @@ public class ProduitDTO {
 	public void setRayon(RayonDTO rayon) {
 		this.rayon = rayon;
 	}
+
+	public Float getTauxPromotion() {
+		return tauxPromotion;
+	}
+
+	public void setTauxPromotion(Float tauxPromotion) {
+		this.tauxPromotion = tauxPromotion;
+	}
+	
+	
 }
