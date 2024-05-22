@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,56 +13,62 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.miage.supermarket.dao.CategorieDAO;
+import fr.miage.supermarket.dao.RayonDAO;
 import fr.miage.supermarket.dto.CategorieDTO;
 import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.Rayon;
 import fr.miage.supermarket.utils.ListWrapper;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 
 /**
- * Servlet implementation class GestionCategoriesService
+ * Service de gestion de recherche de catégories de produits
+ * @author EricB
  */
 public class GestionCategoriesService extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
        
-	private CategorieDAO categorieDAO;
+	private RayonDAO rayonDAO;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public GestionCategoriesService() {
         super();
-        this.categorieDAO = new CategorieDAO();
+        this.rayonDAO = new RayonDAO();
     }
 
-	/**
+    /**
+     * Gère les requêtes HTTP GET en récupérant les catégories d'un rayon dont l'identifiant est passé en paramètre,
+     * trie les catégories par libellé, puis en les formate en XML pour les transmettre en réponse.
+     *
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @author EricB
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Categorie> categories = categorieDAO.getAllCategorie();
-		
-		List<CategorieDTO> categorieDTOs = new ArrayList<>();
+		String rayonIdString = request.getParameter("rayonId");
+	    Integer rayonId = Integer.parseInt(rayonIdString);
+	    Rayon rayon = rayonDAO.findRayonById(rayonId);
 
+	    // Tri nécessaire pour ne pas avoir les catégories qui viennent dans un ordre aléatoire dans le XML
+	    // permet de garantir une stabilité à l'IHM sur l'ordre d'affichage
+	    List<Categorie> categories = new ArrayList<>(rayon.getCategories());
+	    categories.sort(Comparator.comparing(Categorie::getLibelle));
+	    
+	    StringBuilder xmlResponse = new StringBuilder();
+	    xmlResponse.append("<categories>");
 	    for (Categorie categorie : categories) {
-	        CategorieDTO categorieDTO = new CategorieDTO();
-	        categorieDTO.setLibelle(categorie.getLibelle());
-	        categorieDTOs.add(categorieDTO);
+	      xmlResponse.append("<categorie id='").append(categorie.getId()).append("'>");
+	      xmlResponse.append(categorie.getLibelle());
+	      xmlResponse.append("</categorie>");
 	    }
-		
-		try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(CategorieDTO.class, ListWrapper.class);
-            Marshaller marshaller = jaxbContext.createMarshaller();
+	    xmlResponse.append("</categories>");
 
-            ListWrapper<CategorieDTO> wrapper = new ListWrapper<>(categorieDTOs);
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
-            marshaller.marshal(wrapper, writer);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+	    response.setContentType("application/xml");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write(xmlResponse.toString());
 	}
 }

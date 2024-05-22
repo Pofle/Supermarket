@@ -1,5 +1,9 @@
 package fr.miage.supermarket.dao;
 
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +20,9 @@ import org.hibernate.query.Query;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.LinkCommandeProduitId;
+import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
+import fr.miage.supermarket.models.StatutCommande;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 import jakarta.persistence.NoResultException;
@@ -128,17 +134,30 @@ public class CommandeDAO {
 	public Commande getCommandeNonFinalisee(int utilisateurId) {
 		try (Session session = sessionFactory.openSession()) {
 			TypedQuery<Commande> query = session.createQuery(
-					"SELECT c FROM Commande c LEFT JOIN FETCH c.produits WHERE c.utilisateur.id = :utilisateurId AND c.statut = false",
+					"SELECT c FROM Commande c LEFT JOIN FETCH c.produits WHERE c.utilisateur.id = :utilisateurId AND c.statut = :statutcommande",
 					Commande.class);
 			query.setParameter("utilisateurId", utilisateurId);
+			query.setParameter("statutcommande", StatutCommande.NON_VALIDE);
 			return query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 	}
-	
-	
-	public LinkCommandeProduit getLinkCommandeProduitById(LinkCommandeProduitId id) {
+    
+    public List<Commande> getAllCommandes() {
+        Session session = sessionFactory.openSession();
+        List<Commande> commandes = null;
+        try {
+            commandes = session.createQuery("FROM Commande", Commande.class).list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return commandes;
+    }
+    
+    public LinkCommandeProduit getLinkCommandeProduitById(LinkCommandeProduitId id) {
         try (Session session = sessionFactory.openSession()) {
             return session.get(LinkCommandeProduit.class, id);
         } catch (HibernateException e) {
@@ -178,6 +197,54 @@ public class CommandeDAO {
         }
     }
     
+    public List<Commande> getCommandesByUtilisateur(Utilisateur utilisateur) {
+        Session session = sessionFactory.openSession();
+        List<Commande> commandes = null;
+        try {
+            String hql = "FROM Commande WHERE utilisateur = :utilisateur";
+            Query<Commande> query = session.createQuery(hql, Commande.class);
+            query.setParameter("utilisateur", utilisateur);
+            commandes = query.getResultList();
+        } finally {
+            session.close();
+        }
+        return commandes;
+    }
+    
+    public Commande getCommandeById(int id) {
+        Session session = sessionFactory.openSession();
+        Commande commande = null;
+        try {
+            commande = session.get(Commande.class, id);
+        } finally {
+            session.close();
+        }
+        return commande;
+    }
+    
+    public void updateCommande(String idCommande, Magasin magasin, LocalDate dateRetrait, String horaireRetrait) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionAnnotationFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            Commande commande = session.get(Commande.class, idCommande);
+            if (commande != null) {
+                commande.setMagasin(magasin);
+                commande.setDateRetrait(dateRetrait);
+                commande.setHoraireRetrait(horaireRetrait);
+                session.merge(commande);
+                transaction.commit();
+            } else {
+                System.out.println("Commande non trouvée avec l'ID: " + idCommande);
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
     public List<Commande> getCommandeUtilisateur(Utilisateur utilisateur) {
 		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 		try {
@@ -192,24 +259,6 @@ public class CommandeDAO {
 			} else {
 				return null;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			session.close();
-		}
-	}
-
-	public Commande getCommandeById(int commandeId) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-		Session session = sessionFactory.getCurrentSession();
-
-		try {
-			session.beginTransaction();
-			Commande commande = (Commande) session.createQuery("FROM Commande WHERE id_commande = :commandeId")
-					.setParameter("commandeId", commandeId).uniqueResult();
-			session.getTransaction().commit();
-			return commande;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -288,9 +337,9 @@ public class CommandeDAO {
 		return linkByCommande;
 	}
 	/**
-	 * Récupère les différentes commandes reliés à LinkCommandeProduit
+	 * Récupère les différentes commandes reliés à LinkCommandeProduit qui ont un chrono différent de null 
 	 * @author RR
-	 * @return liste des commandes relié à l'entité LinkCommandeProduit
+	 * @return liste des commandes prête relié à l'entité LinkCommandeProduit
 	 */
 	public static ArrayList<Commande> getCommandeInLink() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
@@ -298,15 +347,15 @@ public class CommandeDAO {
 		if(!transact.isActive()) {
 			transact = session.beginTransaction();
 		}
-		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit", Commande.class);
-		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
+		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NOT NULL", Commande.class);
+		ArrayList<Commande> commande = (ArrayList<Commande>) query.getResultList();
 		System.out.println("getCommandeTrieInLink returns : ");
-		for (int i = 0; i<idComm.size(); i++) {
-			System.out.print(" Commande : "+idComm.get(i).getId_commande());
+		for (int i = 0; i<commande.size(); i++) {
+			System.out.print(" Commande : "+commande.get(i).getId_commande());
 		}
 		System.out.println(";");
 		transact.commit();
-		return idComm;
+		return commande;
 	}
 	/**
 	 * Récupère les différentes commandes non traités dans l'ordre croissant de retrait
@@ -321,14 +370,14 @@ public class CommandeDAO {
 		}
 		//on récupère les commandes dans l'ordre croissant des dates et heures (converti en Time) de retrait
 		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NULL ORDER BY commande.dateRetrait ASC, STR_TO_DATE(commande.horaireRetrait, '%H:%i') ASC", Commande.class);
-		ArrayList<Commande> idComm = (ArrayList<Commande>) query.getResultList();
+		ArrayList<Commande> commande = (ArrayList<Commande>) query.getResultList();
 		System.out.println("getCommandeTrieInLink returns : ");
-		for (int i = 0; i<idComm.size(); i++) {
-			System.out.print(" Commande : "+idComm.get(i).getId_commande());
+		for (int i = 0; i<commande.size(); i++) {
+			System.out.print(" Commande : "+commande.get(i).getId_commande());
 		}
 		System.out.println(";");
 		transact.commit();
-		return idComm;
+		return commande;
 	}
 	/**
 	 * Récupère la ligne de LinkCommandeProduit contenant la commande et produit dont les id sont en paramètre

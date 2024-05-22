@@ -1,6 +1,7 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <nav class="navbar">
 	<div class="navbar-container">
 		<div class="navbar-left">
@@ -9,6 +10,7 @@
 				<c:if test="${requestScope.categorie == 'GESTIONNAIRE'}">
 					<li class="navbar-item"><a href="central?type_action=gestionProduit" class="navbar-link">Gestion des produits</a></li>
 					<li class="navbar-item"><a href="central?type_action=gestionStock" class="navbar-link">Gestion du stock</a></li>
+					<li class="navbar-item"><a href="central?type_action=visuTempsPrepaMoyen" class="navbar-link">Temps de Préparation moyen</a></li>
 				</c:if>
 				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
 					<li class="navbar-item"><a
@@ -18,12 +20,18 @@
 				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
                     <li class="navbar-item"><a href="central?type_action=gestion_List" class="navbar-link">Listes des courses</a></li>
                     <li class="navbar-item"><a href="central?type_action=habitudesConsommation" class="navbar-link">Mes habitudes</a></li>
+                    <li class="navbar-item"><a href="central?type_action=nosRayons" class="navbar-link">Nos rayons</a></li>
 				</c:if>
+ 				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
+    				<li class="navbar-item"><a href="CommandeUtilisateur" class="navbar-link">Commandes en cours</a></li>
+				</c:if>		
 				<c:if test="${requestScope.categorie == 'VISITEUR'}">
 					<li class="navbar-item"><a href="central?type_action=connexionInscription" class="navbar-link">Connexion / Inscription</a></li>
+					<li class="navbar-item"><a href="central?type_action=nosRayons" class="navbar-link">Nos rayons</a></li>
 				</c:if>
 			</ul>
 		</div>
+		<a href="/SupermarketG3/deconnexion"><i class="fas fa-sign-out-alt">LOGOUT</i></a>
 		<span class="navbar-right"> <span class="navbar-profile">${categorie}</span>
 			<div class="navbar-cart-container">
 				<a href="central?type_action=panier"">

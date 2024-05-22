@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.miage.supermarket.dao.ShoppingListDAO;
+import fr.miage.supermarket.models.Utilisateur;
 /**
  * Servlet gérant les listes de course, leur creation et supression
  * @author Pauline
@@ -30,8 +31,9 @@ public class ServletListeCourse extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nomListeCourse = request.getParameter("inputName");
-        if (nomListeCourse != null && !nomListeCourse.trim().isEmpty()) {
-            ShoppingListDAO.ajouterListe(nomListeCourse);
+		Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("utilisateur");
+        if (nomListeCourse != null && !nomListeCourse.trim().isEmpty() && utilisateur != null) {
+            ShoppingListDAO.ajouterListe(nomListeCourse, utilisateur);
 
             response.sendRedirect("central?type_action=gestion_List");
         }

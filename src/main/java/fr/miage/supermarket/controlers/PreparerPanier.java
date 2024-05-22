@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.models.LinkCommandeProduit;
+import fr.miage.supermarket.models.StatutCommande;
 
 /**
  * @author RR
@@ -123,10 +124,10 @@ public class PreparerPanier extends HttpServlet {
 		                
 		                // Conversion pour enregistrement dans la bd 
 		                Time chronoPanierTime = new Time(differenceTemps - 3600000);  
-		                linkValid.get(0).getCommande().setChrono(chronoPanierTime);  
+		                linkValid.get(0).getCommande().setChrono(chronoPanierTime); 
+		                linkValid.get(0).getCommande().setStatut(StatutCommande.PRET);
 					    commandeDAO.mettreAJourCommande(linkValid.get(0).getCommande());
 					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" chrono : " + linkValid.get(0).getCommande().getChrono() + "enregistrée dans la bd");
-
 		            }
 		        }
 	        }

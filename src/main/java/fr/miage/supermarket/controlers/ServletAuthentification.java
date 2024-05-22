@@ -15,6 +15,7 @@ import fr.miage.supermarket.models.LinkCommandeProduit;
 import fr.miage.supermarket.models.Panier;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ProduitPanier;
+import fr.miage.supermarket.models.StatutCommande;
 import fr.miage.supermarket.models.Utilisateur;
 
 public class ServletAuthentification extends HttpServlet {
@@ -53,11 +54,9 @@ public class ServletAuthentification extends HttpServlet {
 			hashedPassword = user.hacherMotdePasse(password);
 		}
 
-		// Vérification de l'utilisateur et son MDP
-
 		// Si valide, on redirige vers une page de confirmation, et on enregistre
 		// l'utilisateur en session HTTP
-		if (mdpUser.equals(hashedPassword) && userConnecting != null) {
+        if (mdpUser.equals(hashedPassword) && userConnecting != null && userConnecting.getMail().equals(mail)) {
 			System.out.println("Connexion réussie");
 			request.setAttribute("message", "Authentification réussie ! Bienvenue, " + mail + ".");
 			HttpSession session = request.getSession();
@@ -76,7 +75,7 @@ public class ServletAuthentification extends HttpServlet {
 		} else {
 			// Si la connexion n'est pas valide, on explique pourquoi et on propose à
 			// nouveau à l'utilisateur de se connecter
-			if (userConnecting == null) {
+            if (userConnecting == null || !userConnecting.getMail().equals(mail)) {
 				System.out.println("Il n'existe pas d'utilisateur avec ce mail");
 				request.setAttribute("message", "Il n'existe pas d'utilisateur avec ce mail");
 			} else {
@@ -126,7 +125,7 @@ public class ServletAuthentification extends HttpServlet {
 	private void enregistrerPanierToPanierNonFinalise(Utilisateur utilisateur, Panier panier) {
 		Commande commande = new Commande();
 		commande.setUtilisateur(utilisateur);
-		commande.setStatut(false);
+		commande.setStatut(StatutCommande.NON_VALIDE);
 		commande = commandeDAO.creerCommande(commande);
 
 		for (ProduitPanier produitPanier : panier.getPanier().values()) {
