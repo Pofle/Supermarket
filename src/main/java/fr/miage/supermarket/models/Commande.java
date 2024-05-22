@@ -1,11 +1,12 @@
 package fr.miage.supermarket.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
-import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -41,15 +42,12 @@ public class Commande {
 
     @Column(name = "HORAIRE_RETRAIT")
     private String horaireRetrait;
-
-    @Transient
-    @Temporal(jakarta.persistence.TemporalType.TIME)
-    private Time timeRetrait;
     
     @Column(name = "STATUT", nullable = false)
-    private boolean statut;
+    @Enumerated(EnumType.STRING)
+    private StatutCommande statut;
 
-    @ManyToOne
+	@ManyToOne
     @JoinColumn(name = "ID_MAGASIN")
     private Magasin magasin;
 
@@ -101,13 +99,13 @@ public class Commande {
         this.horaireRetrait = horaireRetrait;
     }
 
-    public boolean isStatut() {
-        return statut;
-    }
+    public StatutCommande getStatut() {
+		return statut;
+	}
 
-    public void setStatut(boolean statut) {
-        this.statut = statut;
-    }
+	public void setStatut(StatutCommande statut) {
+		this.statut = statut;
+	}
 
     public Set<LinkCommandeProduit> getProduits() {
         return produits;
