@@ -190,6 +190,9 @@ public class ServletDispatcher extends HttpServlet {
             case "panier":
                 url = "panier";
                 break;
+            case "nosRayons":
+            	url = "nosRayons";
+            	break;
 			default:
 				url = "accueil";
 			
@@ -247,6 +250,9 @@ public class ServletDispatcher extends HttpServlet {
                 break;
             case "habitudesConsommation":
             	url = "habitudesConsommation";
+            	break;
+            case "nosRayons":
+            	url = "nosRayons";
             	break;
 			default:
 				url = "accueil";

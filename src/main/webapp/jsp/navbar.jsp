@@ -20,12 +20,14 @@
 				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
                     <li class="navbar-item"><a href="central?type_action=gestion_List" class="navbar-link">Listes des courses</a></li>
                     <li class="navbar-item"><a href="central?type_action=habitudesConsommation" class="navbar-link">Mes habitudes</a></li>
+                    <li class="navbar-item"><a href="central?type_action=nosRayons" class="navbar-link">Nos rayons</a></li>
 				</c:if>
  				<c:if test="${requestScope.categorie == 'UTILISATEUR'}">
     				<li class="navbar-item"><a href="CommandeUtilisateur" class="navbar-link">Commandes en cours</a></li>
 				</c:if>		
 				<c:if test="${requestScope.categorie == 'VISITEUR'}">
 					<li class="navbar-item"><a href="central?type_action=connexionInscription" class="navbar-link">Connexion / Inscription</a></li>
+					<li class="navbar-item"><a href="central?type_action=nosRayons" class="navbar-link">Nos rayons</a></li>
 				</c:if>
 			</ul>
 		</div>

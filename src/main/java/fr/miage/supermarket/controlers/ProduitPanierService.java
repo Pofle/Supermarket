@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import fr.miage.supermarket.dao.CategorieDAO;
 import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
@@ -35,6 +36,7 @@ public class ProduitPanierService extends HttpServlet {
 	private ProduitDAO produitDAO;
 	private PromotionDAO promotionDAO;
 	private CommandeDAO commandeDAO;
+	private CategorieDAO categorieDAO;
 
 	private Map<String, Float> promotions;
 
@@ -42,6 +44,7 @@ public class ProduitPanierService extends HttpServlet {
 		this.produitDAO = new ProduitDAO();
 		this.promotionDAO = new PromotionDAO();
 		this.commandeDAO = new CommandeDAO();
+		this.categorieDAO = new CategorieDAO();
 		this.promotions = new HashMap<>();
 	}
 
@@ -53,7 +56,7 @@ public class ProduitPanierService extends HttpServlet {
 	 * renseigné à "all", renvoit le nombre de produits enregistrés dans le panier.
 	 * 
 	 * @see {@link HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)};
-	 * 
+	 * @author EricB
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -67,10 +70,43 @@ public class ProduitPanierService extends HttpServlet {
 			panier = new Panier();
 			session.setAttribute("panier", panier);
 		}
+		String categorieIdString = request.getParameter("categorieId");
+		if(categorieIdString != null) {
+			Integer categorieId = Integer.parseInt(categorieIdString);
+		    List<Object[]> produitsWithPromoQuantite = produitDAO.findProduitsWithPromotionsAndPurchaseCountByCategorieId(categorieId);
 
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter()
+		    StringBuilder xmlResponse = new StringBuilder();
+		    xmlResponse.append("<produits>");
+		    for (Object[] produitPromoQuantite : produitsWithPromoQuantite) {
+		    	Produit produit = (Produit) produitPromoQuantite[0];
+	            Float promotion = (Float) produitPromoQuantite[1];
+	            Long purchaseCount = (Long) produitPromoQuantite[2];
+		    	
+		    	xmlResponse.append("<produit id='").append(produit.getEan()).append("'>");
+		        xmlResponse.append("<libelle>").append(produit.getLibelle()).append("</libelle>");
+		        xmlResponse.append("<poids>").append(produit.getPoids()).append("</poids>");
+		        xmlResponse.append("<prix>").append(produit.getPrix()).append("</prix>");
+		        xmlResponse.append("<conditionnement>").append(produit.getConditionnement()).append("</conditionnement>");
+		        if (produit.getRepertoireImage() != null) {
+		          xmlResponse.append("<image>").append(produit.getRepertoireImage()).append("</image>");
+		        }
+		        if (promotion != null) {
+			          xmlResponse.append("<tauxPromotion>").append(promotion).append("</tauxPromotion>");
+			    }
+		        if (purchaseCount != null) {
+		        	xmlResponse.append("<nombreAchats>").append(purchaseCount).append("</nombreAchats>");
+		        }
+		        
+		        xmlResponse.append("</produit>");
+		    }
+		    xmlResponse.append("</produits>");
+
+		    response.getWriter().write(xmlResponse.toString());
+		} else {
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter()
 				.write("<response><nombreProduits>" + panier.getPanier().size() + "</nombreProduits></response>");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
