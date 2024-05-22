@@ -66,15 +66,25 @@
                         <input type="hidden" id="idCommande" name="idCommande">
                         <div class="form-group">
                             <label for="magasin">Magasin de retrait</label>
-                            <input type="text" class="form-control" id="magasin" name="magasinId">
+                            <select class="form-control" id="magasin" name="magasinId" required>
+                                <c:forEach var="magasin" items="${magasins}">
+                                    <option value="${magasin.id}">${magasin.nom}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="dateRetrait">Date de Retrait</label>
-                            <input type="date" class="form-control" id="dateRetrait" name="dateRetrait">
+                            <label for="dateRetrait">Modifiez la date :</label> 
+							<input
+							type="date" id="dateRetrait" name="dateRetrait"
+							min="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>"
+							required> 
                         </div>
                         <div class="form-group">
-                            <label for="horaireRetrait">Horaire de Retrait</label>
-                            <input type="time" class="form-control" id="horaireRetrait" name="horaireRetrait">
+                            <label for="horaireRetrait">Modifiez l'horaire :</label> 
+							<select
+							name="horaireRetrait" id="horaireRetrait" required>
+							<option value="">Heure de retrait</option>
+						</select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -101,17 +111,79 @@
             var button = $(event.relatedTarget); // Button that triggered the modal
             var id = button.data('id');
             var magasin = button.data('magasin');
-            var date = button.data('date');
-            var horaire = button.data('horaire');
-            var statut = button.data('statut');
+            var dateRetrait = button.data('dateRetrait');
+            var horaireRetrait = button.data('horaireRetrait');
 
             var modal = $(this);
             modal.find('#idCommande').val(id);
             modal.find('#magasin').val(magasin);
-            modal.find('#dateRetrait').val(date);
-            modal.find('#horaireRetrait').val(horaire);
-            modal.find('#statut').val(statut);
+            modal.find('#dateRetrait').val(dateRetrait);
+            modal.find('#horaireRetrait').val(horaireRetrait);
         });
     </script>
+    
+    <script>
+		$(document)
+				.ready(
+						function() {
+							$('#dateRetrait')
+									.change(
+											function() {
+												// Vider les options existantes dans le select horaire
+												$('#horaireRetrait').empty();
+
+												// Récupérer la date sélectionnée
+												var selectedDate = new Date($(
+														this).val());
+												selectedDate.setHours(0, 0, 0,
+														0); // Réinitialiser l'heure de la date sélectionnée
+
+												// Récupérer la date d'aujourd'hui
+												var today = new Date();
+												today.setHours(0, 0, 0, 0); // Réinitialiser l'heure de la date d'aujourd'hui
+
+												// Récupérer l'heure actuelle
+												var currentHour = new Date()
+														.getHours();
+
+												// Définir l'heure de début
+												var debut;
+												if (selectedDate.getTime() === today
+														.getTime()) {
+													debut = currentHour + 2;
+												} else {
+													debut = 9; // Heure de début par défaut si la date sélectionnée n'est pas aujourd'hui
+												}
+
+												var fin = 19; // Heure de fin
+
+												// Ajouter les horaires au select
+												for (var i = debut; i <= fin; i++) {
+													for (var j = 0; j < 60; j += 15) {
+														var heure = (i < 10) ? '0'
+																+ i
+																: i;
+														var minute = (j === 0) ? '00'
+																: j;
+														var horaire = heure
+																+ ':' + minute;
+														$('#horaireRetrait')
+																.append(
+																		'<option value="' + horaire + '">'
+																				+ horaire
+																				+ '</option>');
+													}
+												}
+
+												// Si aucune heure n'est ajoutée (le début est après la fin), ajouter un message
+												if ($('#horaireRetrait').children().length === 0) {
+													$('#horaireRetrait')
+															.append(
+																	'<option value="">Aucune heure disponible</option>');
+												}
+											});
+						});
+	</script>
+    
 </body>
 </html>

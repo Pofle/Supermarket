@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cascade;
@@ -41,6 +42,9 @@ public class Commande {
     @Column(name = "STATUT", nullable = false)
     private boolean statut;
 
+    @Column(name = "magasin_id")
+    private String magasinId;
+    
     @ManyToOne
     @JoinColumn(name = "ID_MAGASIN")
     private Magasin magasin;
@@ -106,6 +110,14 @@ public class Commande {
         this.produits = produits;
     }
 
+    public String getMagasinId() {
+        return magasinId;
+    }
+
+    public void setMagasinId(String magasinId) {
+        this.magasinId = magasinId;
+    }
+    
     public Magasin getMagasin() {
         return magasin;
     }

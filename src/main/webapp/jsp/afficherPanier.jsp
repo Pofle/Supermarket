@@ -64,11 +64,13 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 							}
 							%>
 						</select> <br>
-						<br> <label for="date">Sélectionnez une date :</label> <input
+						<br><label for="date">Sélectionnez une date :</label> 
+							<input
 							type="date" id="date" name="date"
 							min="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>"
 							required> <br>
-						<br> <label for="horaire">Sélectionnez un horaire :</label> <select
+						<br><label for="horaire">Sélectionnez un horaire :</label> 
+							<select
 							name="horaire" id="horaire" required>
 							<option value="">Heure de retrait</option>
 						</select> <br>

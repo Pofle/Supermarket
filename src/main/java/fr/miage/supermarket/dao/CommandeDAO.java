@@ -1,5 +1,8 @@
 package fr.miage.supermarket.dao;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -10,6 +13,7 @@ import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
+import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
 
@@ -105,4 +109,30 @@ public class CommandeDAO {
         }
         return commande;
     }
+    
+    public void updateCommande(String idCommande, Magasin magasin, LocalDate dateRetrait, String horaireRetrait) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionAnnotationFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            Commande commande = session.get(Commande.class, idCommande);
+            if (commande != null) {
+                commande.setMagasin(magasin);
+                commande.setDateRetrait(dateRetrait);
+                commande.setHoraireRetrait(horaireRetrait);
+                session.merge(commande);
+                transaction.commit();
+            } else {
+                // Gérer le cas où la commande n'existe pas
+                System.out.println("Commande non trouvée avec l'ID: " + idCommande);
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+
 }

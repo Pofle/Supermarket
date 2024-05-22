@@ -184,7 +184,7 @@ public class ProduitPanierService extends HttpServlet {
                 commande.setUtilisateur(utilisateur);
                 commande.setStatut(true);
                 commande.setIdMagasin(magasinId);
-                commande.setDateCommande(currentDate); // Date de commande
+                commande.setDateCommande(currentDate);
                 commande.setDateRetrait(localDate);
                 commande.setHoraireRetrait(horaireStr);
                 commande = commandeDAO.creerCommande(commande);
@@ -205,12 +205,12 @@ public class ProduitPanierService extends HttpServlet {
 
                 response.setStatus(HttpServletResponse.SC_OK);
                 
-                // Utilisez l'ID du magasin pour récupérer les informations du magasin depuis la base de données
+                // ID du magasin pour récupérer les informations du magasin depuis la base de données
                 Magasin magasin = MagasinDAO.getMagasinById(magasinId);
 
-                // Vérifiez si le magasin a été trouvé
+                // Vérification si le magasin a été trouvé
                 if (magasin != null) {
-                    // Ajoutez le nom et l'adresse du magasin aux attributs de la requête
+                    // Ajout nom et l'adresse du magasin aux attributs de la requête
                     request.setAttribute("nomMagasin", magasin.getNom());
                     request.setAttribute("adresseMagasin", magasin.getAdresse());
                 } else {
