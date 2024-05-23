@@ -5,6 +5,7 @@ package fr.miage.supermarket.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
@@ -111,22 +112,29 @@ public class MemoDAO {
 		    }
 		}
 	
-	public static void updateLibelle(int idMemo, String libelle, int listeId) {
+	public static void updateMemos(int listeId, Map<Integer, String> memos) {
 	    Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	    Transaction tx = null;
 
 	    try {
 	        tx = session.beginTransaction();
-	        Memo memo = session.get(Memo.class, idMemo);
-
-	        if (memo != null) {
-	            memo.setLibelle(libelle);
-	            session.update(memo);
-	            tx.commit();
-	            System.out.println("Memos successfully updated.");
-	        } else {
-	            System.out.println("Memos not found.");
+	        
+	        // Supprimer les mémos existants liés à la liste
+	        Query<?> deleteQuery = session.createQuery("DELETE FROM Memo WHERE shoppingList.id = :listId");
+	        deleteQuery.setParameter("listId", listeId);
+	        deleteQuery.executeUpdate();
+	        
+	        // Ajouter les nouveaux mémos
+	        ShoppingList shoppingList = session.get(ShoppingList.class, listeId);
+	        for (Map.Entry<Integer, String> entry : memos.entrySet()) {
+	            Memo memo = new Memo();
+	            memo.setLibelle(entry.getValue());
+	            memo.setShoppingList(shoppingList);
+	            session.persist(memo);
 	        }
+	        
+	        tx.commit();
+	        System.out.println("Mémos mis à jour avec succès.");
 	    } catch (Exception e) {
 	        if (tx != null) tx.rollback();
 	        throw e;
@@ -134,5 +142,5 @@ public class MemoDAO {
 	        session.close();
 	    }
 	}
-
 }
+

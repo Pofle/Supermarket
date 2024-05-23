@@ -102,16 +102,15 @@
         	<h1 class="modal-title fs-5" id="ModalMemoLabel"></h1>
         	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
-      	<form id="formMemo" action="" method="">
+      
       		<div class="modal-body">
       		   <!--  Contenu généré par JS  -->                      		  	
       		</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>       
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>     
       </div>
        <input type="hidden" name="listeId" id="listeIdInput" value="">
-      </form>
+     
     </div>
   </div>
 </div>

@@ -3,7 +3,10 @@ package fr.miage.supermarket.controlers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,22 +36,23 @@ public class ServletGestionMemo extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 // Récupérer le libellé du mémo et l'ID de la liste de courses
-	    String libelle = request.getParameter("newLibelle");
-	    int listeId = Integer.parseInt(request.getParameter("listeId"));
-	    System.out.println("Egalement for add memos : " + libelle + "id liste"+ listeId);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String actionType = request.getParameter("type_action");
 
-	    try {
-	        // Ajouter le nouveau mémo à la base de données
-	        MemoDAO.ajouterMemo(libelle, listeId);
-	        response.setStatus(HttpServletResponse.SC_OK);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	    }
-	    //response.sendRedirect("central?type_action=gestion_List");
-	}
+        if ("add_memo".equals(actionType)) {
+            String libelle = request.getParameter("newLibelle");
+            int listeId = Integer.parseInt(request.getParameter("listeId"));
+            try {
+                MemoDAO.ajouterMemo(libelle, listeId);
+                response.setStatus(HttpServletResponse.SC_OK);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+            response.sendRedirect("central?type_action=gestion_List");
+        }
+    }
+	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String actionType = request.getParameter("type_action");

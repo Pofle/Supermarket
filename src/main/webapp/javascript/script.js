@@ -59,6 +59,7 @@ function chargerMemo(listeId) {
             // Sélectionne le corps de la modale
             var modalBody = document.querySelector('#modalMemo .modal-body');
             modalBody.innerHTML = ''; // Vide le contenu actuel
+            
 
             // Parcours les éléments XML pour créer les éléments HTML
             var memoNodes = xmlDoc.querySelectorAll('memo');
@@ -67,16 +68,14 @@ function chargerMemo(listeId) {
                 var libelle = memoNode.querySelector('libelle').textContent;
                 var li = document.createElement('li');
                 li.innerHTML = `
-                	<input type="hidden" name="id_memo_${idMemo}" value="${idMemo}">
-                    <input type="text" name="libelle_${idMemo}" value="${libelle}" required>
-                    <a href="" onclick="supprimerMemo(${idMemo}, ${listeId})"><img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteProduit" title="Supprimer la ligne"></a>`;
+                   	${libelle}
+                    <a href="#" onclick="supprimerMemo(${idMemo}, ${listeId}); return false;">
+                    <img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteProduit" title="Supprimer la ligne"></a>`;
                 modalBody.appendChild(li);
             });
             // Ajout de la ligne pour ajouter un nouveau libellé
             var newForm = document.createElement('form');
             newForm.id = "addMemoForm";
-            /*newForm.action="ServletGestionMemo"
-            newForm.method = "post"*/
             newForm.innerHTML = `
             	<li>
                     <input type="hidden" name="id_memo" value="">
@@ -93,18 +92,6 @@ function chargerMemo(listeId) {
     xhr.send();
 }
 
-
-function ajouterInputLibelle() {
-	//event.preventDefault();
-    console.log("Clic pour ajouter une entrée reçu");
-   
-    var form = document.getElementById('addMemoForm');
-    form.action = 'ServletGestionMemo';
-    form.method = 'post';
-    form.submit();
-
-   }
-   
    function supprimerMemo(memoId, listeId) {
     console.log("Clic pour supprimer un mémo reçu : " + memoId);
 
@@ -122,6 +109,20 @@ function ajouterInputLibelle() {
     xhr.send();
 }
    
+
+function ajouterInputLibelle() {
+	//event.preventDefault();
+    console.log("Clic pour ajouter une entrée reçu");
+   
+    var form = document.getElementById('addMemoForm');
+    form.action = 'ServletGestionMemo?type_action=add_memo';
+    form.method = 'post';
+    form.submit();
+    chargerMemo(listeId);
+
+   }
+   
+
 /**
  * Fonction pour afficher les produits d'une liste de course
  */
