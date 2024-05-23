@@ -1,6 +1,7 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,6 +37,12 @@ public class CommandeUtilisateur extends HttpServlet {
         }
 
         List<Commande> commandesUtilisateur = commandeDAO.getCommandesByUtilisateur(utilisateurConnecte);
+        for (Commande c : commandesUtilisateur) {
+        	if(LocalDate.now().isAfter(c.getDateRetrait())) {
+        		c.setStatut(StatutCommande.TERMINE);
+        		commandeDAO.mettreAJourCommande(c);
+        	}
+        }
         List<Magasin> magasins = magasinDAO.getAllMagasins(); // Obtenir la liste des magasins
         request.setAttribute("commandes", commandesUtilisateur);
         request.setAttribute("nonValide", StatutCommande.NON_VALIDE);
