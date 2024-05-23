@@ -31,7 +31,9 @@
 				</c:if>
 			</ul>
 		</div>
-		<a href="/SupermarketG3/deconnexion"><i class="fas fa-sign-out-alt">LOGOUT</i></a>
+		<c:if test="${requestScope.categorie != 'VISITEUR'}">
+			<a href="/SupermarketG3/deconnexion"><i class="fas fa-sign-out-alt">LOGOUT</i></a>
+		</c:if>
 		<span class="navbar-right"> <span class="navbar-profile">${categorie}</span>
 			<div class="navbar-cart-container">
 				<a href="central?type_action=panier"">
