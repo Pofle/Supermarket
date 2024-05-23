@@ -79,9 +79,7 @@ public class PreparerPanier extends HttpServlet {
 		        }
 		        valide = valide.substring(0, valide.length()-2);
 		        valide = valide + ".";
-		        System.out.println("Sélection formulaire, " + valide);
 		        // on vérifie si tous les éléments ont été validé/sélectionné
-		        System.out.println("gestionFormu - génération de la commande de base pour comparaison");
 		        ArrayList<LinkCommandeProduit> linkCompar = commandeDAO.getLinkByCommande(linkValid.get(linkValid.size()-1).getCommande().getId_commande());
 				if(linkCompar.size() != linkValid.size()) {
 					// on ne garde que les éléments qui n'ont pas été validés
@@ -99,7 +97,6 @@ public class PreparerPanier extends HttpServlet {
 					}
 					manque = manque.substring(0, manque.length()-2);
 					manque = manque + ".";
-					System.out.println(manque);
 				}
 				
 				// Vérification si le chrono a été lancé
@@ -120,7 +117,6 @@ public class PreparerPanier extends HttpServlet {
 		                linkValid.get(0).getCommande().setChrono(chronoPanierTime); 
 		                linkValid.get(0).getCommande().setStatut(StatutCommande.PRET);
 					    commandeDAO.mettreAJourCommande(linkValid.get(0).getCommande());
-					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" chrono : " + linkValid.get(0).getCommande().getChrono() + "enregistrée dans la bd");
 		            }
 		        }
 	        }

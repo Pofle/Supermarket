@@ -342,12 +342,6 @@ public class CommandeDAO {
 		Query query = session.createQuery("FROM LinkCommandeProduit lc WHERE lc.commande.id_commande = :idCommande", LinkCommandeProduit.class);
 		query.setParameter("idCommande", idCommande);
 		ArrayList<LinkCommandeProduit> linkByCommande = (ArrayList<LinkCommandeProduit>) query.getResultList();
-		System.out.println("getLinkByCommande returns : ");
-		for (LinkCommandeProduit lcp : linkByCommande) {
-			if (lcp!= null) {
-				System.out.println("Commande : "+lcp.getCommande().getId_commande()+" art : "+lcp.getProduit().getEan() + " * " + lcp.getQuantite());
-			}
-		}
 		transact.commit();
 		return linkByCommande;
 	}
@@ -364,11 +358,6 @@ public class CommandeDAO {
 		}
 		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NOT NULL", Commande.class);
 		ArrayList<Commande> commande = (ArrayList<Commande>) query.getResultList();
-		System.out.println("getCommandeTrieInLink returns : ");
-		for (int i = 0; i<commande.size(); i++) {
-			System.out.print(" Commande : "+commande.get(i).getId_commande());
-		}
-		System.out.println(";");
 		transact.commit();
 		return commande;
 	}
@@ -386,11 +375,6 @@ public class CommandeDAO {
 		//on récupère les commandes dans l'ordre croissant des dates et heures (converti en Time) de retrait
 		Query query = session.createQuery("SELECT DISTINCT commande FROM LinkCommandeProduit WHERE commande.chrono IS NULL ORDER BY commande.dateRetrait ASC, STR_TO_DATE(commande.horaireRetrait, '%H:%i') ASC", Commande.class);
 		ArrayList<Commande> commande = (ArrayList<Commande>) query.getResultList();
-		System.out.println("getCommandeTrieInLink returns : ");
-		for (int i = 0; i<commande.size(); i++) {
-			System.out.print(" Commande : "+commande.get(i).getId_commande());
-		}
-		System.out.println(";");
 		transact.commit();
 		return commande;
 	}
@@ -413,7 +397,6 @@ public class CommandeDAO {
 			query.setParameter("id_Commande", id_Commande);
 			query.setParameter("ean", ean);
 			LinkCommandeProduit wantedLink = (LinkCommandeProduit) query.getSingleResult();
-			System.out.println("loadLink returns : cmde " + wantedLink.getCommande().getId_commande() + ", prod " + wantedLink.getProduit().getEan() + ", qte " + wantedLink.getQuantite());
 			transact.commit();
 	        return wantedLink;
 	    } catch (RuntimeException e) {
