@@ -16,6 +16,16 @@ public class LinkCommandeProduitId implements Serializable {
     @Column(name = "EAN")
     private String produitId;
 
+    public LinkCommandeProduitId() {
+    	super();
+    }
+    
+    public LinkCommandeProduitId(Integer commandeId, String produitId) {
+    	super();
+    	this.commandeId = commandeId;
+    	this.produitId = produitId;
+    }
+    
     public Integer getCommandeId() {
         return commandeId;
     }

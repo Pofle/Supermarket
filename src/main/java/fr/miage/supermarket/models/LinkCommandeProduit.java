@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 public class LinkCommandeProduit {
 
 	@EmbeddedId
-	private LinkCommandeProduitId id = new LinkCommandeProduitId();
+	private LinkCommandeProduitId id;
 
 	@ManyToOne
 	@MapsId("commandeId")
@@ -25,12 +25,16 @@ public class LinkCommandeProduit {
 	@Column(name = "QUANTITE")
 	private int quantite;
 	
-	public LinkCommandeProduit(){}	
+	public LinkCommandeProduit() {
+		super();
+	}
+
 	public LinkCommandeProduit(Commande commande, Produit produit, int quantite) {
 		super();
 		this.commande = commande;
 		this.produit = produit;
 		this.quantite = quantite;
+		this.id = new LinkCommandeProduitId(commande.getId_commande(), produit.getEan());
 	}
 
 	public Commande getCommande() {
@@ -55,5 +59,13 @@ public class LinkCommandeProduit {
 
 	public void setQuantite(int quantite) {
 		this.quantite = quantite;
+	}
+
+	public LinkCommandeProduitId getId() {
+		return id;
+	}
+
+	public void setId(LinkCommandeProduitId id) {
+		this.id = id;
 	}
 }
