@@ -62,16 +62,18 @@ public class ServletAuthentification extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateur", userConnecting);
 
-			Panier panier = chargerPanierNonFinalise(userConnecting);
-			if (panier != null) {
+			Panier panier = (Panier) session.getAttribute("panier");
+			Commande commandeNonValidee = commandeDAO.getCommandeNonFinalisee(userConnecting.getId());
+			if(commandeNonValidee != null && (panier != null || !panier.getPanier().values().isEmpty())) {
+		        request.setAttribute("showPopup", true);
+			} else if((panier != null || !panier.getPanier().values().isEmpty()) && commandeNonValidee == null) { // Si on a un panier en session mais pas sur le compte
+				enregistrerPanierToPanierNonFinalise(userConnecting, panier);
+			} else if((panier == null || panier.getPanier().values().isEmpty()) && commandeNonValidee != null) { // Si on a pas de panier en session mais on en a un sur le compte
+				panier = chargerPanierNonFinalise(userConnecting);
 				session.setAttribute("panier", panier);
-			} else {
-				if (session.getAttribute("panier") != null) {
-					enregistrerPanierToPanierNonFinalise(userConnecting, (Panier) session.getAttribute("panier"));
-				}
 			}
-
-			request.getRequestDispatcher("/jsp/confirmLogin.jsp").forward(request, response);
+			
+			request.getRequestDispatcher("accueil").forward(request, response);
 		} else {
 			// Si la connexion n'est pas valide, on explique pourquoi et on propose à
 			// nouveau à l'utilisateur de se connecter
@@ -84,18 +86,8 @@ public class ServletAuthentification extends HttpServlet {
 			}
 			request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
 		}
-
 	}
-
-	/**
-	 * Charge le panier non finalisé d'un utilisateur à partir de la base de
-	 * données.
-	 *
-	 * @param utilisateur L'utilisateur dont on souhaite charger le panier non
-	 *                    finalisé.
-	 * @return Le panier non finalisé de l'utilisateur s'il en a un, sinon null.
-	 * @author EricB
-	 */
+	
 	private Panier chargerPanierNonFinalise(Utilisateur utilisateur) {
 		Commande commande = commandeDAO.getCommandeNonFinalisee(utilisateur.getId());
 		if (commande != null) {
@@ -111,28 +103,24 @@ public class ServletAuthentification extends HttpServlet {
 		}
 		return null;
 	}
-
-	/**
-	 * Enregistre le panier d'un utilisateur en tant que commande non finalisée dans
-	 * la base de données.
-	 *
-	 * @param utilisateur L'utilisateur pour lequel la commande non finalisée est
-	 *                    enregistrée.
-	 * @param panier      Le panier à enregistrer en tant que commande non
-	 *                    finalisée.
-	 * @author EricB
-	 */
+	
 	private void enregistrerPanierToPanierNonFinalise(Utilisateur utilisateur, Panier panier) {
-		Commande commande = new Commande();
-		commande.setUtilisateur(utilisateur);
-		commande.setStatut(StatutCommande.NON_VALIDE);
-		commande = commandeDAO.creerCommande(commande);
-
-		for (ProduitPanier produitPanier : panier.getPanier().values()) {
-			Produit produit = produitDAO.getProduitByEan(produitPanier.getEan());
-			LinkCommandeProduit newLink = new LinkCommandeProduit(commande, produit, produitPanier.getQuantite());
-			commandeDAO.updateLinkCommandeProduit(newLink);
+		// On supprime la précédente commande NON_VALIDE
+		Commande commandeToDelete = commandeDAO.getCommandeNonFinalisee(utilisateur.getId());
+		if(commandeToDelete != null) {
+			commandeDAO.supprimerCommande(commandeToDelete);
+		}
+		
+		if(!panier.getPanier().values().isEmpty()) {
+			Commande commande = new Commande();
+			commande.setUtilisateur(utilisateur);
+			commande.setStatut(StatutCommande.NON_VALIDE);
+			commande = commandeDAO.creerCommande(commande);
+			for (ProduitPanier produitPanier : panier.getPanier().values()) {
+				Produit produit = produitDAO.getProduitByEan(produitPanier.getEan());
+				LinkCommandeProduit newLink = new LinkCommandeProduit(commande, produit, produitPanier.getQuantite());
+				commandeDAO.updateLinkCommandeProduit(newLink);
+			}
 		}
 	}
-
 }

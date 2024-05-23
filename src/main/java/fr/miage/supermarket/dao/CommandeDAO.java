@@ -197,13 +197,21 @@ public class CommandeDAO {
         }
     }
     
+    /**
+     * Retourne la liste des commandes associées à l'utilisateur qui ne sont pas "NON_VALIDEES"
+     * 
+     * @param utilisateur l'utilisateur pour lequel récupérer les commandes
+     * @return les commandes
+     * @author EricB & YassineA
+     */
     public List<Commande> getCommandesByUtilisateur(Utilisateur utilisateur) {
         Session session = sessionFactory.openSession();
         List<Commande> commandes = null;
         try {
-            String hql = "FROM Commande WHERE utilisateur = :utilisateur";
+            String hql = "FROM Commande c WHERE c.utilisateur = :utilisateur AND c.statut != :statutcommande";
             Query<Commande> query = session.createQuery(hql, Commande.class);
             query.setParameter("utilisateur", utilisateur);
+            query.setParameter("statutcommande", StatutCommande.NON_VALIDE);
             commandes = query.getResultList();
         } finally {
             session.close();

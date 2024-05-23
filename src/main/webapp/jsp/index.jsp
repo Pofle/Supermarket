@@ -28,7 +28,29 @@
     <div class="row mt-4" id="article-container"></div>
 </div>
 
+<div id="popup-data" data-show-popup="${showPopup}"></div>
 
-	<script src="javascript/rechercherProduits.js"></script>
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choisir le panier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous garder votre panier précédent ou récupérer le panier associé à votre compte ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="keepCart()">Garder le panier précédent</button>
+                <button type="button" class="btn btn-secondary" onclick="retrieveCart()">Récupérer le panier associé au compte</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="javascript/rechercherProduits.js"></script>
+<script src="javascript/popupPanier.js"></script>
 </body>
 </html>
