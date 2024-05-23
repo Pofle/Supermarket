@@ -29,13 +29,14 @@
             </thead>
             <tbody>
                 <c:forEach var="commande" items="${commandes}">
-                    <tr>
+                    <tr>                  	
                         <td>${commande.id_commande}</td>
                         <td>${commande.magasin.nom}</td>
                         <td>${commande.dateRetrait}</td>
                         <td>${commande.horaireRetrait}</td>
                         <td>${commande.statut}</td>
                         <td>
+                        <c:if test="${commande.statut == 'EN_COURS'}">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal"
                                     data-id="${commande.id_commande}"
                                     data-magasin="${commande.magasin.id}"
@@ -43,6 +44,7 @@
                                     data-horaire="${commande.horaireRetrait}">
                                 Modifier
                             </button>
+                        </c:if>
                         </td>
                     </tr>
                 </c:forEach>
