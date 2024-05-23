@@ -42,14 +42,8 @@ public class PreparerPanier extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Servlet PreparerPanier méthode GET ");
 		gestionFormu(request, response);
 	}
-	 protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	            throws ServletException, IOException {
-		 System.out.println("Servlet PreparerPanier méthode POST ");
-		 gestionFormu(request, response);
-	 }
 	 
 	 CommandeDAO commandeDAO = new CommandeDAO();
 	 
@@ -170,12 +164,11 @@ public class PreparerPanier extends HttpServlet {
 	
 	            // Envoi du mail
 	            Transport.send(message);
-	            System.out.println("Message envoyé");
+	            System.out.println("Mail de notification envoyé");
 	            
 	        } catch (MessagingException mex) {
 	            System.out.println("Attention erreur lors de l'envoi du mail : " + mex);
 	        }
-			System.out.println("Vers servlet VisuPreparateur");
 			response.sendRedirect("central?type_action=listePaniers");	 }
 	
 		

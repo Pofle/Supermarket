@@ -83,9 +83,11 @@ public class ServletPanier extends HttpServlet {
 		request.setAttribute("promotions", promotions);
 
 		String action = request.getParameter("action");
+		// on vide le panier de la session 
 		if("vider".equals(action)) {
 		    session.removeAttribute("panier");
 		    Utilisateur utilisateurActuel = (Utilisateur) session.getAttribute("utilisateur");
+		    // on retire de la bd la commande non validée 
 		    if(utilisateurActuel != null) {
 				Commande commandeProvisoire = commandeDAO.getCommandeNonFinalisee(utilisateurActuel.getId());
 				commandeDAO.supprimerCommande(commandeProvisoire);

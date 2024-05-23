@@ -31,29 +31,26 @@ public class VisuPreparateur extends HttpServlet {
 		 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
-		System.out.println("Servlet VisuPreparateur méthode GET ");
-		
+			throws ServletException, IOException {		
 		if(request.getParameter("id_commande") == null) {
 			displayAllCommandes(request, response);
 		} else {
-			displaySpecificPanier(request, response);
+			//displaySpecificPanier(request, response);
 
 		}
 		
 	}
-	@Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-		System.out.println("Servlet VisuPreparateur méthode POST ");
-		
-		if(request.getParameter("id_commande") == null) {
-			displayAllCommandes(request, response);
-		} else {
-			displaySpecificPanier(request, response);
-		}
-    }
+//	@Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//		System.out.println("Servlet VisuPreparateur méthode POST ");
+//		
+//		if(request.getParameter("id_commande") == null) {
+//			displayAllCommandes(request, response);
+//		} else {
+//			displaySpecificPanier(request, response);
+//		}
+//    }
 	
 	/**
 	 * Affichage du détail d'un panier de la commande dont id_commande a été récupéré
@@ -70,13 +67,12 @@ public class VisuPreparateur extends HttpServlet {
 		// attention set catégorie 
 		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
 		request.setAttribute("linkAsso", linkAsso);
-
-		System.out.println("Vers JSP preparerPaniers ");
 		request.getRequestDispatcher("/jsp/preparerPanier.jsp").forward(request, response);
 	}
 	
 	/**
 	 * Affichage de l'intégralité des commandes 
+	 * @author RR
 	 * @param request
 	 * @param response
 	 * @throws ServletException
@@ -85,10 +81,8 @@ public class VisuPreparateur extends HttpServlet {
 	private void displayAllCommandes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
 		ArrayList<Commande> commandes = CommandeDAO.getCommandeTrieInLink();
-		System.out.println("");
-		// attention set catégorie 
 		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
-		request.setAttribute("commande", commandes);
+		request.setAttribute("commandes", commandes);
 		
 		request.getRequestDispatcher("/jsp/listePaniers.jsp").forward(request, response);
 	}

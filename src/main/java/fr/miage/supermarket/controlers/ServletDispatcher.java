@@ -138,12 +138,6 @@ public class ServletDispatcher extends HttpServlet {
 				url = "accueil";
 			}
 		}
-		// affichage des commandes dans l'ordre croissant de retrait
-		ArrayList<Commande> commandesTriees = CommandeDAO.getCommandeTrieInLink();
-		
-		// attention set catégorie 
-		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
-		request.setAttribute("commandes", commandesTriees);
 
 		request.getRequestDispatcher(url).forward(request, response);
 	}

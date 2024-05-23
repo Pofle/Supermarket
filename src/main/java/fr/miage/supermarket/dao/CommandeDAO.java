@@ -160,7 +160,12 @@ public class CommandeDAO {
         }
         return commandes;
     }
-    
+    /**
+     * Récupère LinkCommandeProduit dans la BD dont l'id correspond
+     * @author RR
+     * @param id du link recherché
+     * @return
+     */
     public LinkCommandeProduit getLinkCommandeProduitById(LinkCommandeProduitId id) {
         try (Session session = sessionFactory.openSession()) {
             return session.get(LinkCommandeProduit.class, id);
@@ -321,34 +326,6 @@ public class CommandeDAO {
 			session.close();
 		}
 	}
-
-	/**
-	 * Récupération d'une Commande dans la base de données
-	 * @author RR
-	 * @param id_Commande
-	 * @return la Commande désigné par son ID
-	 */
-	public static Commande loadCommande(Integer id_Commande) {
-	    Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-	    Transaction transact = session.getTransaction();
-	    if(!transact.isActive()) {
-	        transact = session.beginTransaction();
-	    }
-	    try {
-	        Commande wantedCommande = session.get(Commande.class, id_Commande);
-	        transact.commit();
-	        return wantedCommande;
-	    } catch (RuntimeException e) {
-	        if (transact != null && transact.isActive()) {
-	            transact.rollback();
-	        }
-	        throw e;
-	    } finally {
-	    	 if (session != null) {
-	             session.close();
-	         }
-	    }
-	}
 	
 	/**
 	 * Récupération des lignes de Link_Commande_Produit concernant une commande spécifique
@@ -379,7 +356,7 @@ public class CommandeDAO {
 	 * @author RR
 	 * @return liste des commandes prête relié à l'entité LinkCommandeProduit
 	 */
-	public static ArrayList<Commande> getCommandeInLink() {
+	public static ArrayList<Commande> getCommandesTraiteesInLink() {
 		Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
 		Transaction transact = session.getTransaction();
 		if(!transact.isActive()) {
