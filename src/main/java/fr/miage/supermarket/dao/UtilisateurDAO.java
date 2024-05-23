@@ -70,7 +70,7 @@ public class UtilisateurDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.update(commande);
+            session.merge(commande);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();

@@ -3,178 +3,196 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-    <display-name>SuperMarket Groupe3</display-name>
+	<display-name>SuperMarket Groupe3</display-name>
 
-    <!-- JSP Servlets -->
-    <servlet>
-        <servlet-name>ImportProduitsJSP</servlet-name>
-        <jsp-file>/jsp/gestionProduit.jsp</jsp-file>
-    </servlet>
-    <servlet>
-        <servlet-name>AfficherPanier</servlet-name>
-        <jsp-file>/jsp/afficherPanier.jsp</jsp-file>
-    </servlet>
-    <servlet>
-        <servlet-name>Accueil</servlet-name>
-        <jsp-file>/jsp/index.jsp</jsp-file>
-    </servlet>
-    <servlet>
-        <servlet-name>gestionList</servlet-name>
-        <jsp-file>/jsp/gestionList.jsp</jsp-file>
-    </servlet>
-    <servlet>
+	<!-- JSP Servlets -->
+	<servlet>
+		<servlet-name>ImportProduitsJSP</servlet-name>
+		<jsp-file>/jsp/gestionProduit.jsp</jsp-file>
+	</servlet>
+	<servlet>
+		<servlet-name>AfficherPanier</servlet-name>
+		<jsp-file>/jsp/afficherPanier.jsp</jsp-file>
+	</servlet>
+	<servlet>
+		<servlet-name>Accueil</servlet-name>
+		<jsp-file>/jsp/index.jsp</jsp-file>
+	</servlet>
+	<servlet>
+		<servlet-name>gestionList</servlet-name>
+		<jsp-file>/jsp/gestionList.jsp</jsp-file>
+	</servlet>
+	<servlet>
         <servlet-name>RecapCommandesApprovisionnement</servlet-name>
         <servlet-class>fr.miage.supermarket.controlers.GestionRecapApprovisionnementService</servlet-class>
     </servlet>
-    
 
-    <!-- Java Servlets -->
-    <servlet>
-        <servlet-name>ServletDispatcher</servlet-name>
-        <display-name>ServletDispatcher</display-name>
-        <description>Contrôleur central de l'ensemble des servlets de l'application</description>
-        <servlet-class>fr.miage.supermarket.controlers.ServletDispatcher</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DetailProduit</servlet-name>
-        <display-name>DetailProduit</display-name>
-        <description>Servlet de gestion de la récupération du détail d'un produit</description>
-        <servlet-class>fr.miage.supermarket.controlers.RecupererProduits</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RecupererImage</servlet-name>
-        <display-name>RecupererImage</display-name>
-        <description>Servlet servant à la récupération des images</description>
-        <servlet-class>fr.miage.supermarket.controlers.RecupererImage</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ProductServlet</servlet-name>
-        <servlet-class>servlet.ProductServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletListeCourse</servlet-name>
-        <display-name>ServletListeCourse</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.ServletListeCourse</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAuthentification</servlet-name>
-        <display-name>ServletAuthentification</display-name>
-        <description>Servlet gérant l'authentification</description>
-        <servlet-class>fr.miage.supermarket.controlers.ServletAuthentification</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletInscription</servlet-name>
-        <display-name>ServletInscription</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.ServletInscription</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GestionProduitsService</servlet-name>
-        <display-name>GestionProduitsService</display-name>
-        <description>Service de gestion de recherche et d'insertion des produits</description>
-        <servlet-class>fr.miage.supermarket.controlers.GestionProduitsService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GestionArticleListe</servlet-name>
-        <display-name>GestionArticleListe</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GestionProduitListe</servlet-name>
-        <servlet-class>fr.miage.supermarket.controlers.GestionProduitListe</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GenerationListeProduitXml</servlet-name>
-        <servlet-class>fr.miage.supermarket.controlers.GenerationListeProduitXml</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GenerationListeXml</servlet-name>
-        <servlet-class>fr.miage.supermarket.controlers.GenerationListeXml</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletAjoutProduitListe</servlet-name>
-        <servlet-class>fr.miage.supermarket.controlers.ServletAjoutProduitListe</servlet-class>
-    </servlet>
+	<!-- Java Servlets -->
+	<servlet>
+		<servlet-name>ServletDispatcher</servlet-name>
+		<display-name>ServletDispatcher</display-name>
+		<description>Contrôleur central de l'ensemble des servlets de
+			l'application</description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletDispatcher</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DetailProduit</servlet-name>
+		<display-name>DetailProduit</display-name>
+		<description>Servlet de gestion de la récupération du détail d'un
+			produit</description>
+		<servlet-class>fr.miage.supermarket.controlers.RecupererProduits</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>RecupererImage</servlet-name>
+		<display-name>RecupererImage</display-name>
+		<description>Servlet servant à la récupération des images</description>
+		<servlet-class>fr.miage.supermarket.controlers.RecupererImage</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ProductServlet</servlet-name>
+		<servlet-class>servlet.ProductServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletListeCourse</servlet-name>
+		<display-name>ServletListeCourse</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.ServletListeCourse</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletAuthentification</servlet-name>
+		<display-name>ServletAuthentification</display-name>
+		<description>Servlet gérant l'authentification</description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletAuthentification</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletInscription</servlet-name>
+		<display-name>ServletInscription</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.ServletInscription</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionProduitsService</servlet-name>
+		<display-name>GestionProduitsService</display-name>
+		<description>Service de gestion de recherche et d'insertion des
+			produits</description>
+		<servlet-class>fr.miage.supermarket.controlers.GestionProduitsService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionArticleListe</servlet-name>
+		<display-name>GestionArticleListe</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.GestionArticleListe</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionProduitListe</servlet-name>
+		<servlet-class>fr.miage.supermarket.controlers.GestionProduitListe</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GenerationListeProduitXml</servlet-name>
+		<servlet-class>fr.miage.supermarket.controlers.GenerationListeProduitXml</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GenerationListeXml</servlet-name>
+		<servlet-class>fr.miage.supermarket.controlers.GenerationListeXml</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletAjoutProduitListe</servlet-name>
+		<servlet-class>fr.miage.supermarket.controlers.ServletAjoutProduitListe</servlet-class>
+	</servlet>
 	<servlet>
 		<servlet-name>HabitudesConsommationUtilisateurServlet</servlet-name>
 		<display-name>HabitudesConsommationUtilisateurServlet</display-name>
 		<servlet-class>fr.miage.supermarket.controlers.HabitudesConsommationUtilisateurServlet</servlet-class>
 	</servlet>
-    <servlet>
-        <servlet-name>GestionCategoriesService</servlet-name>
-        <display-name>GestionCategoriesService</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.GestionCategoriesService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GestionRayonsService</servlet-name>
-        <display-name>GestionRayonsService</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.GestionRayonsService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GestionStockService</servlet-name>
-        <display-name>GestionStocksService</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.GestionStockService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ProduitPanierService</servlet-name>
-        <display-name>ProduitPanierService</display-name>
-        <description>Servlet de gestion des produits au sein d'un panier</description>
-        <servlet-class>fr.miage.supermarket.controlers.ProduitPanierService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>MagasinService</servlet-name>
-        <display-name>MagasinService</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.MagasinService</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ServletPanier</servlet-name>
-        <display-name>ServletPanier</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.ServletPanier</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RecupererStatistiques</servlet-name>
-        <display-name>RecupererStatistiques</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.RecupererStatistiques</servlet-class>
-    </servlet>
-    <!-- Servlet Alex -->
-    <servlet>
+	<servlet>
         <servlet-name>GestionApprovisionnementService</servlet-name>
         <display-name>GestionApprovisionnementService</display-name>
         <servlet-class>fr.miage.supermarket.controlers.GestionApprovisionnementService</servlet-class>
     </servlet>
-    <!-- Fin Servlet Alex -->
-    <servlet>
-	    <servlet-name>CommandeUtilisateur</servlet-name>
-	    <servlet-class>fr.miage.supermarket.controlers.CommandeUtilisateur</servlet-class>
+	<servlet>
+		<servlet-name>GestionCategoriesService</servlet-name>
+		<display-name>GestionCategoriesService</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.GestionCategoriesService</servlet-class>
 	</servlet>
-    <servlet>
-    	<servlet-name>ModifierCommandeServlet</servlet-name>
-    	<display-name>ModifierCommandeServlet</display-name>
-    	<description></description>
-    	<servlet-class>fr.miage.supermarket.controlers.ModifierCommandeServlet</servlet-class>
-    </servlet>
-   	<servlet>
-    	<servlet-name>ServletConversionListe</servlet-name>
-    	<display-name>ServletConversionListe</display-name>
-    	<description></description>
-    	<servlet-class>fr.miage.supermarket.controlers.ServletConversionListe</servlet-class>
-    </servlet>
-    <servlet>
+	<servlet>
+		<servlet-name>GestionRayonsService</servlet-name>
+		<display-name>GestionRayonsService</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.GestionRayonsService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionStockService</servlet-name>
+		<display-name>GestionStocksService</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.GestionStockService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ProduitPanierService</servlet-name>
+		<display-name>ProduitPanierService</display-name>
+		<description>Servlet de gestion des produits au sein d'un panier</description>
+		<servlet-class>fr.miage.supermarket.controlers.ProduitPanierService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>MagasinService</servlet-name>
+		<display-name>MagasinService</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.MagasinService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletPanier</servlet-name>
+		<display-name>ServletPanier</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.ServletPanier</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>RecupererStatistiques</servlet-name>
+		<display-name>RecupererStatistiques</display-name>
+		<servlet-class>fr.miage.supermarket.controlers.RecupererStatistiques</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>CommandeUtilisateur</servlet-name>
+		<servlet-class>fr.miage.supermarket.controlers.CommandeUtilisateur</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ModifierCommandeServlet</servlet-name>
+		<display-name>ModifierCommandeServlet</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.ModifierCommandeServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletConversionListe</servlet-name>
+		<display-name>ServletConversionListe</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletConversionListe</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>VisuPreparateur</servlet-name>
-        <display-name>VisuPreparateur</display-name>
-        <description></description>
+		<display-name>VisuPreparateur</display-name>
+		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.VisuPreparateur</servlet-class>
-    </servlet>
-    <servlet>
+	</servlet>
+	<servlet>
 		<servlet-name>PreparerPanier</servlet-name>
-        <display-name>PreparerPanier</display-name>
-        <description></description>
+		<display-name>PreparerPanier</display-name>
+		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.PreparerPanier</servlet-class>
-    </servlet>
-    <servlet>
+	</servlet>
+	<servlet>
 		<servlet-name>ServletTempsMoyen</servlet-name>
-        <display-name>ServletTempsMoyen</display-name>
-        <description></description>
+		<display-name>ServletTempsMoyen</display-name>
+		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.ServletTempsMoyen</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletDeconnexion</servlet-name>
+		<display-name>ServletDeconnexion</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletDeconnexion</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ServletRayons</servlet-name>
+		<display-name>ServletRayons</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.ServletRayons</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GestionChoixPanierServlet</servlet-name>
+		<display-name>GestionChoixPanierServlet</display-name>
+		<description></description>
+		<servlet-class>fr.miage.supermarket.controlers.GestionChoixPanierServlet</servlet-class>
 	</servlet>
     <servlet>
     	<servlet-name>ServletDeconnexion</servlet-name>
@@ -194,127 +212,129 @@
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.GestionChoixPanierServlet</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>ServletGestionMemo</servlet-name>
+    	<display-name>ServletGestionMemo</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletGestionMemo</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>ServletConversionMemoProduit</servlet-name>
+    	<display-name>ServletConversionMemoProduit</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletConversionMemoProduit</servlet-class>
+    </servlet>
 
-    <!-- Servlet Mappings -->
-    <servlet-mapping>
-        <servlet-name>ServletDispatcher</servlet-name>
-        <url-pattern>/central</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ImportProduitsJSP</servlet-name>
-        <url-pattern>/gestionProduit</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AfficherPanier</servlet-name>
-        <url-pattern>/afficherPanier</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Accueil</servlet-name>
-        <url-pattern>/accueil</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>gestionList</servlet-name>
-        <url-pattern>/gestionList</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RecupererImage</servlet-name>
-        <url-pattern>/recupererImage</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionProduitsService</servlet-name>
-        <url-pattern>/produits</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletListeCourse</servlet-name>
-        <url-pattern>/servletListeCourse</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAuthentification</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletInscription</servlet-name>
-        <url-pattern>/inscription</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionArticleListe</servlet-name>
-        <url-pattern>/GestionArticleListe</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DetailProduit</servlet-name>
-        <url-pattern>/detailProduit</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionProduitListe</servlet-name>
-        <url-pattern>/gestionProduitListe</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GenerationListeProduitXml</servlet-name>
-        <url-pattern>/generationListeProduitXml</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GenerationListeXml</servlet-name>
-        <url-pattern>/generationListeXml</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletAjoutProduitListe</servlet-name>
-        <url-pattern>/ServletAjoutProduitListe</url-pattern>
-    </servlet-mapping>
+	<!-- Servlet Mappings -->
+	<servlet-mapping>
+		<servlet-name>ServletDispatcher</servlet-name>
+		<url-pattern>/central</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ImportProduitsJSP</servlet-name>
+		<url-pattern>/gestionProduit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AfficherPanier</servlet-name>
+		<url-pattern>/afficherPanier</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Accueil</servlet-name>
+		<url-pattern>/accueil</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>gestionList</servlet-name>
+		<url-pattern>/gestionList</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RecupererImage</servlet-name>
+		<url-pattern>/recupererImage</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionProduitsService</servlet-name>
+		<url-pattern>/produits</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletListeCourse</servlet-name>
+		<url-pattern>/servletListeCourse</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletAuthentification</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletInscription</servlet-name>
+		<url-pattern>/inscription</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionArticleListe</servlet-name>
+		<url-pattern>/GestionArticleListe</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DetailProduit</servlet-name>
+		<url-pattern>/detailProduit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionProduitListe</servlet-name>
+		<url-pattern>/gestionProduitListe</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GenerationListeProduitXml</servlet-name>
+		<url-pattern>/generationListeProduitXml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GenerationListeXml</servlet-name>
+		<url-pattern>/generationListeXml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletAjoutProduitListe</servlet-name>
+		<url-pattern>/ServletAjoutProduitListe</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>HabitudesConsommationUtilisateurServlet</servlet-name>
 		<url-pattern>/habitudesConsommation</url-pattern>
 	</servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionCategoriesService</servlet-name>
-        <url-pattern>/categories</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionRayonsService</servlet-name>
-        <url-pattern>/rayons</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionStockService</servlet-name>
-        <url-pattern>/stocks</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ProduitPanierService</servlet-name>
-        <url-pattern>/ajoutPanier</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MagasinService</servlet-name>
-        <url-pattern>/magasin</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletPanier</servlet-name>
-        <url-pattern>/panier</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RecupererStatistiques</servlet-name>
-        <url-pattern>/RecupererStatistiques</url-pattern>
-    </servlet-mapping>
-    <!-- Servlet Alex -->
-    <servlet-mapping>
-        <servlet-name>GestionApprovisionnementService</servlet-name>
-        <url-pattern>/approvisionnement</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RecapCommandesApprovisionnement</servlet-name>
-        <url-pattern>/recapCommandesApprovisionnement</url-pattern>
-    </servlet-mapping>
-    <!-- Fin Servlet Alex -->
-    <servlet-mapping>
-    	<servlet-name>CommandeUtilisateur</servlet-name>
-    	<url-pattern>/CommandeUtilisateur</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-    	<servlet-name>ModifierCommandeServlet</servlet-name>
-    	<url-pattern>/ModifierCommandeServlet</url-pattern>
-    </servlet-mapping>
 	<servlet-mapping>
-    	<servlet-name>ServletConversionListe</servlet-name>
-    	<url-pattern>/ServletConversionListe</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
+		<servlet-name>GestionCategoriesService</servlet-name>
+		<url-pattern>/categories</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionRayonsService</servlet-name>
+		<url-pattern>/rayons</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionStockService</servlet-name>
+		<url-pattern>/stocks</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ProduitPanierService</servlet-name>
+		<url-pattern>/ajoutPanier</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>MagasinService</servlet-name>
+		<url-pattern>/magasin</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletPanier</servlet-name>
+		<url-pattern>/panier</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RecupererStatistiques</servlet-name>
+		<url-pattern>/RecupererStatistiques</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CommandeUtilisateur</servlet-name>
+		<url-pattern>/CommandeUtilisateur</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ModifierCommandeServlet</servlet-name>
+		<url-pattern>/ModifierCommandeServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletConversionListe</servlet-name>
+		<url-pattern>/ServletConversionListe</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>VisuPreparateur</servlet-name>
 		<url-pattern>/listePaniers</url-pattern>
 	</servlet-mapping>
@@ -330,7 +350,6 @@
 		<servlet-name>ServletDeconnexion</servlet-name>
 		<url-pattern>/deconnexion</url-pattern>
 	</servlet-mapping>
-	
 	<servlet-mapping>
 		<servlet-name>ServletRayons</servlet-name>
 		<url-pattern>/nosRayons</url-pattern>
@@ -339,9 +358,24 @@
 		<servlet-name>GestionChoixPanierServlet</servlet-name>
 		<url-pattern>/gestionChoixPanier</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>GestionApprovisionnementService</servlet-name>
+        <url-pattern>/approvisionnement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecapCommandesApprovisionnement</servlet-name>
+        <url-pattern>/recapCommandesApprovisionnement</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletGestionMemo</servlet-name>
+		<url-pattern>/ServletGestionMemo</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletConversionMemoProduit</servlet-name>
+		<url-pattern>/ServletConversionMemoProduit</url-pattern>
+	</servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>supermarket</welcome-file>
     </welcome-file-list>
-    
 </web-app>

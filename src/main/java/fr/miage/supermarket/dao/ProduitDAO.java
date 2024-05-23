@@ -1,5 +1,6 @@
 package fr.miage.supermarket.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
 import jakarta.persistence.Tuple;
@@ -212,4 +214,39 @@ public class ProduitDAO {
             session.close();
         }
     }
+	
+	/**
+	 * Récupère tous les produits de remplacement en stock de la même catégorie que le produit passé en paramètre,
+	 * pour un magasin donné et une date donnée.
+	 *
+	 * @param produit Le produit pour lequel on cherche des produits de remplacement en stock.
+	 * @param magasin Le magasin pour lequel on vérifie le stock des produits de remplacement.
+	 * @param date    La date pour laquelle on vérifie le stock des produits de remplacement.
+	 * @return Une liste des produits de remplacement en stock de la même catégorie que le produit spécifié,
+	 *         pour le magasin spécifié et la date spécifiée.
+	 */
+	public List<Produit> getProduitsRemplacementEnStock(Produit produit, Magasin magasin, Date date) {
+	    Session session = sessionFactory.openSession();
+	    List<Produit> result = null;
+	    try {
+	        String hql = "SELECT p " +
+	                     "FROM Produit p " +
+	                     "WHERE p.categorie = :categorie " +
+	                     "AND p IN (" +
+	                     "    SELECT lps.produit " +
+	                     "    FROM Link_Produit_Stock lps " +
+	                     "    WHERE lps.magasin = :magasin " +
+	                     "    AND lps.stock.dateStock = :date " +
+	                     "    AND lps.quantite > 0" +
+	                     ")";
+	        Query<Produit> query = session.createQuery(hql, Produit.class);
+	        query.setParameter("categorie", produit.getCategorie());
+	        query.setParameter("magasin", magasin);
+	        query.setParameter("date", date);
+	        result = query.getResultList();
+	    } finally {
+	        session.close();
+	    }
+	    return result;
+	}
 }

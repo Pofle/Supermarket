@@ -21,6 +21,11 @@
         <div class="col-md-6">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Rechercher..." id="search-bar">
+                <select class="form-control" id="sort-options">
+                    <option value="default">Trier par</option>
+                    <option value="prixKilo-asc">Prix au kilo croissant</option>
+                    <option value="prixKilo-desc">Prix au kilo décroissant</option>
+                </select>
             </div>
         </div>
     </div>

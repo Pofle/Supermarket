@@ -31,10 +31,14 @@
 				</c:if>
 			</ul>
 		</div>
-		<a href="/SupermarketG3/deconnexion"><i class="fas fa-sign-out-alt">LOGOUT</i></a>
+
 		<span class="navbar-right"> <span class="navbar-profile">${categorie}</span>
+		<c:if test="${requestScope.categorie != 'VISITEUR'}"><a style="margin-right: 20px; color:#f70e0e;" href="/SupermarketG3/deconnexion" title="Déconnexion"><span><svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"/>
+</svg>
+		</span></a></c:if>
 			<div class="navbar-cart-container">
-				<a href="central?type_action=panier"">
+				<a href="central?type_action=panier" title="Panier">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" color="#ffffff" fill="none">
     <path d="M8 16L16.7201 15.2733C19.4486 15.046 20.0611 14.45 20.3635 11.7289L21 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
     <path d="M6 6H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

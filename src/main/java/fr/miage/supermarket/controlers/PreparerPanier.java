@@ -42,15 +42,8 @@ public class PreparerPanier extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Servlet PreparerPanier méthode GET ");
 		gestionFormu(request, response);
 	}
-	
-	 protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	            throws ServletException, IOException {
-		 System.out.println("Servlet PreparerPanier méthode POST ");
-		 gestionFormu(request, response);
-	 }
 	 
 	 CommandeDAO commandeDAO = new CommandeDAO();
 	 
@@ -86,9 +79,7 @@ public class PreparerPanier extends HttpServlet {
 		        }
 		        valide = valide.substring(0, valide.length()-2);
 		        valide = valide + ".";
-		        System.out.println("Sélection formulaire, " + valide);
 		        // on vérifie si tous les éléments ont été validé/sélectionné
-		        System.out.println("gestionFormu - génération de la commande de base pour comparaison");
 		        ArrayList<LinkCommandeProduit> linkCompar = commandeDAO.getLinkByCommande(linkValid.get(linkValid.size()-1).getCommande().getId_commande());
 				if(linkCompar.size() != linkValid.size()) {
 					// on ne garde que les éléments qui n'ont pas été validés
@@ -106,7 +97,6 @@ public class PreparerPanier extends HttpServlet {
 					}
 					manque = manque.substring(0, manque.length()-2);
 					manque = manque + ".";
-					System.out.println(manque);
 				}
 				
 				// Vérification si le chrono a été lancé
@@ -127,7 +117,6 @@ public class PreparerPanier extends HttpServlet {
 		                linkValid.get(0).getCommande().setChrono(chronoPanierTime); 
 		                linkValid.get(0).getCommande().setStatut(StatutCommande.PRET);
 					    commandeDAO.mettreAJourCommande(linkValid.get(0).getCommande());
-					    System.out.println("gestionFormu - commande "+ linkValid.get(0).getCommande().getId_commande()+" chrono : " + linkValid.get(0).getCommande().getChrono() + "enregistrée dans la bd");
 		            }
 		        }
 	        }
@@ -171,14 +160,12 @@ public class PreparerPanier extends HttpServlet {
 	
 	            // Envoi du mail
 	            Transport.send(message);
-	            System.out.println("Message envoyé");
+	            System.out.println("Mail de notification envoyé");
 	            
 	        } catch (MessagingException mex) {
 	            System.out.println("Attention erreur lors de l'envoi du mail : " + mex);
 	        }
-			System.out.println("Vers servlet VisuPreparateur");
-			request.getRequestDispatcher("central?type_action=listePaniers").forward(request, response);		 
-	 }
+			response.sendRedirect("central?type_action=listePaniers");	 }
 	
 		
 }

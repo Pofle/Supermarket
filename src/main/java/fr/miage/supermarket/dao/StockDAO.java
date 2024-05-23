@@ -2,6 +2,7 @@ package fr.miage.supermarket.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.Magasin;
+import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
@@ -23,6 +27,12 @@ import fr.miage.supermarket.utils.HibernateUtil;
  * @author AlexP
  */
 public class StockDAO {
+	
+	private SessionFactory sessionFactory;
+	
+	public StockDAO() {
+		this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+	}
 	
     /**
      * Récupère les informations sur les produits en stock pour une date donnée.
@@ -83,5 +93,70 @@ public class StockDAO {
             }
         }
         return resultatSerie;
+    }
+
+    /**
+    * Retire une certaine quantité d'un produit du stock associé à un magasin.
+    * Cette méthode met à jour la quantité disponible du produit dans le stock du magasin.
+    * 
+    * @param ean l'EAN du produit à retirer du stock
+    * @param id_magasin l'identifiant du magasin où le produit doit être retiré du stock
+    * @param quantite_retiree la quantité du produit à retirer du stock
+    */
+	public void retirerProduitCommandesStock (String ean, int id_magasin, int quantite_retiree) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+        Session session = sessionFactory.getCurrentSession();
+        
+        session.beginTransaction();
+	    try {
+	    	Query query = session.createQuery("SELECT quantite FROM Link_Produit_Stock WHERE produit.ean = :ean AND magasin.id = :id_magasin");
+	    	query.setParameter("ean", ean);
+	    	query.setParameter("id_magasin", id_magasin);
+	    	int qte_actuelle = (int) query.list().get(0);
+	    	int qte_new = qte_actuelle - quantite_retiree;
+	    	query = session.createQuery("UPDATE Link_Produit_Stock SET quantite = :qte_new WHERE produit.ean = :ean AND magasin.id = :id_magasin");
+			query.setParameter("qte_new", qte_new);
+			query.setParameter("ean", ean);
+	    	query.setParameter("id_magasin", id_magasin);
+			int result = query.executeUpdate();
+	    	session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+	}
+	
+	/**
+     * Récupère les produits de la liste qui ne sont pas en stock pour un magasin spécifique à une date donnée.
+     *
+     * @param date la date pour laquelle vérifier les stocks
+     * @param magasin le magasin pour lequel vérifier les stocks
+     * @param produits la liste de produits à vérifier
+     * @return une liste de produits qui ne sont pas en stock
+     */
+	public List<Produit> getProduitsNonEnStockPourCommande(Date date, Magasin magasin, Commande commande) {
+        Session session = sessionFactory.openSession();
+        List<Produit> result = null;
+        try {
+            String hql = "SELECT lcp.produit " +
+                         "FROM LinkCommandeProduit lcp " +
+                         "WHERE lcp.commande = :commande " +
+                         "AND lcp.produit NOT IN (" +
+                         "    SELECT lps.produit " +
+                         "    FROM Link_Produit_Stock lps " +
+                         "    WHERE lps.magasin = :magasin " +
+                         "    AND lps.stock.dateStock = :date " +
+                         "    AND lps.quantite >= lcp.quantite" +
+                         ")";
+            Query<Produit> query = session.createQuery(hql, Produit.class);
+            query.setParameter("commande", commande);
+            query.setParameter("magasin", magasin);
+            query.setParameter("date", date);
+            result = query.getResultList();
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }

@@ -23,12 +23,20 @@ public class CommandeUtilisateur extends HttpServlet {
     private CommandeDAO commandeDAO;
     private MagasinDAO magasinDAO;
 
+    /**
+     * Servlet gestion des commandes pour un utilisateur
+     * @author YassineA
+     */
     public CommandeUtilisateur() {
         super();
         this.commandeDAO = new CommandeDAO();
         this.magasinDAO = new MagasinDAO();
     }
 
+    /**
+     * méthode doGet avec récupération de la liste des magasins
+     * @author YassineA
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateur");
@@ -39,7 +47,7 @@ public class CommandeUtilisateur extends HttpServlet {
         }
         //liste des commandes
         List<Commande> commandesUtilisateur = commandeDAO.getCommandesByUtilisateur(utilisateurConnecte);
-        // mise à jour des statuts des commandes prêtes à terminées
+        // mise à jour des statuts des commandes à 'terminées' si le retrait est passé
         for (Commande c : commandesUtilisateur) {
         	if(LocalDate.now().isAfter(c.getDateRetrait()) 
         			|| (

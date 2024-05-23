@@ -16,6 +16,10 @@ import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.models.Magasin;
 
+/**
+ * Servlet permettant la modification d'une commande validée par un utilisateur
+ * @author YassineA
+ */
 @WebServlet("/modifierCommande")
 public class ModifierCommandeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -29,6 +33,10 @@ public class ModifierCommandeServlet extends HttpServlet {
         this.magasinDAO = new MagasinDAO();
     }
 
+    /**
+     * Méthode doPost permettant de sauvegarder en base les nouvelles données affectées à la commande récupérée
+     * @author YassineA
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if ("modifier".equals(action)) {
@@ -38,9 +46,7 @@ public class ModifierCommandeServlet extends HttpServlet {
             String horaireRetrait = request.getParameter("horaireRetrait");
             
             Magasin mag = magasinDAO.getMagasinById(Integer.parseInt(magasinId));
-            System.out.println(dateRetrait);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-            System.out.println(magasinId);
             try {
                 LocalDate dateRetraitFormatted = LocalDate.parse(dateRetrait + "T" + horaireRetrait + ":00", formatter);
                 commandeDAO.updateCommande(idCommande, mag, dateRetraitFormatted, horaireRetrait);

@@ -1,10 +1,15 @@
 package fr.miage.supermarket.controlers;
 
 import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.Memo;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import fr.miage.supermarket.dao.CommandeDAO;
 //import org.hibernate.mapping.List;
-
+import fr.miage.supermarket.dao.MemoDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.ShoppingList;
@@ -135,12 +140,6 @@ public class ServletDispatcher extends HttpServlet {
 				url = "accueil";
 			}
 		}
-		// affichage des commandes dans l'ordre croissant de retrait
-		ArrayList<Commande> commandesTriees = CommandeDAO.getCommandeTrieInLink();
-		
-		// attention set catégorie 
-		request.setAttribute("categorie", CategorieCompte.PREPARATEUR.name());
-		request.setAttribute("commandes", commandesTriees);
 
 		request.getRequestDispatcher(url).forward(request, response);
 	}
@@ -217,18 +216,22 @@ public class ServletDispatcher extends HttpServlet {
                     HttpSession session = request.getSession();
                     Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
                     int utilisateurId = utilisateur.getId();
-                    // Récupérer les liste de course de cet utilisateur
-                    List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);
-                    // Ajouter les listes de courses comme attribut de la requête
+                    // Récupérer les liste de course et les memos de cet utilisateur
+                    List<ShoppingList> shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);                    
+                    String xmlMemosIdString = convertMemosToXml(shoppingLists);
+                    
+                    // Ajout des listes de courses et du xml_memo comme attribut de la requête
                     request.setAttribute("shoppingLists", shoppingLists);
+                    request.setAttribute("memosIdXml", xmlMemosIdString);
+                    
                     request.getRequestDispatcher("gestionList").forward(request, response);
-
 					return;
 				}catch(Exception e) {
 					request.setAttribute("msgError", e.getMessage());
 					 e.printStackTrace();
 				}
 				break;
+
 				
 			case "rayons":
                 url = "rayons";
@@ -256,6 +259,48 @@ public class ServletDispatcher extends HttpServlet {
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
+	/**
+	 * Methode qui récupère une liste de Memos et la convertit en xml
+	 * @param shoppingLists, liste des listes de courses
+	 * @return
+	 * @author Pauline
+	 */
+	private String convertMemosToXml(List<ShoppingList> shoppingLists) {
+		 List<Memo> memosList = null;
+		 
+		 try {
+			 
+		        memosList = MemoDAO.getMemos(shoppingLists);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }		
+		
+	    StringBuilder xmlBuilder = new StringBuilder();
+	    // Initialisation d'un set pour ne pas avoir de doublon sur les noeuds
+	    Set<Integer> listeIdUniques = new HashSet<>();
+	    
+	    xmlBuilder.append("<memos>");
+	    for (Memo memo : memosList) {
+	    	int listId = memo.getShoppingList().getId();
+	    	if (listeIdUniques.add(listId)) {
+	            xmlBuilder.append("<memo>");
+	            xmlBuilder.append("<id_liste>").append(listId).append("</id_liste>");
+	            xmlBuilder.append("</memo>");
+	        }
+	    }
+	    xmlBuilder.append("</memos>");
+	    
+	    // Enregistrer le XML dans un fichier POUR TEST A SUPPRIMER APRES
+	    String xmlString = xmlBuilder.toString();
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Pauline\\Cours\\Projet\\memos_id.xml"))) {
+	        writer.write(xmlString);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return xmlString;
+	}
+
 	
 
 }

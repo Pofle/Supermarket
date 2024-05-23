@@ -4,6 +4,10 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+/**
+ * Classe d'implémentation de l'entité magasin
+ * @author YassineA
+ */
 @Entity
 @Table(name = "MAGASIN", uniqueConstraints= {@UniqueConstraint(columnNames= {"ID_MAGASIN"})})
 public class Magasin {
