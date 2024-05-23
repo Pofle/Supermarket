@@ -35,10 +35,12 @@ public class CommandeUtilisateur extends HttpServlet {
         }
 
         List<Commande> commandesUtilisateur = commandeDAO.getCommandesByUtilisateur(utilisateurConnecte);
-        List<Magasin> magasins = magasinDAO.getAllMagasins(); // Obtenir la liste des magasins
+        // liste des magasins
+        List<Magasin> magasins = magasinDAO.getAllMagasins(); 
 
         request.setAttribute("commandes", commandesUtilisateur);
-        request.setAttribute("magasins", magasins); // Ajouter les magasins comme attribut
+        // ajout des magasins comme attribut
+        request.setAttribute("magasins", magasins); 
 
         request.getRequestDispatcher("/jsp/afficherCommande.jsp").forward(request, response);
     }
