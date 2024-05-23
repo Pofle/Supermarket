@@ -83,7 +83,12 @@ public class ServletPanier extends HttpServlet {
 		String action = request.getParameter("action");
 		if("vider".equals(action)) {
 		    session.removeAttribute("panier");
+		    Utilisateur utilisateurActuel = (Utilisateur) session.getAttribute("utilisateur");
+		    if(utilisateurActuel != null) {
+				Commande commandeProvisoire = commandeDAO.getCommandeNonFinalisee(utilisateurActuel.getId());
+				commandeDAO.supprimerCommande(commandeProvisoire);
 		    }
+		}
 		request.getRequestDispatcher("/jsp/afficherPanier.jsp").forward(request, response);
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
