@@ -143,7 +143,7 @@ public class CommandeDAO {
 			return null;
 		}
 	}
-    
+	
 	/**
      * Méthode permettant de récupérer une liste des commandes depuis la base de données
      * @author YassineA
