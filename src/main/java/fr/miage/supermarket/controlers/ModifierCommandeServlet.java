@@ -46,9 +46,7 @@ public class ModifierCommandeServlet extends HttpServlet {
             String horaireRetrait = request.getParameter("horaireRetrait");
             
             Magasin mag = magasinDAO.getMagasinById(Integer.parseInt(magasinId));
-            System.out.println(dateRetrait);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-            System.out.println(magasinId);
             try {
                 LocalDate dateRetraitFormatted = LocalDate.parse(dateRetrait + "T" + horaireRetrait + ":00", formatter);
                 commandeDAO.updateCommande(idCommande, mag, dateRetraitFormatted, horaireRetrait);

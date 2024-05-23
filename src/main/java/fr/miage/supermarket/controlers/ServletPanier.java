@@ -37,10 +37,9 @@ import fr.miage.supermarket.models.Utilisateur;
 
 /**
  * Servlet de gestion du panier (affichage/validation)
- * @author EricB & YassineA
  */
 public class ServletPanier extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private ProduitDAO produitDAO;
@@ -48,7 +47,8 @@ public class ServletPanier extends HttpServlet {
 	private CommandeDAO commandeDAO;
 	private UtilisateurDAO utilisateurDAO;
 	private MagasinDAO magasinDAO;
-	
+	private StockDAO stockDAO;
+
 	private Map<String, Float> promotions;
 
 	/**
@@ -59,6 +59,7 @@ public class ServletPanier extends HttpServlet {
 		this.produitDAO = new ProduitDAO();
 		this.promotionDAO = new PromotionDAO();
 		this.commandeDAO = new CommandeDAO();
+		this.stockDAO = new StockDAO();
 		this.promotions = new HashMap<>();
 		this.utilisateurDAO = new UtilisateurDAO();
 	}
@@ -68,7 +69,6 @@ public class ServletPanier extends HttpServlet {
 	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
-	 * @author EricB & YassineA
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -99,7 +99,6 @@ public class ServletPanier extends HttpServlet {
 	 * Méthode POST permettant de gérer la validation du panier contenu en session.
 	 * 
 	 * @see {@link HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)};
-	 * @author EricB
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -107,10 +106,11 @@ public class ServletPanier extends HttpServlet {
 	}
 
 	/**
-	 * Récupère le panier contenu en session s'il existe, sinon associe un nouveau panier et le retourne.
+	 * Récupère le panier contenu en session s'il existe, sinon associe un nouveau
+	 * panier et le retourne.
+	 * 
 	 * @param session la session sur laquelle prendre le panier
 	 * @return le panier
-	 * @author EricB
 	 */
 	private Panier getOrCreatePanier(HttpSession session) {
 		Panier panier = (Panier) session.getAttribute("panier");
@@ -122,7 +122,9 @@ public class ServletPanier extends HttpServlet {
 	}
 
 	/**
-	 * Mets à jour le panier pour chaque produit avec la promotion associée si trouvée
+	 * Mets à jour le panier pour chaque produit avec la promotion associée si
+	 * trouvée
+	 * 
 	 * @param panier le panier à mettre à jour
 	 * @author EricB
 	 */
@@ -136,10 +138,10 @@ public class ServletPanier extends HttpServlet {
 
 	/**
 	 * Valide le panier afin de le transformer en commande.
+	 * 
 	 * @param request
 	 * @param response
 	 * @throws IOException
-	 * @author EricB & YassineA
 	 */
 	private void validerPanier(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
@@ -157,7 +159,7 @@ public class ServletPanier extends HttpServlet {
 			response.getWriter().write("Vous devez vous connecter pour pouvoir valider votre commande.");
 			return;
 		}
-		
+
 		String magasinIdStr = request.getParameter("magasin");
 		String dateStr = request.getParameter("date");
 		String horaireStr = request.getParameter("horaire");
@@ -165,47 +167,94 @@ public class ServletPanier extends HttpServlet {
 		if (magasinIdStr != null && dateStr != null && horaireStr != null) {
 			try {
 				int magasinId = Integer.parseInt(magasinIdStr);
-				Commande commande = creerEtEnregistrerCommande(panier, magasinId, dateStr, horaireStr, utilisateur);
-				
-				majPointsUtilisateur(request.getParameter("pointsUtilises"), utilisateur, panier);
-				// Commande enregistrée : on vide le panier
-				session.removeAttribute("panier");
-				
 				Magasin magasin = MagasinDAO.getMagasinById(magasinId);
-				if (magasin != null) {
-					request.setAttribute("nomMagasin", magasin.getNom());
-					request.setAttribute("adresseMagasin", magasin.getAdresse());
-				} else {
-					request.setAttribute("nomMagasin", "Magasin inconnu");
-					request.setAttribute("adresseMagasin", "Adresse inconnue");
+				Commande commandeNonFinalisee = commandeDAO.getCommandeNonFinalisee(utilisateur.getId());
+				if (commandeNonFinalisee != null) {
+					List<Produit> produitsNonEnStock = stockDAO.getProduitsNonEnStockPourCommande(
+							new SimpleDateFormat("yyyy-MM-dd").parse(dateStr), magasin, commandeNonFinalisee);
+					if (!produitsNonEnStock.isEmpty()) {
+						response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+						StringBuilder xmlResponse = new StringBuilder();
+						xmlResponse.append("<produits>");
+						for (Produit produit : produitsNonEnStock) {
+							xmlResponse.append("<produit id='").append(produit.getEan()).append("'>");
+							xmlResponse.append("<libelle>").append(produit.getLibelle()).append("</libelle>");
+							xmlResponse.append("<poids>").append(produit.getPoids()).append("</poids>");
+							xmlResponse.append("<prix>").append(produit.getPrix()).append("</prix>");
+							xmlResponse.append("<conditionnement>").append(produit.getConditionnement())
+									.append("</conditionnement>");
+							if (produit.getRepertoireImage() != null) {
+								xmlResponse.append("<image>").append(produit.getRepertoireImage()).append("</image>");
+							}
+							/**
+							 * if (promotion != null) {
+							 * xmlResponse.append("<tauxPromotion>").append(promotion).append("</tauxPromotion>");
+							 * }
+							 **/
+							xmlResponse.append("<produitsRemplacement>");
+							List<Produit> produitsRemplacement = produitDAO.getProduitsRemplacementEnStock(produit,
+									magasin, new SimpleDateFormat("yyyy-MM-dd").parse(dateStr));
+							for (Produit produitRemplacement : produitsRemplacement) {
+								xmlResponse.append("<produitRemplacement id='").append(produitRemplacement.getEan())
+										.append("'>");
+								xmlResponse.append("<libelle>").append(produitRemplacement.getLibelle())
+										.append("</libelle>");
+								xmlResponse.append("<poids>").append(produitRemplacement.getPoids()).append("</poids>");
+								xmlResponse.append("<prix>").append(produitRemplacement.getPrix()).append("</prix>");
+								xmlResponse.append("<conditionnement>").append(produitRemplacement.getConditionnement())
+										.append("</conditionnement>");
+								if (produit.getRepertoireImage() != null) {
+									xmlResponse.append("<image>").append(produitRemplacement.getRepertoireImage())
+											.append("</image>");
+								}
+								xmlResponse.append("</produitRemplacement>");
+							}
+							xmlResponse.append("</produitsRemplacement>");
+
+							xmlResponse.append("</produit>");
+
+						}
+						xmlResponse.append("</produits>");
+
+						response.setContentType("application/xml");
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().write(xmlResponse.toString());
+						return;
+					}
 				}
 
-				request.setAttribute("dateCommande", commande.getDateCommande());
-				request.setAttribute("jourRetrait", commande.getDateRetrait());
-				request.setAttribute("horaireRetrait", commande.getHoraireRetrait());
+				Commande commande = creerEtEnregistrerCommande(panier, magasinId, dateStr, horaireStr, utilisateur);
+				majPointsUtilisateur(request.getParameter("pointsUtilises"), commande.getUtilisateur(), panier,
+						session);
+				// Commande enregistrée : on vide le panier
+				session.removeAttribute("panier");
 
-				request.getRequestDispatcher("/jsp/commandeValide.jsp").forward(request, response);
-			} catch (NumberFormatException | ParseException | ServletException e) {
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.getWriter().write("Commande validée");
+			} catch (NumberFormatException | ParseException e) {
 				e.printStackTrace();
-				response.sendRedirect("jsp/error.jsp");
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().write("Erreur survenue lors de l'enregistrement de la commande");
 			}
 		} else {
-			response.sendRedirect("jsp/error.jsp");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().write("Erreur survenue lors de l'enregistrement de la commande");
 		}
 	}
-	
+
 	/**
 	 * Créée et enregistre une nouvelle commande à partir du panier
-	 * @param panier le panier depuis lequel créer une commande
-	 * @param magasinId l'id du magasin de commande
-	 * @param dateStr la date de reception de la commande
-	 * @param horaireStr l'horaire de reception de la commande
+	 * 
+	 * @param panier      le panier depuis lequel créer une commande
+	 * @param magasinId   l'id du magasin de commande
+	 * @param dateStr     la date de reception de la commande
+	 * @param horaireStr  l'horaire de reception de la commande
 	 * @param utilisateur l'utilisateur passant commande
 	 * @return la commande nouvellement créée
 	 * @throws ParseException
-	 * @author EricB & YassineA
 	 */
-	private Commande creerEtEnregistrerCommande(Panier panier, int magasinId, String dateStr, String horaireStr, Utilisateur utilisateur) throws ParseException {
+	private Commande creerEtEnregistrerCommande(Panier panier, int magasinId, String dateStr, String horaireStr,
+			Utilisateur utilisateur) throws ParseException {
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
 		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate currentDate = LocalDate.now();
@@ -217,6 +266,9 @@ public class ServletPanier extends HttpServlet {
 		commande.setDateRetrait(localDate);
 		commande.setHoraireRetrait(horaireStr);
 		commande.finaliserCommande(panier.calculerPrixTotal());
+
+		utilisateurDAO.mettreAJourUtilisateur(commande.getUtilisateur());
+
 		
 		//Pour tous les produits du panier, on décrémente le stock du magasin
 		StockDAO stockDAO = new StockDAO();
@@ -226,15 +278,14 @@ public class ServletPanier extends HttpServlet {
 		
 		return commandeDAO.creerOuMajCommande(commande);
 	}
-	
+
 	/**
 	 * Gestion de la mise à jour des points de fidélité de l'utilisateur
 	 * @param pointsUtilisesStr les points que l'utilisateur a utilisé pour la commande
 	 * @param utilisateur l'utilisateur concerné
 	 * @param panier le panier sur lequel les points ont été utilisés
-	 * @author EricB
 	 */
-	private void majPointsUtilisateur(String pointsUtilisesStr, Utilisateur utilisateur, Panier panier) {
+	private void majPointsUtilisateur(String pointsUtilisesStr, Utilisateur utilisateur, Panier panier, HttpSession session) {
 		int pointsUtilises = 0;
 
 		if (pointsUtilisesStr != null && !pointsUtilisesStr.isEmpty()) {
@@ -263,7 +314,9 @@ public class ServletPanier extends HttpServlet {
 		//double prixTotalAvecReduction = prixTotal - reduction;
 
 		utilisateur.setPoints(utilisateur.getPoints() - pointsUtilises);
-		utilisateurDAO.mettreAJourUtilisateur(utilisateur);
+		Utilisateur utilisateurAJour = utilisateurDAO.mettreAJourUtilisateur(utilisateur);
+        Utilisateur utilisateurSession = (Utilisateur) session.getAttribute("utilisateur");
+        utilisateurSession.setPoints(utilisateurAJour.getPoints());
 	}
 	
 }

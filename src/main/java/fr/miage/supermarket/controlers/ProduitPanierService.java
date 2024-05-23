@@ -107,6 +107,17 @@ public class ProduitPanierService extends HttpServlet {
 					.write("<response><nombreProduits>" + panier.getPanier().size() + "</nombreProduits></response>");
 		}
 	}
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+		String eanToDelete = request.getParameter("ean");
+		Panier panier = (Panier) request.getSession().getAttribute("panier");
+		Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("utilisateur");
+		if(panier.produitExiste(eanToDelete)) {
+			panier.retirerProduit(eanToDelete);
+			Commande commande = commandeDAO.getCommandeNonFinalisee(utilisateur.getId());
+			commandeDAO.supprimerProduitDeCommandeNonFinalisee(commande, eanToDelete);
+		}
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("application/xml");

@@ -92,6 +92,12 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 													</p>
 												</c:if>
 											</div>
+											<div class="mt-3 text-right">
+												<button id="retirerProduitPanier" type="button"
+													class="btn btn-danger btn-block" data-ean="${produit.ean}">Retirer
+													produit du panier</button>
+
+											</div>
 										</div>
 									</div>
 								</div>
@@ -126,7 +132,7 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 									</c:otherwise>
 								</c:choose>
 								<div class="form-group">
-									<label for="pointsUtilises">Points de fidélité (${utilisateur.points}pts)</label> <input
+									<label for="pointsUtilises">Points de fidélité (${utilisateur.points == null ? 0 : utilisateur.points}pts)</label> <input
 										type="number" class="form-control" id="pointsUtilises"
 										name="pointsUtilises" min="0" step="10"
 										max="${maxReduction * 10}"
@@ -162,36 +168,31 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form action="panier" method="post">
-					<div class="modal-body">
-						<label for="magasin">Sélectionnez un magasin :</label> <select
-							name="magasin" id="magasin" required>
-							<option value="">Votre magasin</option>
-							<%
-							for (Magasin magasin : (List<Magasin>) request.getAttribute("magasins")) {
-							%>
-							<option value="<%=magasin.getId()%>"><%=magasin.getNom()%></option>
-							<%
-							}
-							%>
-						</select> <br>
-						<br><label for="date">Sélectionnez une date :</label> 
-								<input type="date" id="date" name="date" min="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>" required> 
-							<br>
-							<br>
-							<label for="horaire">Sélectionnez un horaire :</label> 
-								<select name="horaire" id="horaire" required></select> 
-							<br> 
-							<br> 
-						<input type="hidden" id="pointsUtilisesInput" name="pointsUtilises" value="0">
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Valider</button>
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Fermer</button>
-					</div>
-				</form>
-
+				<div class="modal-body">
+					<label for="magasin">Sélectionnez un magasin :</label> <select
+						name="magasin" id="magasin" required>
+						<option value="">Votre magasin</option>
+						<%
+						for (Magasin magasin : (List<Magasin>) request.getAttribute("magasins")) {
+						%>
+						<option value="<%=magasin.getId()%>"><%=magasin.getNom()%></option>
+						<%
+						}
+						%>
+					</select> <br> <br> <label for="date">Sélectionnez une
+						date :</label> <input type="date" id="date" name="date"
+						min="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>"
+						required> <br> <br> <label for="horaire">Sélectionnez
+						un horaire :</label> <select name="horaire" id="horaire" required></select>
+					<br> <br> <input type="hidden" id="pointsUtilisesInput"
+						name="pointsUtilises" value="0">
+				</div>
+				<div class="modal-footer">
+					<button id="validerPanierFinal" type="submit"
+						class="btn btn-primary">Valider</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Fermer</button>
+				</div>
 			</div>
 		</div>
 	</div>
