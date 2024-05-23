@@ -37,19 +37,26 @@ public class CommandeUtilisateur extends HttpServlet {
         }
 
         List<Commande> commandesUtilisateur = commandeDAO.getCommandesByUtilisateur(utilisateurConnecte);
+        // mise à jour des statuts des commandes prêtes à terminées
         for (Commande c : commandesUtilisateur) {
         	if(LocalDate.now().isAfter(c.getDateRetrait())) {
         		c.setStatut(StatutCommande.TERMINE);
         		commandeDAO.mettreAJourCommande(c);
         	}
         }
-        List<Magasin> magasins = magasinDAO.getAllMagasins(); // Obtenir la liste des magasins
+
         request.setAttribute("commandes", commandesUtilisateur);
         request.setAttribute("nonValide", StatutCommande.NON_VALIDE);
         request.setAttribute("enCours", StatutCommande.EN_COURS);
         request.setAttribute("pret", StatutCommande.PRET);
         request.setAttribute("termine", StatutCommande.TERMINE);
         request.setAttribute("magasins", magasins); // Ajouter les magasins comme attribut
+        // liste des magasins
+        List<Magasin> magasins = magasinDAO.getAllMagasins(); 
+
+        request.setAttribute("commandes", commandesUtilisateur);
+        // ajout des magasins comme attribut
+        request.setAttribute("magasins", magasins); 
 
         request.getRequestDispatcher("/jsp/afficherCommande.jsp").forward(request, response);
     }

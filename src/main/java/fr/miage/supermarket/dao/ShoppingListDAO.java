@@ -51,14 +51,13 @@ public class ShoppingListDAO {
 	  * @param nomListe, le nom de la liste à ajouter
 	  * @author Pauline
 	  */
-	 public static void ajouterListe(String nomListe)
+	 public static void ajouterListe(String nomListe, Utilisateur utilisateur)
 	 {
 		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	     Transaction tx = null;
 	     
 	   //TO-DO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
  		// -- Code à remplacer
-	    Utilisateur utilisateur = session.get(Utilisateur.class, 1);
 	 // Fin du code à remplacer
 	    
 	     try {

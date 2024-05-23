@@ -56,26 +56,37 @@ public class HabitudesConsommationUtilisateurServlet extends HttpServlet {
         List<Commande> listeCommandeUser = commandeDAO.getCommandeUtilisateur(utilisateur);
         HashMap<Produit, Integer> map = new HashMap<Produit, Integer>();
         
-        //On vérifie que l'utilisateur a passé au moins une commande
+        //On vérifie que l'utilisateur a passé au moins une commande, si c'est le cas on en parcourt la liste (dans le cas du test, deux fois car deux commandes)
         if (listeCommandeUser != null) {			
         	for (int i = 0; i < listeCommandeUser.size(); i++) {
         		Commande cmde = listeCommandeUser.get(i);
         		List<Produit> listeProd = produitDAO.getProduitsParIdCommande(cmde.getId_commande());
+        		//On récupère la liste des produits commandés dans la commande analysée
         		for (int j = 0; j < listeProd.size(); j++) {
         			//Affectation dans une map du produit et sa quantitée commandée (ou incrémentation)
-        			if (map.get(listeProd.get(j)) != null) {
-        				map.put(listeProd.get(j), map.get(listeProd.get(j)) + produitDAO.getQuantiteCommandee(listeProd.get(j)));
-					} else {
-						map.put(listeProd.get(j), produitDAO.getQuantiteCommandee(listeProd.get(j)));
-					}
+        			int montant_ajoute = produitDAO.getQuantiteCommandee(listeProd.get(j));
+        			
+        			boolean prodExistantDansMap = false;
+        			if (listeProd.size() > 0) {
+	        			//Le tri se fait sur la signature de l'objet produit, or deux mêmes produits peuvent avoir deux signatures différentes car dans plusieurs commandes
+	        			//En train de faire la verif sur l'EAN de chaque element de la liste
+	        			for (Map.Entry<Produit, Integer> entry : map.entrySet()) {
+							if (entry.getKey().getEan().equals(listeProd.get(j).getEan())) {
+								prodExistantDansMap = true;
+							}
+						}
+        			}
+        			if (!prodExistantDansMap) {
+        				map.put(listeProd.get(j), montant_ajoute);
+					} 
 				}
         		
         	}
+        	
+			
+        	
         	List<Map.Entry<Produit, Integer>> entryList = new ArrayList<>(map.entrySet());
             entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
-            if (entryList.size() > 10) {
-                entryList = entryList.subList(0, 10);
-            }
             Map<Produit, Integer> sortedMap = entryList.stream().collect(Collectors.toMap(
                             Map.Entry::getKey,
                             Map.Entry::getValue,

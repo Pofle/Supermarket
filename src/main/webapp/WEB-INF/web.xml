@@ -170,6 +170,18 @@
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.ServletDeconnexion</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>ServletRayons</servlet-name>
+    	<display-name>ServletRayons</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletRayons</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>GestionChoixPanierServlet</servlet-name>
+    	<display-name>GestionChoixPanierServlet</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.GestionChoixPanierServlet</servlet-class>
+    </servlet>
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -297,6 +309,14 @@
 		<url-pattern>/deconnexion</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>ServletRayons</servlet-name>
+		<url-pattern>/nosRayons</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GestionChoixPanierServlet</servlet-name>
+		<url-pattern>/gestionChoixPanier</url-pattern>
+	</servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>supermarket</welcome-file>
