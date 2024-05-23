@@ -185,6 +185,36 @@
 		<description></description>
 		<servlet-class>fr.miage.supermarket.controlers.GestionChoixPanierServlet</servlet-class>
 	</servlet>
+    <servlet>
+    	<servlet-name>ServletDeconnexion</servlet-name>
+    	<display-name>ServletDeconnexion</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletDeconnexion</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>ServletRayons</servlet-name>
+    	<display-name>ServletRayons</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletRayons</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>GestionChoixPanierServlet</servlet-name>
+    	<display-name>GestionChoixPanierServlet</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.GestionChoixPanierServlet</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>ServletGestionMemo</servlet-name>
+    	<display-name>ServletGestionMemo</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletGestionMemo</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>ServletConversionMemoProduit</servlet-name>
+    	<display-name>ServletConversionMemoProduit</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.ServletConversionMemoProduit</servlet-class>
+    </servlet>
 
 	<!-- Servlet Mappings -->
 	<servlet-mapping>
@@ -311,7 +341,6 @@
 		<servlet-name>ServletDeconnexion</servlet-name>
 		<url-pattern>/deconnexion</url-pattern>
 	</servlet-mapping>
-
 	<servlet-mapping>
 		<servlet-name>ServletRayons</servlet-name>
 		<url-pattern>/nosRayons</url-pattern>
@@ -320,9 +349,16 @@
 		<servlet-name>GestionChoixPanierServlet</servlet-name>
 		<url-pattern>/gestionChoixPanier</url-pattern>
 	</servlet-mapping>
-	<!-- Welcome File List -->
-	<welcome-file-list>
-		<welcome-file>supermarket</welcome-file>
-	</welcome-file-list>
-
+	<servlet-mapping>
+		<servlet-name>ServletGestionMemo</servlet-name>
+		<url-pattern>/ServletGestionMemo</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletConversionMemoProduit</servlet-name>
+		<url-pattern>/ServletConversionMemoProduit</url-pattern>
+	</servlet-mapping>
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>supermarket</welcome-file>
+    </welcome-file-list>
 </web-app>

@@ -83,9 +83,11 @@ public class ServletPanier extends HttpServlet {
 		request.setAttribute("promotions", promotions);
 
 		String action = request.getParameter("action");
+		// on vide le panier de la session 
 		if("vider".equals(action)) {
 		    session.removeAttribute("panier");
 		    Utilisateur utilisateurActuel = (Utilisateur) session.getAttribute("utilisateur");
+		    // on retire de la bd la commande non validée 
 		    if(utilisateurActuel != null) {
 				Commande commandeProvisoire = commandeDAO.getCommandeNonFinalisee(utilisateurActuel.getId());
 				commandeDAO.supprimerCommande(commandeProvisoire);
@@ -297,22 +299,24 @@ public class ServletPanier extends HttpServlet {
 		}
 
 		double prixTotal = panier.calculerPrixTotal();
-
+		int pointActuel = utilisateur.getPoints();
+		if (utilisateur.getPoints() == null) {
+			pointActuel = 0;
+		}
 		if (pointsUtilises < 0) {
 			pointsUtilises = 0;
-		} else if (pointsUtilises > utilisateur.getPoints()) {
-			pointsUtilises = utilisateur.getPoints();
+		} else if (pointsUtilises > pointActuel) {
+			pointsUtilises = pointActuel;
 		}
 
 		int maxPointsUtilisables = (int) Math.floor(prixTotal * 10);
-
+		
 		if (pointsUtilises > maxPointsUtilisables) {
 			pointsUtilises = maxPointsUtilisables;
 		}
 
 		//double reduction = pointsUtilises / 10.0; // 10 points = 1€ de réduction
 		//double prixTotalAvecReduction = prixTotal - reduction;
-
 		utilisateur.setPoints(utilisateur.getPoints() - pointsUtilises);
 		Utilisateur utilisateurAJour = utilisateurDAO.mettreAJourUtilisateur(utilisateur);
         Utilisateur utilisateurSession = (Utilisateur) session.getAttribute("utilisateur");

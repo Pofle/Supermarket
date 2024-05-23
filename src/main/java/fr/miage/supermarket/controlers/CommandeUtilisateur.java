@@ -47,7 +47,7 @@ public class CommandeUtilisateur extends HttpServlet {
         }
         //liste des commandes
         List<Commande> commandesUtilisateur = commandeDAO.getCommandesByUtilisateur(utilisateurConnecte);
-        // mise à jour des statuts des commandes prêtes à terminées
+        // mise à jour des statuts des commandes à 'terminées' si le retrait est passé
         for (Commande c : commandesUtilisateur) {
         	if(LocalDate.now().isAfter(c.getDateRetrait()) 
         			|| (

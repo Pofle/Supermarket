@@ -53,13 +53,15 @@ public class HabitudesConsommationUtilisateurServlet extends HttpServlet {
         ProduitDAO produitDAO = new ProduitDAO();
         Map<String, Object> statistiques;
         List<Commande> listeCommandeUser;
+        // on paramètre les valeurs selon s'il s'agit d'un gestionnaire ou non
    		 if(utilisateur.getRole() != CategorieCompte.GESTIONNAIRE) {
    			 statistiques = statistiquesDAO.getStatistiquesConsommation(utilisateur);
    			 listeCommandeUser = commandeDAO.getCommandeUtilisateur(utilisateur);
    		} else {
    			statistiques = statistiquesDAO.getStatistiquesConsommationUtilisateurs();
   			listeCommandeUser = commandeDAO.getAllCommandes();
-  			ArrayList<Commande> commandes = CommandeDAO.getCommandeInLink();
+  			// on rajoute les paramètres pour visualiser le temps moyen de préparation 
+  			ArrayList<Commande> commandes = CommandeDAO.getCommandesTraiteesInLink();
   	 		long somme = 0;
   	 		String resultat = "00:00:00";
   	 		// vérification s'il existe des commandes preparées/terminées
