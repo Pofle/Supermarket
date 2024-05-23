@@ -88,12 +88,12 @@ ul {
 .modal-title {
     text-align: center; 
 }
-label {
+.label {
     display: block;
     margin-bottom: 5px;
 }
 
-input[type="text"] {
+#modalAjout .input[type="text"] {
     width: 100%;
     padding: 8px;
     border: 1px solid #ced4da; 
@@ -102,7 +102,7 @@ input[type="text"] {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-input[type="text"]:focus {
+#modalAjout .input[type="text"]:focus {
     border-color: #007bff; 
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);

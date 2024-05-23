@@ -55,7 +55,7 @@ public class ShoppingListDAO {
 		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	     Transaction tx = null;
 	     
-	   //TO-DO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
+	   //TODO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
  		// -- Code à remplacer
 	    Utilisateur utilisateur = session.get(Utilisateur.class, 1);
 	 // Fin du code à remplacer

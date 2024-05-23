@@ -110,7 +110,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
         <button type="submit" class="btn btn-primary">Enregistrer</button>       
       </div>
-       <input type="hidden" name="listeId" id="listeId" value="">
+       <input type="hidden" name="listeId" id="listeIdInput" value="">
       </form>
     </div>
   </div>

@@ -63,29 +63,76 @@ public class MemoDAO {
         return memoContent;
 	}
 	
-	public static void ajouterLibelle(String libelle, int listeId) {
+	
+	public static void ajouterMemo(String libelle, int listeId) {
 		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	    Transaction tx = null;
-	    
+
 	    try {
 	        tx = session.beginTransaction();
 	        Memo memo = new Memo();
 	        memo.setLibelle(libelle);
 
-	        // Récupérer la liste de course à partir de l'id
 	        ShoppingList shoppingList = session.get(ShoppingList.class, listeId);
 	        memo.setShoppingList(shoppingList);
 
 	        session.persist(memo);
 	        tx.commit();
+	        System.out.println("Mémo ajouté avec succès.");
 	    } catch (Exception e) {
 	        if (tx != null) tx.rollback();
 	        throw e;
 	    } finally {
 	        session.close();
 	    }
-	    System.out.println("Memo successfully added.");
 	}
 	
+	public static void supprimerMemo(int memoId, int listeId)
+	 {
+		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+		    Transaction tx = null;
+
+		    try {
+		        tx = session.beginTransaction();
+		        
+		        // Suppression du mémo spécifique
+		        Memo memo = session.get(Memo.class, memoId);
+		        if (memo != null && memo.getShoppingList().getId() == listeId) {
+		            session.remove(memo);
+		        }
+		        
+		        tx.commit();
+		        System.out.println("Mémo supprimé avec succès.");
+		    } catch (Exception e) {
+		        if (tx != null) tx.rollback();
+		        throw e;
+		    } finally {
+		        session.close();
+		    }
+		}
+	
+	public static void updateLibelle(int idMemo, String libelle, int listeId) {
+	    Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+	    Transaction tx = null;
+
+	    try {
+	        tx = session.beginTransaction();
+	        Memo memo = session.get(Memo.class, idMemo);
+
+	        if (memo != null) {
+	            memo.setLibelle(libelle);
+	            session.update(memo);
+	            tx.commit();
+	            System.out.println("Memos successfully updated.");
+	        } else {
+	            System.out.println("Memos not found.");
+	        }
+	    } catch (Exception e) {
+	        if (tx != null) tx.rollback();
+	        throw e;
+	    } finally {
+	        session.close();
+	    }
+	}
 
 }

@@ -2,7 +2,7 @@
  * Fonction pour générer les boutons "Memo" pour les listes de courses.
  */
 function generateMemoButtons() {
-if (!memosXml) {
+    if (!memosXml) {
         console.error("XML_memos not found.");
         return;
     }
@@ -13,8 +13,8 @@ if (!memosXml) {
     // Récupère tous les éléments <id_liste> dans le XML
     const idListElements = xmlDoc.getElementsByTagName("id_liste");
     const idListArray = Array.from(idListElements).map(el => el.textContent);
-   
-     // Pour chaque conteneur de bouton dans le DOM, ajoute le bouton approprié
+
+    // Pour chaque conteneur de bouton dans le DOM, ajoute le bouton approprié
     document.querySelectorAll('[id^=btn-Memo_container-]').forEach(container => {
         const listeId = container.id.split('-')[2]; // Extraire l'ID de liste depuis l'ID du conteneur
         if (idListArray.includes(listeId)) {
@@ -37,25 +37,25 @@ if (!memosXml) {
     });
 }
 
-/** Appel de la fonction de génération au chargement de la page*/ 
+/** Appel de la fonction de génération au chargement de la page */ 
 window.onload = generateMemoButtons;
 
 /**
- * Fonction pour charge le contenu de la modal memo
+ * Fonction pour charger le contenu de la modal memo
  */
-function chargerMemo(listeId){
-	//log de controle
-	console.log("ID recieved for displaying memo modal is : "+listeId)
-	
-	var xhr = new XMLHttpRequest();
-            xhr.open("GET", "GenerationMemoXml?listeId=" + listeId);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var xmlDoc = xhr.responseXML;
-                    if (xmlDoc === null) {
-                        console.error("xml_MemoContent is null. Check the response format.");
-                        return;
-                    }
+function chargerMemo(listeId) {
+    //log de controle
+    console.log("ID reçu pour afficher la modale memo : " + listeId);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "GenerationMemoXml?listeId=" + listeId);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var xmlDoc = xhr.responseXML;
+            if (xmlDoc === null) {
+                console.error("xml_MemoContent is null. Check the response format.");
+                return;
+            }
             // Sélectionne le corps de la modale
             var modalBody = document.querySelector('#modalMemo .modal-body');
             modalBody.innerHTML = ''; // Vide le contenu actuel
@@ -67,19 +67,25 @@ function chargerMemo(listeId){
                 var libelle = memoNode.querySelector('libelle').textContent;
                 var li = document.createElement('li');
                 li.innerHTML = `
-                    <input type="texte" name="id_memo_${idMemo}" value="${libelle}" required>
-                    <a href=""><img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteProduit" title="Supprimer la ligne"></a>`;
+                	<input type="hidden" name="id_memo_${idMemo}" value="${idMemo}">
+                    <input type="text" name="libelle_${idMemo}" value="${libelle}" required>
+                    <a href="" onclick="supprimerMemo(${idMemo}, ${listeId})"><img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteProduit" title="Supprimer la ligne"></a>`;
                 modalBody.appendChild(li);
             });
             // Ajout de la ligne pour ajouter un nouveau libellé
-            var newLi = document.createElement('li');
-            newLi.innerHTML = `
-                <input type="texte" name="" value="" required>
-                <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" data-liste-id="${listeId}" class="btn-AddInput" title="Ajouter une ligne">
+            var newForm = document.createElement('form');
+            newForm.id = "addMemoForm";
+            /*newForm.action="ServletGestionMemo"
+            newForm.method = "post"*/
+            newForm.innerHTML = `
+            	<li>
+                    <input type="hidden" name="id_memo" value="">
+                    <input type="text" name="newLibelle" id="newLibelle" required>
+                    <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" data-liste-id="${listeId}" onclick="ajouterInputLibelle()" class="btn-AddInput" title="Ajouter une ligne">
+                    <input type="hidden" name="listeId" id="listeIdInput" value="${listeId}">
+                </li>
             `;
-            modalBody.appendChild(newLi);
-        // Ajoutez les écouteurs d'événements aux nouveaux boutons ajoutés
-            newLi.querySelector('.btn-AddInput').addEventListener('click', ajouterInputLibelle);
+            modalBody.appendChild(newForm);
         } else {
             console.error("Failed to load memo content.");
         }
@@ -87,37 +93,35 @@ function chargerMemo(listeId){
     xhr.send();
 }
 
-function ajouterInputLibelle(event) {
-    event.preventDefault(); // Empêcher le comportement par défaut du bouton
-    console.log("Clic for add an input received");
 
-    // Crée un nouvel élément <li> avec un <input> et le bouton d'ajout
-    var newLi = document.createElement('li');
-    newLi.innerHTML = `
-        <input type="text" name="" value="" required>
-        <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" class="btn-AddInput" title="Ajouter une ligne">
-    `;
+function ajouterInputLibelle() {
+	//event.preventDefault();
+    console.log("Clic pour ajouter une entrée reçu");
+   
+    var form = document.getElementById('addMemoForm');
+    form.action = 'ServletGestionMemo';
+    form.method = 'post';
+    form.submit();
 
-    // Insère le nouvel élément après le bouton actuel
-    event.target.closest('li').insertAdjacentElement('afterend', newLi);
+   }
+   
+   function supprimerMemo(memoId, listeId) {
+    console.log("Clic pour supprimer un mémo reçu : " + memoId);
 
-    // Attacher à nouveau l'écouteur à l'icône nouvellement créée
-    newLi.querySelector('.btn-AddInput').addEventListener('click', ajouterInputLibelle);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `ServletGestionMemo?type_action=delete_memo&memoId=${memoId}&listeId=${listeId}`);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log("Mémo supprimé avec succès.");
+            // Rechargez les mémos pour mettre à jour la liste
+            chargerMemo(listeId);
+        } else {
+            console.error("Failed to delete memo.");
+        }
+    };
+    xhr.send();
 }
-
-// Attacher les écouteurs d'événements aux boutons existants
-document.querySelectorAll('.btn-AddInput').forEach(function(btn) {
-    btn.addEventListener('click', ajouterInputLibelle);
-});
-
-// Attachez l'écouteur pour tous les boutons existants
-document.querySelectorAll('.btn-AddInput').forEach(function(btn) {
-    btn.addEventListener('click', ajouterInputLibelle);
-});
-
-// Appelez la fonction pour ajouter le listener
-ajouterInputLibelle();
-
+   
 /**
  * Fonction pour afficher les produits d'une liste de course
  */
@@ -125,64 +129,62 @@ function chargerProduitsListe(idListe, nomListe) {
     // RETOUR CONSOLE pour test
     console.log("ID de la liste envoyé dans le js :" + idListe);
     console.log("Nom de la liste:" + nomListe);
-    // FIN RETOUR
-    
-   var xhr = new XMLHttpRequest();
-            xhr.open("GET", "generationListeProduitXml?id=" + idListe);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var xmlDoc = xhr.responseXML;
-                    if (xmlDoc === null) {
-                        console.error("xmlDocListeProduits is null. Check the response format.");
-                        return;
-                    }
-                    // Generation du HTML selon le contenu du xml
-                    var produits = xmlDoc.getElementsByTagName("produit");
-                    var produitsHTML = "<ul>";
-                    for (var i = 0; i < produits.length; i++) {						
-                        var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
-                        var marque = produits[i].getElementsByTagName("marque")[0].textContent;
-                        var quantite = produits[i].getElementsByTagName("quantite")[0].textContent;
-                        var ean = produits[i].getElementsByTagName("ean")[0].textContent;                        
-                        produitsHTML += "<li>";
-                        produitsHTML += "<input type='number' min='0' step='1' class='input_quantite' name='" + ean + "' value='" + quantite + "'>";
-                        produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
-                       	produitsHTML += "<a href='gestionProduitListe?type_action=delete_produit&produit_ean=" + ean + "&listeId=" + idListe + "'><img src='recupererImage?cheminImage=icons/delete_icon.png' class='btn-DeleteProduit' title='Supprimer le produit'/></a>";
-                        produitsHTML += "</li>";
-                    }
-                    produitsHTML += "</ul>";
-                    
-					// Maj de la modale
-                    var modalBody = document.querySelector("#modalProduits .modal-body");
-                    modalBody.innerHTML = produitsHTML;
-                    // Maj du titre de la modale
-                    var modalTitle = document.querySelector("#ModalProduitsLabel");
-                    modalTitle.innerText = "La liste " + nomListe + " contient :";
-                    
-         			// Récupère l'id de la liste
-                    document.getElementById("listeId").value = idListe;
-                    
-                    // Initialise la modale
-                    var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
-                    modal.show();
-                }
-            };
-            xhr.send();
-        }
 
-        
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "generationListeProduitXml?id=" + idListe);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var xmlDoc = xhr.responseXML;
+            if (xmlDoc === null) {
+                console.error("xmlDocListeProduits is null. Check the response format.");
+                return;
+            }
+            // Generation du HTML selon le contenu du xml
+            var produits = xmlDoc.getElementsByTagName("produit");
+            var produitsHTML = "<ul>";
+            for (var i = 0; i < produits.length; i++) {
+                var libelle = produits[i].getElementsByTagName("libelle")[0].textContent;
+                var marque = produits[i].getElementsByTagName("marque")[0].textContent;
+                var quantite = produits[i].getElementsByTagName("quantite")[0].textContent;
+                var ean = produits[i].getElementsByTagName("ean")[0].textContent;
+                produitsHTML += "<li>";
+                produitsHTML += "<input type='number' min='0' step='1' class='input_quantite' name='" + ean + "' value='" + quantite + "'>";
+                produitsHTML += "<p>" + libelle + " - " + marque + "</p>";
+                produitsHTML += "<a href='gestionProduitListe?type_action=delete_produit&produit_ean=" + ean + "&listeId=" + idListe + "'><img src='recupererImage?cheminImage=icons/delete_icon.png' class='btn-DeleteProduit' title='Supprimer le produit'/></a>";
+                produitsHTML += "</li>";
+            }
+            produitsHTML += "</ul>";
+
+            // Maj de la modale
+            var modalBody = document.querySelector("#modalProduits .modal-body");
+            modalBody.innerHTML = produitsHTML;
+            // Maj du titre de la modale
+            var modalTitle = document.querySelector("#ModalProduitsLabel");
+            modalTitle.innerText = "La liste " + nomListe + " contient :";
+
+            // Récupère l'id de la liste
+            document.getElementById("listeId").value = idListe;
+
+            // Initialise la modale
+            var modal = new bootstrap.Modal(document.getElementById('modalProduits'));
+            modal.show();
+        }
+    };
+    xhr.send();
+}
+
 /**
  * Fonction convertir une liste de course en panier
- *  */        
+ */
 function convertirListeEnPanier() {
-        var form = document.getElementById('formProduits');           	
-        form.action = 'ServletConversionListe';
-        form.method = 'post';
-        form.submit();
-    }    
+    var form = document.getElementById('formProduits');
+    form.action = 'ServletConversionListe';
+    form.method = 'post';
+    form.submit();
+}
 
 /**
- * Fonction pour forcer la fermeture de la modale boostrap
+ * Fonction pour forcer la fermeture de la modale Bootstrap
  */
 function forcerFermetureModal() {
     $('#modalProduits').on('hidden.bs.modal', function() {
@@ -191,9 +193,7 @@ function forcerFermetureModal() {
     });
 }
 
-/**Appel de la fonction de fermture sur le document */
+/** Appel de la fonction de fermeture sur le document */
 $(document).ready(function() {
     forcerFermetureModal();
 });
-
-
