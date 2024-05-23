@@ -131,7 +131,7 @@ public class GestionApprovisionnementService extends HttpServlet {
                             newLink.setProduit(produit);
                             newLink.setMagasin(magasin);
                             newLink.setStock(stock);
-                            newLink.setQuantite((long) quantiteCommandee);
+                            newLink.setQuantite((int) quantiteCommandee);
                             session.save(newLink);
                         }
                         
@@ -166,7 +166,7 @@ public class GestionApprovisionnementService extends HttpServlet {
                                 newLink.setProduit(produit);
                                 newLink.setMagasin(magasin);
                                 newLink.setStock(futureStock);
-                                newLink.setQuantite((long) quantiteCommandee);
+                                newLink.setQuantite((int) quantiteCommandee);
                                 session.save(newLink);
                             }
                         }

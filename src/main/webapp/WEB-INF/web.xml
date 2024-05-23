@@ -5,27 +5,28 @@
 <web-app>
 	<display-name>SuperMarket Groupe3</display-name>
 
-	<!-- JSP Servlets -->
-	<servlet>
-		<servlet-name>ImportProduitsJSP</servlet-name>
-		<jsp-file>/jsp/gestionProduit.jsp</jsp-file>
-	</servlet>
-	<servlet>
-		<servlet-name>AfficherPanier</servlet-name>
-		<jsp-file>/jsp/afficherPanier.jsp</jsp-file>
-	</servlet>
-	<servlet>
-		<servlet-name>Accueil</servlet-name>
-		<jsp-file>/jsp/index.jsp</jsp-file>
-	</servlet>
-	<servlet>
-		<servlet-name>gestionList</servlet-name>
-		<jsp-file>/jsp/gestionList.jsp</jsp-file>
-	</servlet>
-	<servlet>
+    <!-- JSP Servlets -->
+    <servlet>
+        <servlet-name>ImportProduitsJSP</servlet-name>
+        <jsp-file>/jsp/gestionProduit.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>AfficherPanier</servlet-name>
+        <jsp-file>/jsp/afficherPanier.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Accueil</servlet-name>
+        <jsp-file>/jsp/index.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>gestionList</servlet-name>
+        <jsp-file>/jsp/gestionList.jsp</jsp-file>
+    </servlet>
+    <servlet>
         <servlet-name>RecapCommandesApprovisionnement</servlet-name>
         <servlet-class>fr.miage.supermarket.controlers.GestionRecapApprovisionnementService</servlet-class>
     </servlet>
+    
 
 	<!-- Java Servlets -->
 	<servlet>
@@ -101,15 +102,50 @@
 		<display-name>HabitudesConsommationUtilisateurServlet</display-name>
 		<servlet-class>fr.miage.supermarket.controlers.HabitudesConsommationUtilisateurServlet</servlet-class>
 	</servlet>
-	<servlet>
+    <servlet>
+        <servlet-name>GestionCategoriesService</servlet-name>
+        <display-name>GestionCategoriesService</display-name>
+        <servlet-class>fr.miage.supermarket.controlers.GestionCategoriesService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GestionRayonsService</servlet-name>
+        <display-name>GestionRayonsService</display-name>
+        <servlet-class>fr.miage.supermarket.controlers.GestionRayonsService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GestionStockService</servlet-name>
+        <display-name>GestionStocksService</display-name>
+        <servlet-class>fr.miage.supermarket.controlers.GestionStockService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProduitPanierService</servlet-name>
+        <display-name>ProduitPanierService</display-name>
+        <description>Servlet de gestion des produits au sein d'un panier</description>
+        <servlet-class>fr.miage.supermarket.controlers.ProduitPanierService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MagasinService</servlet-name>
+        <display-name>MagasinService</display-name>
+        <servlet-class>fr.miage.supermarket.controlers.MagasinService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletPanier</servlet-name>
+        <display-name>ServletPanier</display-name>
+        <servlet-class>fr.miage.supermarket.controlers.ServletPanier</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RecupererStatistiques</servlet-name>
+        <display-name>RecupererStatistiques</display-name>
+        <servlet-class>fr.miage.supermarket.controlers.RecupererStatistiques</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GestionApprovisionnementService</servlet-name>
         <display-name>GestionApprovisionnementService</display-name>
         <servlet-class>fr.miage.supermarket.controlers.GestionApprovisionnementService</servlet-class>
     </servlet>
-	<servlet>
-		<servlet-name>GestionCategoriesService</servlet-name>
-		<display-name>GestionCategoriesService</display-name>
-		<servlet-class>fr.miage.supermarket.controlers.GestionCategoriesService</servlet-class>
+    <servlet>
+	    <servlet-name>CommandeUtilisateur</servlet-name>
+	    <servlet-class>fr.miage.supermarket.controlers.CommandeUtilisateur</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>GestionRayonsService</servlet-name>
@@ -294,6 +330,50 @@
 		<servlet-name>HabitudesConsommationUtilisateurServlet</servlet-name>
 		<url-pattern>/habitudesConsommation</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionCategoriesService</servlet-name>
+        <url-pattern>/categories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionRayonsService</servlet-name>
+        <url-pattern>/rayons</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionStockService</servlet-name>
+        <url-pattern>/stocks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProduitPanierService</servlet-name>
+        <url-pattern>/ajoutPanier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MagasinService</servlet-name>
+        <url-pattern>/magasin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPanier</servlet-name>
+        <url-pattern>/panier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecupererStatistiques</servlet-name>
+        <url-pattern>/RecupererStatistiques</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionApprovisionnementService</servlet-name>
+        <url-pattern>/approvisionnement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecapCommandesApprovisionnement</servlet-name>
+        <url-pattern>/recapCommandesApprovisionnement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>CommandeUtilisateur</servlet-name>
+    	<url-pattern>/CommandeUtilisateur</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>ModifierCommandeServlet</servlet-name>
+    	<url-pattern>/ModifierCommandeServlet</url-pattern>
+    </servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GestionCategoriesService</servlet-name>
 		<url-pattern>/categories</url-pattern>
@@ -358,14 +438,6 @@
 		<servlet-name>GestionChoixPanierServlet</servlet-name>
 		<url-pattern>/gestionChoixPanier</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-        <servlet-name>GestionApprovisionnementService</servlet-name>
-        <url-pattern>/approvisionnement</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RecapCommandesApprovisionnement</servlet-name>
-        <url-pattern>/recapCommandesApprovisionnement</url-pattern>
-    </servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ServletGestionMemo</servlet-name>
 		<url-pattern>/ServletGestionMemo</url-pattern>
