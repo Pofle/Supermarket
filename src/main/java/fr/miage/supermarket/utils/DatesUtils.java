@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Classe utilitaire pour les opérations sur les dates.
  * Cette classe fournit des méthodes pour générer une série de dates pour les stocks.
+ * 
  * @author AlexP
  */
 public class DatesUtils {
@@ -16,6 +17,7 @@ public class DatesUtils {
      * Génère une série de dates à partir d'une date de départ.
      * Cette méthode crée une liste de dates, en commençant par la date spécifiée
      * et en ajoutant un jour à chaque itération jusqu'à atteindre le nombre de jours spécifié.
+     * 
      * @param date0 la date de départ
      * @param nbJours le nombre de jours à générer
      * @return une liste de dates couvrant le nombre de jours spécifié

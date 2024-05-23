@@ -7,6 +7,7 @@ import jakarta.persistence.*;
  * Cette classe est une entité JPA mappée sur la table "LINK_PRODUIT_STOCK".
  * Elle contient les informations sur la quantité de produits en stock,
  * ainsi que les relations avec les entités {@link Stock}, {@link Produit}, et {@link Magasin}.
+ * 
  * @author AlexP
  */
 @Entity

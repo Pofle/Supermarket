@@ -2,6 +2,7 @@ package fr.miage.supermarket.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -9,24 +10,37 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.Magasin;
+import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
- * Classe Data Access Object (DAO) pour accéder aux informations de stock dans la base de données.
- * Cette classe utilise Hibernate pour interagir avec la base de données.
- * @author : AlexP
+ * DAO pour la gestion des stocks.
+ * Cette classe fournit les méthodes pour accéder aux données de stock dans la base de données.
+ * 
+ * @see HibernateUtil
+ * @see SessionFactory
+ * @see Session
+ * @see Query
+ * 
+ * @author AlexP
  */
 public class StockDAO {
 	
+	private SessionFactory sessionFactory;
+	
+	public StockDAO() {
+		this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+	}
+	
     /**
-     * Récupère les informations de stock pour une date donnée.
-     * Cette méthode utilise une requête HQL pour sélectionner les informations des produits,
-     * les quantités en stock, les noms des magasins, et la date de stock selectionnée en paramètre.
+     * Récupère les informations sur les produits en stock pour une date donnée.
+     * 
      * @param date la date pour laquelle récupérer les informations de stock
-     * @return une liste d'objets, où chaque objet est un tableau contenant les informations
-     *         sur un produit, la quantité en stock, le nom du magasin et la date de stock
+     * @return une liste d'objets contenant les informations sur les produits en stock pour la date spécifiée
      */
-	public List<Object[]> getProduitsStockDate(Date date) {
+    public List<Object[]> getProduitsStockDate(Date date) {
         SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
         Session session = sessionFactory.getCurrentSession();
         
@@ -48,7 +62,7 @@ public class StockDAO {
             
             session.getTransaction().commit();
             
-            System.out.println("Number of results: " + results.size());
+            System.out.println("Nombre de résultats : " + results.size());
             for (Object[] result : results) {
                 System.out.println(Arrays.toString(result));
             }
@@ -63,14 +77,13 @@ public class StockDAO {
         }
     }
 
-     /**
-     * Récupère les informations de stock pour une série de dates données.
-     * @param serieDates la liste des dates pour lesquelles récupérer les informations de stock
-     * @return une liste d'objets, où chaque objet est un tableau contenant les informations
-     *         sur un produit, la quantité en stock, le nom du magasin et la date de stock
-     *         pour chaque date dans la série
+    /**
+     * Récupère les informations sur les produits en stock pour une série de dates.
+     * 
+     * @param serieDates la série de dates pour lesquelles récupérer les informations de stock
+     * @return une liste d'objets contenant les informations sur les produits en stock pour la série de dates spécifiée
      */
-	public List<Object[]> getProduitsStockSerieDates(List<Date> serieDates) {
+    public List<Object[]> getProduitsStockSerieDates(List<Date> serieDates) {
         List<Object[]> resultatSerie = new ArrayList<>();
         
         for (Date date : serieDates) {
@@ -79,10 +92,17 @@ public class StockDAO {
                 resultatSerie.addAll(resultatDate);
             }
         }
-        
         return resultatSerie;
     }
 
+    /**
+    * Retire une certaine quantité d'un produit du stock associé à un magasin.
+    * Cette méthode met à jour la quantité disponible du produit dans le stock du magasin.
+    * 
+    * @param ean l'EAN du produit à retirer du stock
+    * @param id_magasin l'identifiant du magasin où le produit doit être retiré du stock
+    * @param quantite_retiree la quantité du produit à retirer du stock
+    */
 	public void retirerProduitCommandesStock (String ean, int id_magasin, int quantite_retiree) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
         Session session = sessionFactory.getCurrentSession();
@@ -106,4 +126,37 @@ public class StockDAO {
 			session.close();
 		}
 	}
+	
+	/**
+     * Récupère les produits de la liste qui ne sont pas en stock pour un magasin spécifique à une date donnée.
+     *
+     * @param date la date pour laquelle vérifier les stocks
+     * @param magasin le magasin pour lequel vérifier les stocks
+     * @param produits la liste de produits à vérifier
+     * @return une liste de produits qui ne sont pas en stock
+     */
+	public List<Produit> getProduitsNonEnStockPourCommande(Date date, Magasin magasin, Commande commande) {
+        Session session = sessionFactory.openSession();
+        List<Produit> result = null;
+        try {
+            String hql = "SELECT lcp.produit " +
+                         "FROM LinkCommandeProduit lcp " +
+                         "WHERE lcp.commande = :commande " +
+                         "AND lcp.produit NOT IN (" +
+                         "    SELECT lps.produit " +
+                         "    FROM Link_Produit_Stock lps " +
+                         "    WHERE lps.magasin = :magasin " +
+                         "    AND lps.stock.dateStock = :date " +
+                         "    AND lps.quantite >= lcp.quantite" +
+                         ")";
+            Query<Produit> query = session.createQuery(hql, Produit.class);
+            query.setParameter("commande", commande);
+            query.setParameter("magasin", magasin);
+            query.setParameter("date", date);
+            result = query.getResultList();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
 }
