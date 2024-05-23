@@ -45,7 +45,6 @@ public class PreparerPanier extends HttpServlet {
 		System.out.println("Servlet PreparerPanier méthode GET ");
 		gestionFormu(request, response);
 	}
-	
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
 		 System.out.println("Servlet PreparerPanier méthode POST ");
@@ -177,8 +176,7 @@ public class PreparerPanier extends HttpServlet {
 	            System.out.println("Attention erreur lors de l'envoi du mail : " + mex);
 	        }
 			System.out.println("Vers servlet VisuPreparateur");
-			request.getRequestDispatcher("central?type_action=listePaniers").forward(request, response);		 
-	 }
+			response.sendRedirect("central?type_action=listePaniers");	 }
 	
 		
 }

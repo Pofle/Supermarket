@@ -68,7 +68,7 @@ MajVisibilitePrepaBouton();
 	<% 	ArrayList<LinkCommandeProduit> linkAsso = (ArrayList<LinkCommandeProduit>) request.getAttribute("linkAsso"); %>
 	<h1>Préparation du panier</h1>
 	<h2>Panier n° <%= linkAsso.get(0).getCommande().getId_commande() %></h2> 
-		<form action="preparerPanier" method="GET" onsubmit="finChronoPrepa()">
+		<form action="preparerPanier" method="POST" onsubmit="finChronoPrepa()">
 			<div class="command-container" id="command-container">
             	<% 
             		DecimalFormat decimalFormat = new DecimalFormat("#.##");
