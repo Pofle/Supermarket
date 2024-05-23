@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
 @WebServlet("/GestionApprovisionnementService")
 public class GestionApprovisionnementService extends HttpServlet {
@@ -58,13 +59,19 @@ public class GestionApprovisionnementService extends HttpServlet {
                         cal.add(Calendar.DATE, 5);
                         Date dateArriveeStock = cal.getTime();
         
-                        // Rechercher le produit et le magasin
+                        // Rechercher le produit
                         Produit produit = session.get(Produit.class, ean);
+                        
+                        // Rechercher le magasin (en s'assurant qu'il n'y a qu'un seul résultat)
                         Query<Magasin> query = session.createQuery("FROM Magasin WHERE nom = :nom", Magasin.class);
                         query.setParameter("nom", magasinNom);
-                        Magasin magasin = query.uniqueResult();
+                        List<Magasin> magasins = query.list();
+                        if (magasins.size() != 1) {
+                            throw new IllegalStateException("Unexpected number of results for magasin: " + magasins.size());
+                        }
+                        Magasin magasin = magasins.get(0);
         
-                        // Rechercher ou créer le stock
+                        // Rechercher ou créer le stock pour la date d'arrivée
                         Query<Stock> stockQuery = session.createQuery("FROM Stock WHERE dateStock = :dateStock", Stock.class);
                         stockQuery.setParameter("dateStock", dateArriveeStock);
                         Stock stock = stockQuery.uniqueResult();
@@ -74,35 +81,66 @@ public class GestionApprovisionnementService extends HttpServlet {
                             session.save(stock);
                         }
         
-                        // Rechercher le lien produit-stock existant
+                        // Rechercher le lien produit-stock existant pour la date d'arrivée
                         Query<Link_Produit_Stock> linkQuery = session.createQuery(
                             "FROM Link_Produit_Stock WHERE produit = :produit AND magasin = :magasin AND stock = :stock", 
                             Link_Produit_Stock.class);
                         linkQuery.setParameter("produit", produit);
                         linkQuery.setParameter("magasin", magasin);
                         linkQuery.setParameter("stock", stock);
-                        Link_Produit_Stock linkProduitStock = linkQuery.uniqueResult();
-        
-                        if (linkProduitStock != null) {
+                        List<Link_Produit_Stock> existingLinks = linkQuery.list();
+                        
+                        if (!existingLinks.isEmpty()) {
                             // Mettre à jour la quantité existante
-                            linkProduitStock.setQuantite(linkProduitStock.getQuantite() + quantiteCommandee);
-                            session.update(linkProduitStock);
+                            for (Link_Produit_Stock existingLink : existingLinks) {
+                                existingLink.setQuantite(existingLink.getQuantite() + quantiteCommandee);
+                                session.update(existingLink);
+                            }
                         } else {
                             // Créer un nouveau lien produit-stock
-                            linkProduitStock = new Link_Produit_Stock();
-                            linkProduitStock.setProduit(produit);
-                            linkProduitStock.setMagasin(magasin);
-                            linkProduitStock.setStock(stock);
-                            linkProduitStock.setQuantite((long) quantiteCommandee);
-                            session.save(linkProduitStock);
+                            Link_Produit_Stock newLink = new Link_Produit_Stock();
+                            newLink.setProduit(produit);
+                            newLink.setMagasin(magasin);
+                            newLink.setStock(stock);
+                            newLink.setQuantite((long) quantiteCommandee);
+                            session.save(newLink);
                         }
                         
                         // Créer et enregistrer l'approvisionnement
                         Approvisionnement approvisionnement = new Approvisionnement(produit, quantiteCommandee, dateArriveeStock, magasin);
                         session.save(approvisionnement);
-                    } else {
-                        // Si la quantité à commander est égale à zéro, passer à l'itération suivante
-                        continue;
+                        
+                        // Ajouter la quantité commandée aux stocks des jours suivants
+                        List<Stock> futureStocks = session.createQuery(
+                            "FROM Stock WHERE dateStock > :dateArriveeStock", Stock.class)
+                            .setParameter("dateArriveeStock", dateArriveeStock)
+                            .list();
+
+                        for (Stock futureStock : futureStocks) {
+                            linkQuery = session.createQuery(
+                                "FROM Link_Produit_Stock WHERE produit = :produit AND magasin = :magasin AND stock = :stock", 
+                                Link_Produit_Stock.class);
+                            linkQuery.setParameter("produit", produit);
+                            linkQuery.setParameter("magasin", magasin);
+                            linkQuery.setParameter("stock", futureStock);
+                            existingLinks = linkQuery.list();
+
+                            if (!existingLinks.isEmpty()) {
+                                // Mettre à jour la quantité existante pour les stocks futurs
+                                for (Link_Produit_Stock existingLink : existingLinks) {
+                                    existingLink.setQuantite(existingLink.getQuantite() + quantiteCommandee);
+                                    session.update(existingLink);
+                                }
+                            } else {
+                                // Créer un nouveau lien produit-stock pour les stocks futurs
+                                Link_Produit_Stock newLink = new Link_Produit_Stock();
+                                newLink.setProduit(produit);
+                                newLink.setMagasin(magasin);
+                                newLink.setStock(futureStock);
+                                newLink.setQuantite((long) quantiteCommandee);
+                                session.save(newLink);
+                            }
+                        }
                     }
                 }
             }
@@ -117,7 +155,7 @@ public class GestionApprovisionnementService extends HttpServlet {
         }
 
         if (success) {
-            response.sendRedirect("/jsp/recapCommandesApprovisionnement.jsp");
+        	response.sendRedirect(request.getContextPath() + "/jsp/recapCommandesApprovisionnement.jsp");
         } else {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de la commande.");
         }

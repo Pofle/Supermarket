@@ -24,6 +24,7 @@ public class GestionRecapApprovisionnementService extends HttpServlet {
 
         try {
             List<Approvisionnement> approvisionnements = session.createQuery("FROM Approvisionnement", Approvisionnement.class).list();
+            System.out.println("Nombre d'approvisionnements récupérés : " + approvisionnements.size());
             request.setAttribute("approvisionnements", approvisionnements);
             request.getRequestDispatcher("/jsp/recapCommandesApprovisionnement.jsp").forward(request, response);
         } finally {

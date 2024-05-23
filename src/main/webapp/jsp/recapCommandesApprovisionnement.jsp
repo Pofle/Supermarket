@@ -4,6 +4,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="/jsp/header.jsp">
+		<jsp:param name="title" value="Gestion du Stock" />
+	</jsp:include>
     <title>Récapitulatif des commandes d'approvisionnement</title>
     <link href="css/recap-approvisionnement.css" rel="stylesheet" type="text/css" />
 </head>

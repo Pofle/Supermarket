@@ -29,7 +29,7 @@
         </c:forEach>
     </select>
     
-    <form id="approvisionnementForm" method="post" action="GestionApprovisionnementService">
+    <form id="approvisionnementForm" method="post" action="approvisionnement">
         <button type="submit" id="validerCommande">Valider la commande</button>
     
     <table class="table-style">
