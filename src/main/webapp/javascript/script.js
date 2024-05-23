@@ -75,9 +75,11 @@ function chargerMemo(listeId){
             var newLi = document.createElement('li');
             newLi.innerHTML = `
                 <input type="texte" name="" value="" required>
-                <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" onclick="ajouterInputLibelle()" data-liste-id="${listeId}" class="btn-AddInput" title="Ajouter une ligne">
+                <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" data-liste-id="${listeId}" class="btn-AddInput" title="Ajouter une ligne">
             `;
             modalBody.appendChild(newLi);
+        // Ajoutez les écouteurs d'événements aux nouveaux boutons ajoutés
+            newLi.querySelector('.btn-AddInput').addEventListener('click', ajouterInputLibelle);
         } else {
             console.error("Failed to load memo content.");
         }
@@ -85,25 +87,34 @@ function chargerMemo(listeId){
     xhr.send();
 }
 
-function ajouterInputLibelle() {
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('btn-AddInput')) {
-            event.preventDefault();
-            //Log de controle
-            console.log("Clic for add an input received");
-            
-         // Crée un nouvel élément <li> avec un <input> et le bouton d'ajout
-            var newLi = document.createElement('li');
-            newLi.innerHTML = `
-                <input type="text" name="" value="" required>
-                <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" class="btn-AddInput" title="Ajouter une ligne">
-            `;
-            
-            // Insère le nouvel élément avant le bouton actuel
-            event.target.closest('li').insertAdjacentElement('beforebegin', newLi);
-        }
-    });
+function ajouterInputLibelle(event) {
+    event.preventDefault(); // Empêcher le comportement par défaut du bouton
+    console.log("Clic for add an input received");
+
+    // Crée un nouvel élément <li> avec un <input> et le bouton d'ajout
+    var newLi = document.createElement('li');
+    newLi.innerHTML = `
+        <input type="text" name="" value="" required>
+        <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" class="btn-AddInput" title="Ajouter une ligne">
+    `;
+
+    // Insère le nouvel élément après le bouton actuel
+    event.target.closest('li').insertAdjacentElement('afterend', newLi);
+
+    // Attacher à nouveau l'écouteur à l'icône nouvellement créée
+    newLi.querySelector('.btn-AddInput').addEventListener('click', ajouterInputLibelle);
 }
+
+// Attacher les écouteurs d'événements aux boutons existants
+document.querySelectorAll('.btn-AddInput').forEach(function(btn) {
+    btn.addEventListener('click', ajouterInputLibelle);
+});
+
+// Attachez l'écouteur pour tous les boutons existants
+document.querySelectorAll('.btn-AddInput').forEach(function(btn) {
+    btn.addEventListener('click', ajouterInputLibelle);
+});
+
 // Appelez la fonction pour ajouter le listener
 ajouterInputLibelle();
 
