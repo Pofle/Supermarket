@@ -41,11 +41,13 @@ public class CommandeUtilisateur extends HttpServlet {
         List<Commande> commandesUtilisateur = commandeDAO.getCommandesByUtilisateur(utilisateurConnecte);
         // mise à jour des statuts des commandes prêtes à terminées
         for (Commande c : commandesUtilisateur) {
-        	if(LocalDate.now().isAfter(c.getDateRetrait()) || LocalDate.now().isEqual(c.getDateRetrait())) {
-        		if(LocalTime.now().isAfter(LocalTime.parse(c.getHoraireRetrait(),DateTimeFormatter.ofPattern("HH:mm")))) {
+        	if(LocalDate.now().isAfter(c.getDateRetrait()) 
+        			|| (
+        					LocalDate.now().isEqual(c.getDateRetrait()) 
+        					&& LocalTime.now().isAfter(LocalTime.parse(c.getHoraireRetrait(),DateTimeFormatter.ofPattern("HH:mm"))))
+        			) {
         			c.setStatut(StatutCommande.TERMINE);
         			commandeDAO.mettreAJourCommande(c);
-        		}
         	}
         }
 

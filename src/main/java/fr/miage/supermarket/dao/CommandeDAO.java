@@ -345,7 +345,7 @@ public class CommandeDAO {
 		return linkByCommande;
 	}
 	/**
-	 * Récupère les différentes commandes reliés à LinkCommandeProduit qui ont un chrono différent de null 
+	 * Récupère les différentes commandes reliés à LinkCommandeProduit qui ont un chrono différent de null (prête ou terminée)
 	 * @author RR
 	 * @return liste des commandes prête relié à l'entité LinkCommandeProduit
 	 */
