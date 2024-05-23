@@ -23,6 +23,10 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
+/**
+ * Classe implémentation de l'entité commande
+ * @author YassineA
+ */
 @Entity
 @Table(name = "COMMANDE", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID_COMMANDE" }) })
 public class Commande {

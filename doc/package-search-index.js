@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.miage.supermarket.controlers"},{"l":"fr.miage.supermarket.dao"},{"l":"fr.miage.supermarket.dto"},{"l":"fr.miage.supermarket.models"},{"l":"fr.miage.supermarket.utils"},{"l":"fr.miage.supermarket.xml"}];updateSearchResults();

@@ -11,8 +11,16 @@ import org.hibernate.query.Query;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.utils.HibernateUtil;
 
+/**
+ * Gestion des magasins
+ * @author YassineA
+ */
 public class MagasinDAO {
 
+	/**
+     * Méthode de récupération des magasins en base
+     * @author YassineA
+     */
     public static List<Magasin> getAllMagasins() {
         List<Magasin> magasins = new ArrayList<>();
         SessionFactory sessionFactory = null;
@@ -42,7 +50,12 @@ public class MagasinDAO {
         return magasins;
     }
     
- // Méthode pour récupérer un magasin par son ID
+    /**
+     * Méthode pour récupérer un magasin par son ID
+     * @param idMagasin = l'identifiant du magasin
+     * @return magasin = le magasin concerné
+     * @author YassineA
+     */
     public static Magasin getMagasinById(int idMagasin) {
         Magasin magasin = null;
         SessionFactory sessionFactory = null;
