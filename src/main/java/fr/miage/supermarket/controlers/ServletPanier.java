@@ -246,24 +246,28 @@ public class ServletPanier extends HttpServlet {
 		}
 
 		double prixTotal = panier.calculerPrixTotal();
-
+		int pointActuel = utilisateur.getPoints();
+		if (utilisateur.getPoints() == null) {
+			pointActuel = 0;
+		}
 		if (pointsUtilises < 0) {
 			pointsUtilises = 0;
-		} else if (pointsUtilises > utilisateur.getPoints()) {
-			pointsUtilises = utilisateur.getPoints();
+		} else if (pointsUtilises > pointActuel) {
+			pointsUtilises = pointActuel;
 		}
 
 		int maxPointsUtilisables = (int) Math.floor(prixTotal * 10);
-
+		
 		if (pointsUtilises > maxPointsUtilisables) {
 			pointsUtilises = maxPointsUtilisables;
 		}
 
 		//double reduction = pointsUtilises / 10.0; // 10 points = 1€ de réduction
 		//double prixTotalAvecReduction = prixTotal - reduction;
-
-		utilisateur.setPoints(utilisateur.getPoints() - pointsUtilises);
-		utilisateurDAO.mettreAJourUtilisateur(utilisateur);
+		if (pointActuel > 0) {
+			utilisateur.setPoints(pointActuel - pointsUtilises);
+			utilisateurDAO.mettreAJourUtilisateur(utilisateur);
+		}	
 	}
 	
 }
