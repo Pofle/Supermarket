@@ -52,14 +52,6 @@ public class Utilisateur {
     @Column(name = "PERSONNALISATION", nullable = true)
     private boolean personnalisation;
 
-    public boolean isPersonnalisation() {
-		return personnalisation;
-	}
-
-	public void setPersonnalisation(boolean personnalisation) {
-		this.personnalisation = personnalisation;
-	}
-
 	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<ShoppingList> listesCourseLst;
 
@@ -224,4 +216,12 @@ public class Utilisateur {
         }
         this.points += nbPoints;
     }
+    
+    public boolean isPersonnalisation() {
+		return personnalisation;
+	}
+
+	public void setPersonnalisation(boolean personnalisation) {
+		this.personnalisation = personnalisation;
+	}
 }

@@ -30,6 +30,7 @@ import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Panier;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ProduitPanier;
+import fr.miage.supermarket.models.StatutCommande;
 import fr.miage.supermarket.models.Utilisateur;
 
 /**
@@ -196,25 +197,15 @@ public class ServletPanier extends HttpServlet {
 		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate currentDate = LocalDate.now();
 
-		Commande commande = new Commande();
-		commande.setUtilisateur(utilisateur);
-		commande.setStatut(true);
+		Commande commande = commandeDAO.getCommandeNonFinalisee(utilisateur.getId());
+		commande.setStatut(StatutCommande.EN_COURS);
 		commande.setIdMagasin(magasinId);
 		commande.setDateCommande(currentDate);
 		commande.setDateRetrait(localDate);
 		commande.setHoraireRetrait(horaireStr);
-		commande = commandeDAO.creerCommande(commande);
-
-		Set<LinkCommandeProduit> linkCommandeProduits = new HashSet<>();
-		for (ProduitPanier produitPanier : panier.getPanier().values()) {
-			Produit produit = produitDAO.getProduitByEan(produitPanier.getEan());
-			LinkCommandeProduit link = new LinkCommandeProduit(commande, produit, produitPanier.getQuantite());
-			linkCommandeProduits.add(link);
-		}
 		commande.finaliserCommande(panier.calculerPrixTotal());
-		commande.setProduits(linkCommandeProduits);
-
-		return commandeDAO.mettreAJourCommande(commande);
+		
+		return commandeDAO.creerOuMajCommande(commande);
 	}
 	
 	/**

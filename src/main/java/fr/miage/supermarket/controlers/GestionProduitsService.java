@@ -128,7 +128,7 @@ public class GestionProduitsService extends HttpServlet {
 			}
 			
 			List<Produit> produits = readCsvFile(filePart.getInputStream());
-			produitDAO.registerProduits(produits);			
+			produitDAO.saveProduits(produits);			
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (ServletException | IOException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -260,9 +260,12 @@ public class GestionProduitsService extends HttpServlet {
         dto.setConditionnement(produit.getConditionnement());
         dto.setQuantiteConditionnement(produit.getQuantiteConditionnement());
         dto.setPoids(produit.getPoids());
-
         dto.setQuantiteCommandee(qtt);
 
+        if(!produit.getPromotions().isEmpty()) {
+        	dto.setTauxPromotion(produit.getPromotions().get(0).getPourcentage());
+        }
+        
         if (produit.getCategorie() != null) {
             CategorieDTO categorieDTO = new CategorieDTO();
             categorieDTO.setLibelle(produit.getCategorie().getLibelle());

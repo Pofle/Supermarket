@@ -94,6 +94,9 @@ public class Produit {
 	@OneToMany(mappedBy = "produit")
 	private List<Link_Produit_Stock> linkProduitStocks;
 	
+	@OneToMany(mappedBy = "produit")
+    private Set<LinkCommandeProduit> linkProduitsCommande = new HashSet<>();
+	
 	public String getEan() {
 		return ean;
 	}
@@ -249,4 +252,14 @@ public class Produit {
 		this.linkProduitStocks = linkProduitStocks;
 	}
 
+	public Set<LinkCommandeProduit> getLinkProduitsCommande() {
+		return linkProduitsCommande;
+	}
+
+	public void setLinkProduitsCommande(Set<LinkCommandeProduit> linkProduitsCommande) {
+		this.linkProduitsCommande = linkProduitsCommande;
+	}
+
+	
+	
 }
