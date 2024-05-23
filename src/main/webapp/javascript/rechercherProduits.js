@@ -94,14 +94,27 @@ document.addEventListener("DOMContentLoaded", function() {
 		.catch(error => console.error('Erreur:', error));
 
 	const searchBar = document.getElementById('search-bar');
+	const sortOptions = document.getElementById('sort-options');
+
 	searchBar.addEventListener('input', handleFilterChange);
+	sortOptions.addEventListener('change', handleFilterChange);
 
 	function handleFilterChange() {
 		const searchText = searchBar.value.trim().toLowerCase();
-		const filteredProducts = products.filter(product => {
+		const sortValue = sortOptions.value;
+
+		let filteredProducts = products.filter(product => {
 			return searchText === '' || product.libelle.toLowerCase().includes(searchText);
 		});
-		const sortedProducts = filteredProducts.sort((a, b) => b.quantiteCommandee - a.quantiteCommandee);
-		afficherProduits(sortedProducts, 'article-container');
+
+		if (sortValue === 'prixKilo-asc') {
+			filteredProducts.sort((a, b) => (a.prix * 1000 / a.poids) - (b.prix * 1000 / b.poids));
+		} else if (sortValue === 'prixKilo-desc') {
+			filteredProducts.sort((a, b) => (b.prix * 1000 / b.poids) - (a.prix * 1000 / a.poids));
+		} else {
+			filteredProducts.sort((a, b) => b.quantiteCommandee - a.quantiteCommandee);
+		}
+
+		afficherProduits(filteredProducts, 'article-container');
 	}
 });
