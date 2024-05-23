@@ -7,6 +7,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Link_Produit_Stock;
 import fr.miage.supermarket.models.Magasin;
+import fr.miage.supermarket.models.Approvisionnement;
 import fr.miage.supermarket.models.Categorie;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Magasin;
@@ -60,6 +61,7 @@ public class HibernateUtil {
         	configuration.addAnnotatedClass(LinkListeProduit.class);
         	configuration.addAnnotatedClass(Categorie.class);
         	configuration.addAnnotatedClass(Rayon.class);
+        	configuration.addAnnotatedClass(Approvisionnement.class);
         	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
             return sessionFactory;
         } catch (Throwable ex) {

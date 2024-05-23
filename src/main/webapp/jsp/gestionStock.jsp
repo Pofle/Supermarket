@@ -29,7 +29,8 @@
         </c:forEach>
     </select>
     
-    <button onclick="submitOrder()">Valider la commande</button>
+    <form id="approvisionnementForm" method="post" action="GestionApprovisionnementService">
+        <button type="submit" id="validerCommande">Valider la commande</button>
     
     <table class="table-style">
         <thead>
@@ -77,17 +78,22 @@
                         <%-- Vérification de la quantité en stock --%>
                         <c:if test="${produitStock[1] <= 10 && produitStock[3] == todayDate}">
                             <%-- Bouton + pour augmenter la quantité --%>
-                            <button onclick="updateQuantity('${produitStock[0].ean}', '${produitStock[2]}', '${produitStock[3]}', 1)">+</button>
+                            <button type="button" onclick="updateQuantity('${produitStock[0].ean}', '${produitStock[2]}', '${produitStock[3]}', 1)">+</button>
                             <%-- Input pour afficher la quantité à commander --%>
-                            <input type="text" id="quantity_${produitStock[0].ean}_${produitStock[2]}"" value="0" />
+                            <input type="text" id="quantity_${produitStock[0].ean}_${produitStock[2]}" name="quantiteCommandee_${produitStock[0].ean}_${produitStock[2]}" value="0" />
                             <%-- Bouton - pour diminuer la quantité --%>
-                            <button onclick="updateQuantity('${produitStock[0].ean}', '${produitStock[2]}', '${produitStock[3]}', -1)">-</button>
+                            <button type="button" onclick="updateQuantity('${produitStock[0].ean}', '${produitStock[2]}', '${produitStock[3]}', -1)">-</button>
+                            <%-- Champs cachés pour le formulaire --%>
+                            <input type="hidden" name="ean" value="${produitStock[0].ean}" />
+                            <input type="hidden" name="magasin" value="${produitStock[2]}" />
+                            <input type="hidden" name="dateStock" value="${produitStock[3]}" />
                         </c:if>
                     </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
+    </form>
     
     <script>
         document.getElementById("dateStock").addEventListener("change", updateResults);
@@ -120,36 +126,6 @@
                 updatedQuantity = 0;
             }
             inputQuantity.value = updatedQuantity;
-        }
-        
-        function submitOrder() {
-            var rows = document.querySelectorAll("#tableBody tr");
-            var orderData = [];
-
-            rows.forEach(function(row) {
-                var ean = row.querySelector("td:nth-child(1)").textContent;
-                var magasin = row.querySelector("td:nth-child(9)").textContent;
-                var dateStock = row.querySelector("td:nth-child(10)").textContent;
-                var quantityInput = document.getElementById("quantity_" + ean + "_" + magasin);
-                if (quantityInput && parseInt(quantityInput.value) > 0) {
-                    orderData.push({
-                        ean: ean,
-                        quantity: parseInt(quantityInput.value),
-                        dateStock: dateStock,
-                        magasin: magasin
-                    });
-                }
-            });
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "${pageContext.request.contextPath}/approvisionnement", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert("Commande validée avec succès!");
-                }
-            };
-            xhr.send(JSON.stringify(orderData));
         }
         
     </script>

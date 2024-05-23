@@ -48,7 +48,6 @@ public class GestionStockService extends HttpServlet {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date today = new Date(); // Instanciation de la date du jour
         String todayDate = dateFormat.format(today);
-        //Date date0 = new Date(); // Initialise la date de départ
         List<Date> serieDates = DatesUtils.getSerieDates(today, 15); // Génération des 15 dates suivant la date de départ
         
         StockDAO stockDAO = new StockDAO();
