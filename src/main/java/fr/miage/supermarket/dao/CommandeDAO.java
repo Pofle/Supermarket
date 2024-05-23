@@ -19,11 +19,14 @@ import org.hibernate.query.Query;
 
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
+import fr.miage.supermarket.models.LinkCommandeProduitId;
 import fr.miage.supermarket.models.Magasin;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.StatutCommande;
 import fr.miage.supermarket.models.Utilisateur;
 import fr.miage.supermarket.utils.HibernateUtil;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -37,11 +40,109 @@ import org.hibernate.cache.spi.support.SimpleTimestamper;
  */
 public class CommandeDAO {
 
-private SessionFactory sessionFactory;
-    
-    public CommandeDAO() {
-        this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
-    }
+	private SessionFactory sessionFactory;
+
+	public CommandeDAO() {
+		this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+	}
+
+	public Commande creerCommande(Commande commande) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.persist(commande);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return commande;
+	}
+	
+	public Commande supprimerCommande(Commande commande) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.remove(commande);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return commande;
+	}
+
+	public Commande creerOuMajCommande(Commande commande) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			if (commande.getId_commande() == null) {
+				session.persist(commande);
+			} else {
+				session.merge(commande);
+			}
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return commande;
+	}
+
+	public void updateLinkCommandeProduit(LinkCommandeProduit linkCommandeProduit) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+			LinkCommandeProduitId id = linkCommandeProduit.getId();
+			LinkCommandeProduit existingLink = session.get(LinkCommandeProduit.class, id);
+
+			if (existingLink != null) {
+				if(linkCommandeProduit.getQuantite() <= 0) {
+					session.remove(existingLink);
+				} else {
+					existingLink.setQuantite(linkCommandeProduit.getQuantite());
+					session.merge(existingLink);
+				}
+			} else {
+				session.merge(linkCommandeProduit);
+			}
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
+
+	public Commande getCommandeNonFinalisee(int utilisateurId) {
+		try (Session session = sessionFactory.openSession()) {
+			TypedQuery<Commande> query = session.createQuery(
+					"SELECT c FROM Commande c LEFT JOIN FETCH c.produits WHERE c.utilisateur.id = :utilisateurId AND c.statut = :statutcommande",
+					Commande.class);
+			query.setParameter("utilisateurId", utilisateurId);
+			query.setParameter("statutcommande", StatutCommande.NON_VALIDE);
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
     
     public List<Commande> getAllCommandes() {
         Session session = sessionFactory.openSession();
@@ -56,20 +157,13 @@ private SessionFactory sessionFactory;
         return commandes;
     }
     
-    public Commande creerCommande(Commande commande) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            session.save(commande);
-            tx.commit();
+    public LinkCommandeProduit getLinkCommandeProduitById(LinkCommandeProduitId id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(LinkCommandeProduit.class, id);
         } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
+            return null;
         }
-        return commande;
     }
     
     public Commande mettreAJourCommande(Commande commande) {
@@ -103,13 +197,21 @@ private SessionFactory sessionFactory;
         }
     }
     
+    /**
+     * Retourne la liste des commandes associées à l'utilisateur qui ne sont pas "NON_VALIDEES"
+     * 
+     * @param utilisateur l'utilisateur pour lequel récupérer les commandes
+     * @return les commandes
+     * @author EricB & YassineA
+     */
     public List<Commande> getCommandesByUtilisateur(Utilisateur utilisateur) {
         Session session = sessionFactory.openSession();
         List<Commande> commandes = null;
         try {
-            String hql = "FROM Commande WHERE utilisateur = :utilisateur";
+            String hql = "FROM Commande c WHERE c.utilisateur = :utilisateur AND c.statut != :statutcommande";
             Query<Commande> query = session.createQuery(hql, Commande.class);
             query.setParameter("utilisateur", utilisateur);
+            query.setParameter("statutcommande", StatutCommande.NON_VALIDE);
             commandes = query.getResultList();
         } finally {
             session.close();
