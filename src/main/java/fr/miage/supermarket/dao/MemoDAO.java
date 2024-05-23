@@ -5,15 +5,19 @@ package fr.miage.supermarket.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import fr.miage.supermarket.models.LinkListeProduit;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 import fr.miage.supermarket.models.Memo;
+import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.utils.HibernateUtil;
 
@@ -112,35 +116,32 @@ public class MemoDAO {
 		    }
 		}
 	
-	public static void updateMemos(int listeId, Map<Integer, String> memos) {
-	    Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
-	    Transaction tx = null;
+	public static List<Produit> rechercherProduitsPourMemos(List<String> memos) {
+        Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
+        try {
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Produit> query = builder.createQuery(Produit.class);
+            Root<Produit> root = query.from(Produit.class);
+            query.select(root);
 
-	    try {
-	        tx = session.beginTransaction();
-	        
-	        // Supprimer les mémos existants liés à la liste
-	        Query<?> deleteQuery = session.createQuery("DELETE FROM Memo WHERE shoppingList.id = :listId");
-	        deleteQuery.setParameter("listId", listeId);
-	        deleteQuery.executeUpdate();
-	        
-	        // Ajouter les nouveaux mémos
-	        ShoppingList shoppingList = session.get(ShoppingList.class, listeId);
-	        for (Map.Entry<Integer, String> entry : memos.entrySet()) {
-	            Memo memo = new Memo();
-	            memo.setLibelle(entry.getValue());
-	            memo.setShoppingList(shoppingList);
-	            session.persist(memo);
-	        }
-	        
-	        tx.commit();
-	        System.out.println("Mémos mis à jour avec succès.");
-	    } catch (Exception e) {
-	        if (tx != null) tx.rollback();
-	        throw e;
-	    } finally {
-	        session.close();
-	    }
-	}
+            List<Predicate> predicates = new ArrayList<>();
+            for (String memo : memos) {
+                // Créer une condition de recherche pour le libellé et la marque
+                Predicate libellePredicate = builder.like(builder.lower(root.get("libelle")), "%" + memo.toLowerCase() + "%");
+                Predicate marquePredicate = builder.like(builder.lower(root.get("marque")), "%" + memo.toLowerCase() + "%");
+                // Ajouter la condition de recherche combinant libellé et marque avec un OU logique
+                predicates.add(builder.or(libellePredicate, marquePredicate));
+            }
+
+            // Combiner toutes les conditions avec un OU logique
+            Predicate finalPredicate = builder.or(predicates.toArray(new Predicate[0]));
+            query.where(finalPredicate);
+
+            // Exécuter la requête et récupérer les produits correspondants
+            return session.createQuery(query).getResultList();
+        } finally {
+            session.close();
+        }
+    }
 }
 

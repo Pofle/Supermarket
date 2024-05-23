@@ -108,6 +108,42 @@ function chargerMemo(listeId) {
     };
     xhr.send();
 }
+
+function conversionMemos() {
+   document.getElementById('convertToProductsBtn').addEventListener('click', function() {
+    // Récupérer les libellés des <li>
+    var libelles = [];
+    var lis = document.querySelectorAll('#modalMemo .modal-body li');
+    lis.forEach(function(li) {
+        var libelle = li.textContent.trim();
+        libelles.push(libelle);
+    });
+
+    // Créer un formulaire dynamique
+    var form = document.createElement('form');
+    form.setAttribute('action', 'ServletConversionMemoProduit');
+    form.setAttribute('method', 'post');
+    form.style.display = 'none'; // Ne pas afficher le formulaire sur la page
+
+    // Créer un input pour chaque libellé
+    libelles.forEach(function(libelle, index) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', 'libelle_' + index);
+        input.setAttribute('value', libelle);
+        form.appendChild(input);
+    });
+
+    // Ajouter le formulaire à la page
+    document.body.appendChild(form);
+
+    // Soumettre le formulaire
+    form.submit();
+
+    // Supprimer le formulaire après soumission
+    form.remove();
+});
+}
    
 
 function ajouterInputLibelle() {
