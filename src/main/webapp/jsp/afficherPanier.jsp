@@ -282,6 +282,5 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 	    });
 	</script>
 
-
 </body>
 </html>
