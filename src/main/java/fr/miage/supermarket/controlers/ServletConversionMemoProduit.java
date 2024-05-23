@@ -61,16 +61,16 @@ public class ServletConversionMemoProduit extends HttpServlet {
         response.setContentType("application/xml");
         response.setCharacterEncoding("UTF-8");
 
-        // Construire le contenu XML pour les produits
-        String xmlResponse = construireXMLResponse(produits);
+        /// Construire le contenu XML pour les produits
+        String xml_MemoProduits = construireXMLResponse(produits);
 
-        // Envoyer la réponse XML
-        PrintWriter out = response.getWriter();
-        out.println(xmlResponse);
-        
-     // Enregistrer la réponse XML dans un fichier
-        enregistrerXMLDansFichier(xmlResponse, XML_FILE_PATH);
+        // Enregistrer la réponse XML dans un fichier
+        enregistrerXMLDansFichier(xml_MemoProduits, XML_FILE_PATH);
         System.out.println("XML_MemoProduit generated");
+
+        // Envoyer le XML dans la requête et rediriger vers le JSP
+        request.setAttribute("memoToProduits", xml_MemoProduits);
+        request.getRequestDispatcher("conversionEnProduits").forward(request, response);
     }
 
     private String construireXMLResponse(List<Produit> produits) {
@@ -83,10 +83,13 @@ public class ServletConversionMemoProduit extends HttpServlet {
             xmlBuilder.append("<produit>");
             xmlBuilder.append("<libelle>").append(produit.getLibelle()).append("</libelle>");
             xmlBuilder.append("<marque>").append(produit.getMarque()).append("</marque>");
-            // Ajoutez d'autres éléments si nécessaire
+            xmlBuilder.append("<descriptionCourte>").append(produit.getDescriptionCourte()).append("</descriptionCourte>");
+            xmlBuilder.append("<nutriscore>").append(produit.getNutriscore()).append("</nutriscore>");
+            xmlBuilder.append("<label>").append(produit.getLabel()).append("</label>");
+            xmlBuilder.append("<prix>").append(produit.getPrix()).append("</prix>");
+            xmlBuilder.append("<imageLocation>").append(produit.getRepertoireImage()).append("</imageLocation>");
             xmlBuilder.append("</produit>");
         }
-
         xmlBuilder.append("</produits>");
         return xmlBuilder.toString();
     }

@@ -129,8 +129,11 @@ public class MemoDAO {
                 // Créer une condition de recherche pour le libellé et la marque
                 Predicate libellePredicate = builder.like(builder.lower(root.get("libelle")), "%" + memo.toLowerCase() + "%");
                 Predicate marquePredicate = builder.like(builder.lower(root.get("marque")), "%" + memo.toLowerCase() + "%");
-                // Ajouter la condition de recherche combinant libellé et marque avec un OU logique
-                predicates.add(builder.or(libellePredicate, marquePredicate));
+                Predicate descriptionCourtePredicate = builder.like(builder.lower(root.get("descriptionCourte")), "%" + memo.toLowerCase() + "%");
+                Predicate descriptionPredicate = builder.like(builder.lower(root.get("description")), "%" + memo.toLowerCase() + "%");
+                Predicate labelPredicate = builder.like(builder.lower(root.get("label")), "%" + memo.toLowerCase() + "%");
+               
+                predicates.add(builder.or(libellePredicate, marquePredicate, descriptionCourtePredicate, descriptionPredicate, labelPredicate));
             }
 
             // Combiner toutes les conditions avec un OU logique

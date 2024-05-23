@@ -22,6 +22,12 @@
         <servlet-name>gestionList</servlet-name>
         <jsp-file>/jsp/gestionList.jsp</jsp-file>
     </servlet>
+     <servlet>
+    	<servlet-name>conversionEnProduits</servlet-name>
+    	<display-name>conversionEnProduits</display-name>
+    	<description></description>
+    	<jsp-file>/jsp/conversionEnProduits.jsp</jsp-file>
+    </servlet>
 
     <!-- Java Servlets -->
     <servlet>
@@ -154,6 +160,7 @@
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.ServletConversionMemoProduit</servlet-class>
     </servlet>
+   
 
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -267,6 +274,10 @@
     <servlet-mapping>
     	<servlet-name>ServletConversionMemoProduit</servlet-name>
     	<url-pattern>/ServletConversionMemoProduit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>conversionEnProduits</servlet-name>
+    	<url-pattern>/conversionEnProduits</url-pattern>
     </servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>
