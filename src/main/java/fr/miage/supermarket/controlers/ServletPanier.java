@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.dao.MagasinDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.dao.PromotionDAO;
+import fr.miage.supermarket.dao.StockDAO;
 import fr.miage.supermarket.dao.UtilisateurDAO;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.LinkCommandeProduit;
@@ -154,6 +156,7 @@ public class ServletPanier extends HttpServlet {
 			try {
 				int magasinId = Integer.parseInt(magasinIdStr);
 				Commande commande = creerEtEnregistrerCommande(panier, magasinId, dateStr, horaireStr, utilisateur);
+				
 				majPointsUtilisateur(request.getParameter("pointsUtilises"), utilisateur, panier);
 				// Commande enregistrée : on vide le panier
 				session.removeAttribute("panier");
@@ -204,6 +207,14 @@ public class ServletPanier extends HttpServlet {
 		commande.setDateRetrait(localDate);
 		commande.setHoraireRetrait(horaireStr);
 		commande.finaliserCommande(panier.calculerPrixTotal());
+		
+		//Pour tous les produits du panier, on décrémente le stock du magasin
+		StockDAO stockDAO = new StockDAO();
+		for (Entry<String, ProduitPanier> entry : panier.getPanier().entrySet()) {
+			System.out.println(entry.getValue().getEan());
+			System.out.println(entry.getValue().getQuantite());
+			stockDAO.retirerProduitCommandesStock(entry.getValue().getEan(), magasinId, entry.getValue().getQuantite());
+		}
 		
 		return commandeDAO.creerOuMajCommande(commande);
 	}

@@ -83,4 +83,28 @@ public class StockDAO {
         return resultatSerie;
     }
 
+	public void retirerProduitCommandesStock (String ean, int id_magasin, int quantite_retiree) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+        Session session = sessionFactory.getCurrentSession();
+        
+        session.beginTransaction();
+	    try {
+	    	Query query = session.createQuery("SELECT quantite FROM Link_Produit_Stock WHERE produit.ean = :ean AND magasin.id = :id_magasin");
+	    	query.setParameter("ean", ean);
+	    	query.setParameter("id_magasin", id_magasin);
+	    	int qte_actuelle = (int) query.list().get(0);
+	    	int qte_new = qte_actuelle - quantite_retiree;
+	    	System.out.println("QTE new "+qte_new);
+	    	query = session.createQuery("UPDATE Link_Produit_Stock SET quantite = :qte_new WHERE produit.ean = :ean AND magasin.id = :id_magasin");
+			query.setParameter("qte_new", qte_new);
+			query.setParameter("ean", ean);
+	    	query.setParameter("id_magasin", id_magasin);
+			int result = query.executeUpdate();
+	    	session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+		} finally {
+			session.close();
+		}
+	}
 }
