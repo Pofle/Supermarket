@@ -94,7 +94,6 @@ public class StockDAO {
 	    	query.setParameter("id_magasin", id_magasin);
 	    	int qte_actuelle = (int) query.list().get(0);
 	    	int qte_new = qte_actuelle - quantite_retiree;
-	    	System.out.println("QTE new "+qte_new);
 	    	query = session.createQuery("UPDATE Link_Produit_Stock SET quantite = :qte_new WHERE produit.ean = :ean AND magasin.id = :id_magasin");
 			query.setParameter("qte_new", qte_new);
 			query.setParameter("ean", ean);
