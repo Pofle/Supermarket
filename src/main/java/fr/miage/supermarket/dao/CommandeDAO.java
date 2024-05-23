@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
 import org.hibernate.cache.spi.support.SimpleTimestamper;
 /**
  * Gestion des commandes clients pour préparation de panier
- * @author RR, GL
+ * @author RR, GL, YassineA
  */
 public class CommandeDAO {
 
@@ -144,6 +144,10 @@ public class CommandeDAO {
 		}
 	}
     
+	/**
+     * Méthode permettant de récupérer une liste des commandes depuis la base de données
+     * @author YassineA
+     */
     public List<Commande> getAllCommandes() {
         Session session = sessionFactory.openSession();
         List<Commande> commandes = null;
@@ -166,6 +170,12 @@ public class CommandeDAO {
         }
     }
     
+    /**
+     * Méthode permettant de faire un update sur une commande donnée
+     * @param la commande à mettre à jour
+     * @return la commande mise à jour
+     * @author YassineA
+     */
     public Commande mettreAJourCommande(Commande commande) {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
@@ -219,6 +229,12 @@ public class CommandeDAO {
         return commandes;
     }
     
+    /**
+     * Méthode permettant de récuperer une commande depuis son identifiant
+     * @param id
+     * @return la commande reliée à l'identifiant en paramètre
+     * @author YassineA, GL
+     */
     public Commande getCommandeById(int id) {
         Session session = sessionFactory.openSession();
         Commande commande = null;
@@ -230,6 +246,14 @@ public class CommandeDAO {
         return commande;
     }
     
+    /**
+     * Méthode permettant de mettre à jour les valeurs d'une commande sur une session d'un utilisateur donné
+     * @param idCommande
+     * @param magasin correspondant à la commande
+     * @param dateRetrait = date de retrait à modifier
+     * @param horaireRetrait = horaire de retrait à modifier
+     * @author YassineA
+     */
     public void updateCommande(String idCommande, Magasin magasin, LocalDate dateRetrait, String horaireRetrait) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionAnnotationFactory().openSession()) {
@@ -253,6 +277,12 @@ public class CommandeDAO {
         }
     }
 
+    /**
+     * Méthode permettant de récupérer la liste des commandes d'un utilisateur
+     * @param utilisateur = l'utilisateur ayant passé les commandes
+     * @return listeCommandes = la liste des commandes de lutilisateur concerné
+     * @author YassineA
+     */
     public List<Commande> getCommandeUtilisateur(Utilisateur utilisateur) {
 		Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 		try {
@@ -345,7 +375,7 @@ public class CommandeDAO {
 		return linkByCommande;
 	}
 	/**
-	 * Récupère les différentes commandes reliés à LinkCommandeProduit qui ont un chrono différent de null 
+	 * Récupère les différentes commandes reliés à LinkCommandeProduit qui ont un chrono différent de null (prête ou terminée)
 	 * @author RR
 	 * @return liste des commandes prête relié à l'entité LinkCommandeProduit
 	 */

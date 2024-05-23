@@ -23,39 +23,71 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
+/**
+ * Classe implémentation de l'entité commande
+ * @author YassineA
+ */
 @Entity
 @Table(name = "COMMANDE", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID_COMMANDE" }) })
 public class Commande {
     
+	/**
+	 * identifiant unique de la commande
+	 */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_COMMANDE", nullable = false, unique = true, length = 50)
     private Integer id_commande;
     
+    /**
+     * instanciation représentant le lien entre un produit et un stock dans un magasin
+     */
     @OneToMany(mappedBy = "commande", cascade=CascadeType.ALL)
     private Set<LinkCommandeProduit> produits = new HashSet<>();
 
+    /**
+     * date de la validation de la commande
+     */
     @Column(name = "DATE_COMMANDE")
     private LocalDate dateCommande;
 
+    
+    /**
+     * Date de retrait de la commande
+     */
     @Column(name = "DATE_RETRAIT")
     private LocalDate dateRetrait;
 
+    /**
+     * horaire de retrait de la commande
+     */
     @Column(name = "HORAIRE_RETRAIT")
     private String horaireRetrait;
     
+    /**
+     * statut de la commande (état)
+     */
     @Column(name = "STATUT", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatutCommande statut;
 
+    /**
+     * instanciation de l'entité magasin 
+     */
 	@ManyToOne
     @JoinColumn(name = "ID_MAGASIN")
     private Magasin magasin;
 
+	/**
+	 * le temps de préparation de la commande
+	 */
     @Column(name="TEMPS_PREPARATION")
 	@Temporal(jakarta.persistence.TemporalType.TIME)
 	private Time chrono;
 
+    /**
+     * identifiant de l'utilisateur ayant passé la commande
+     */
     @ManyToOne
     @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
     private Utilisateur utilisateur;

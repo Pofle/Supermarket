@@ -10,7 +10,7 @@
 				<c:if test="${requestScope.categorie == 'GESTIONNAIRE'}">
 					<li class="navbar-item"><a href="central?type_action=gestionProduit" class="navbar-link">Gestion des produits</a></li>
 					<li class="navbar-item"><a href="central?type_action=gestionStock" class="navbar-link">Gestion du stock</a></li>
-					<li class="navbar-item"><a href="central?type_action=visuTempsPrepaMoyen" class="navbar-link">Temps de Préparation moyen</a></li>
+					<li class="navbar-item"><a href="central?type_action=habitudesConsommation" class="navbar-link">Statistiques</a></li>
 				</c:if>
 				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
 					<li class="navbar-item"><a
@@ -31,12 +31,12 @@
 				</c:if>
 			</ul>
 		</div>
-		
+
 		<span class="navbar-right"> <span class="navbar-profile">${categorie}</span>
-		<a style="margin-right: 20px; color:#f70e0e;" href="/SupermarketG3/deconnexion" title="Déconnexion"><span><svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+		<c:if test="${requestScope.categorie != 'VISITEUR'}"><a style="margin-right: 20px; color:#f70e0e;" href="/SupermarketG3/deconnexion" title="Déconnexion"><span><svg class="w-[24px] h-[24px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"/>
 </svg>
-		</span></a>
+		</span></a></c:if>
 			<div class="navbar-cart-container">
 				<a href="central?type_action=panier" title="Panier">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" color="#ffffff" fill="none">
