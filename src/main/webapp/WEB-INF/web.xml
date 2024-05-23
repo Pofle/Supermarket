@@ -24,8 +24,9 @@
     </servlet>
     <servlet>
         <servlet-name>RecapCommandesApprovisionnement</servlet-name>
-        <jsp-file>/jsp/recapCommandesApprovisionnement.jsp</jsp-file>
+        <servlet-class>fr.miage.supermarket.controlers.GestionRecapApprovisionnementService</servlet-class>
     </servlet>
+    
 
     <!-- Java Servlets -->
     <servlet>

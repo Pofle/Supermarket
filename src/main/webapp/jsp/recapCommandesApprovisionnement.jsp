@@ -8,32 +8,29 @@
 		<jsp:param name="title" value="Gestion du Stock" />
 	</jsp:include>
     <title>Récapitulatif des commandes d'approvisionnement</title>
-    <link href="css/recap-approvisionnement.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <%@ include file="navbar.jsp"%>
     <h1>Récapitulatif des commandes d'approvisionnement</h1>
     
-    <table class="table-style">
+    <table border="1" class="table-style">
         <thead>
             <tr>
+                <th>ID Approvisionnement</th>
                 <th>EAN</th>
-                <th>Produit</th>
                 <th>Quantité Commandée</th>
-                <th>Magasin</th>
-                <th>Date Commande</th>
                 <th>Date Arrivée</th>
+                <th>ID Magasin</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="approvisionnement" items="${approvisionnements}">
+            <c:forEach items="${approvisionnements}" var="approvisionnement">
                 <tr>
+                    <td>${approvisionnement.id}</td>
                     <td>${approvisionnement.produit.ean}</td>
-                    <td>${approvisionnement.produit.libelle}</td>
-                    <td>${approvisionnement.quantite}</td>
-                    <td>${approvisionnement.magasin.nom}</td>
-                    <td>${approvisionnement.dateCommande}</td>
-                    <td>${approvisionnement.dateArrivee}</td>
+                    <td>${approvisionnement.quantiteCommandee}</td>
+                    <td>${approvisionnement.dateArriveeStock}</td>
+                    <td>${approvisionnement.magasin.id}</td>
                 </tr>
             </c:forEach>
         </tbody>
