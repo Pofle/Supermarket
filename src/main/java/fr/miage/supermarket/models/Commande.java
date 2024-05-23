@@ -1,19 +1,26 @@
 package fr.miage.supermarket.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.Date;
+
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
 @Entity
@@ -25,8 +32,7 @@ public class Commande {
     @Column(name = "ID_COMMANDE", nullable = false, unique = true, length = 50)
     private Integer id_commande;
     
-    @OneToMany(mappedBy = "commande")
-    @Cascade(CascadeType.ALL)
+    @OneToMany(mappedBy = "commande", cascade=CascadeType.ALL)
     private Set<LinkCommandeProduit> produits = new HashSet<>();
 
     @Column(name = "DATE_COMMANDE")
@@ -37,17 +43,21 @@ public class Commande {
 
     @Column(name = "HORAIRE_RETRAIT")
     private String horaireRetrait;
-
+    
     @Column(name = "STATUT", nullable = false)
-    private boolean statut;
+    @Enumerated(EnumType.STRING)
+    private StatutCommande statut;
 
-    @ManyToOne
+	@ManyToOne
     @JoinColumn(name = "ID_MAGASIN")
     private Magasin magasin;
 
+    @Column(name="TEMPS_PREPARATION")
+	@Temporal(jakarta.persistence.TemporalType.TIME)
+	private Time chrono;
+
     @ManyToOne
     @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
-    @Cascade(CascadeType.ALL)
     private Utilisateur utilisateur;
 
     // Constructeurs
@@ -90,13 +100,13 @@ public class Commande {
         this.horaireRetrait = horaireRetrait;
     }
 
-    public boolean isStatut() {
-        return statut;
-    }
+    public StatutCommande getStatut() {
+		return statut;
+	}
 
-    public void setStatut(boolean statut) {
-        this.statut = statut;
-    }
+	public void setStatut(StatutCommande statut) {
+		this.statut = statut;
+	}
 
     public Set<LinkCommandeProduit> getProduits() {
         return produits;
@@ -105,7 +115,7 @@ public class Commande {
     public void setProduits(Set<LinkCommandeProduit> produits) {
         this.produits = produits;
     }
-
+    
     public Magasin getMagasin() {
         return magasin;
     }
@@ -113,6 +123,20 @@ public class Commande {
     public void setMagasin(Magasin magasin) {
         this.magasin = magasin;
     }
+    /**
+     * @author RR
+     * @return Time du temps de preparation "chrono"
+     */
+    public Time getChrono() {
+		return chrono;
+	}
+    /**
+     * @author RR
+     * @param chrono Time colonne temps de preparation
+     */
+	public void setChrono(Time chrono) {
+		this.chrono = chrono;
+	}
 
     public Utilisateur getUtilisateur() {
         return utilisateur;

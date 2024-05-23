@@ -18,15 +18,16 @@ public class Panier {
 	 * @param quantite la quantité à ajouter/retirer (négatif si retrait)
 	 * @author EricB
 	 */
-	public void ajusterProduit(String ean, int quantite) {
+	public ProduitPanier ajusterProduit(String ean, int quantite) {
 		if (ean == null || !produitExiste(ean)) {
-			return;
+			return null;
 		}
-		int nouvelleQtt = panier.get(ean).ajusterQuantite(quantite);
+		ProduitPanier produitPanier = panier.get(ean);
+		int nouvelleQtt = produitPanier.ajusterQuantite(quantite);
 		if (nouvelleQtt <= 0) {
 			retirerProduit(ean);
-			return;
 		}
+		return produitPanier;
 	}
 	
 	/**

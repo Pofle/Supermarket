@@ -27,7 +27,7 @@ public class Utilisateur {
     // Attributs
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID_UTILISATEUR", nullable = false, unique = true)
     private int id;
 
     @Column(name = "NOM", nullable = false, unique = false, length = 50)
@@ -48,8 +48,11 @@ public class Utilisateur {
 
     @Column(name = "POINTS", nullable = true)
     private Integer points;
+    
+    @Column(name = "PERSONNALISATION", nullable = true)
+    private boolean personnalisation;
 
-    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<ShoppingList> listesCourseLst;
 
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
@@ -213,4 +216,12 @@ public class Utilisateur {
         }
         this.points += nbPoints;
     }
+    
+    public boolean isPersonnalisation() {
+		return personnalisation;
+	}
+
+	public void setPersonnalisation(boolean personnalisation) {
+		this.personnalisation = personnalisation;
+	}
 }

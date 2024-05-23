@@ -9,9 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.ShoppingList;
+import fr.miage.supermarket.models.Utilisateur;
 
 /**
  * Servlet qui gere la generation des listes de course de l'utilisatueur en XML
@@ -33,23 +35,21 @@ public class GenerationListeXml extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 * @author Pauline
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-	//TODO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
-	// -- Code à remplacer
-	    int userId = 1;
-	// Fin du code à remplacer
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		// Récupérer l'utilisateur connecté
+        HttpSession session = request.getSession();
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        int utilisateurId = utilisateur.getId();
+
 	   	   
 	    List<ShoppingList> shoppingLists = null;
 	    try {
-	        shoppingLists = ShoppingListDAO.getShoppingLists(userId);
+	        shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);
 	        System.out.println("Shopping lists fetched successfully");
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	    String xmlContent = convertShoppingListsToXml(shoppingLists);
-	    // Save du fichier XML pour TEST
-	    saveXmlToFile(xmlContent);
 	    
 	    // Include XML content in the response
 	    response.setContentType("application/xml");
@@ -77,19 +77,6 @@ public class GenerationListeXml extends HttpServlet {
 	    xmlBuilder.append("</shoppingLists>");
 	    return xmlBuilder.toString();
 	}
+}
 
-	// Save du fichier XML pour TEST
-	private void saveXmlToFile(String xmlContent) {
-	    try {
-	        // Define file path
-	        String filePath = "C:\\Users\\Pauline\\Cours\\Projet\\listeUser.xml";
-	        
-	        // Write XML content to file
-	        Files.write(Paths.get(filePath), xmlContent.getBytes());
-	        System.out.println("XML content saved to file: " + filePath);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        // Handle exception
-	    }
 
-	}}

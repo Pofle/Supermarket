@@ -1,15 +1,18 @@
-<%@page contentType="text/html;charset=UTF-8" language="java"%>
+<%@page contentType="text/html;charset=UTF-8" language="java"
+	isELIgnored="false"%>
 <%@ page import="java.text.DecimalFormat"%>
 <%@ page import="fr.miage.supermarket.models.Magasin"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
 request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 %>
 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,21 +21,129 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
-<link href="css/panier.css" rel="stylesheet" type="text/css" />
 <title>Mon panier</title>
 </head>
 <body>
 	<jsp:include page="/jsp/navbar.jsp" />
-	<div class="panier-container">
-		<div class="produits-container"></div>
-		<div class="resume-container" id="resume-container">
-			<p id="prixTotal" class="prixTotal"></p>
-			<div style="margin-left: 1cm;">
-				<br />
-				<button id="validerPanier" type="button" class="btn btn-primary"
-					data-toggle="modal" data-target="#exampleModal">Valider le
-					panier</button>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-lg-8 col-md-10 mx-auto">
+				<c:choose>
+					<c:when test="${!empty produits}">
+						<h1 id="panier-title" class="mb-4">Votre panier</h1>
+						<c:forEach var="produit" items="${produits.values()}">
+							<div id="produit" class="card mb-3" data-ean="${produit.ean}">
+								<div class="row no-gutters">
+									<div class="col-md-4">
+										<img src="recupererImage?cheminImage=${produit.image}"
+											class="card-img" alt="${produit.libelle}">
+									</div>
+									<div class="col-md-8">
+										<div class="card-body">
+											<h5 class="card-title">${produit.libelle}</h5>
+											<p class="card-text">
+												<fmt:formatNumber value="${produit.prix}" type="currency"
+													currencySymbol="€" minFractionDigits="2"
+													maxFractionDigits="2" />
+												${produit.conditionnement}
+												<c:if test="${not empty produit.poids}">
+                                                    - <fmt:formatNumber
+														value="${produit.prix * 1000 / produit.poids}"
+														type="currency" currencySymbol="€" minFractionDigits="2"
+														maxFractionDigits="2" />/kg
+                                                </c:if>
+											</p>
+											<c:if test="${not empty produit.tauxPromotion}">
+												<div class="badge badge-success">${produit.tauxPromotion}%
+													d'économies</div>
+											</c:if>
+											<div class="mt-3">
+												<div class="btn-group" role="group">
+													<button class="btn btn-outline-secondary btn-moins"
+														data-ean="${produit.ean}">-</button>
+													<input type="text"
+														class="form-control text-center quantite-input"
+														value="${produit.quantite}" disabled style="width: 50px;">
+													<button class="btn btn-outline-secondary btn-plus"
+														data-ean="${produit.ean}">+</button>
+												</div>
+											</div>
+											<div class="mt-3">
+												<c:if test="${not empty produit.tauxPromotion}">
+													<p id="prixTotalProduit" class="text-muted">
+														<s><fmt:formatNumber
+																value="${produit.prix * produit.quantite}"
+																type="currency" currencySymbol="€" minFractionDigits="2"
+																maxFractionDigits="2" /></s>
+													</p>
+													<p id="prixTotalProduitPromo" class="font-weight-bold">
+														<fmt:formatNumber
+															value="${(produit.prix * produit.quantite) * (1 - produit.tauxPromotion / 100)}"
+															type="currency" currencySymbol="€" minFractionDigits="2"
+															maxFractionDigits="2" />
+													</p>
+												</c:if>
+												<c:if test="${empty produit.tauxPromotion}">
+													<p id="prixTotalProduit" class="font-weight-bold">
+														<fmt:formatNumber
+															value="${produit.prix * produit.quantite}"
+															type="currency" currencySymbol="€" minFractionDigits="2"
+															maxFractionDigits="2" />
+													</p>
+												</c:if>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<h1>Votre panier est vide...</h1>
+					</c:otherwise>
+				</c:choose>
 			</div>
+			<c:if test="${!empty produits}">
+				<div id="resume-container" class="col-lg-4 col-md-10 mx-auto mt-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Résumé</h5>
+							<div class="d-flex justify-content-between">
+								<p class="font-weight-bold">Total:</p>
+								<p id="prixTotal" class="prixTotal font-weight-bold text-right">
+									<fmt:formatNumber value="${totalPrix}" type="currency"
+										currencySymbol="€" minFractionDigits="2" maxFractionDigits="2" />
+								</p>
+							</div>
+							<c:if test="${not empty utilisateur}">
+								<c:set var="maxReduction" value="${utilisateur.points / 10}" />
+								<c:choose>
+									<c:when test="${totalPrix >= maxReduction}">
+										<c:set var="maxReduction" value="${maxReduction}" />
+									</c:when>
+									<c:otherwise>
+										<c:set var="maxReduction" value="${totalPrix}" />
+									</c:otherwise>
+								</c:choose>
+								<div class="form-group">
+									<label for="pointsUtilises">Points de fidélité (${utilisateur.points}pts)</label> <input
+										type="number" class="form-control" id="pointsUtilises"
+										name="pointsUtilises" min="0" step="10"
+										max="${maxReduction * 10}"
+										onchange="adjustToNearestMultiple(this)">
+								</div>
+								<p id="reductionPoints" class="font-weight-bold"></p>
+							</c:if>
+							<button id="validerPanier" type="button"
+								class="btn btn-primary btn-block" data-toggle="modal"
+								data-target="#exampleModal">Valider le panier</button>
+								<br>
+							<button id="viderPanier" type="button" class="btn btn-danger btn-block">Vider le panier</button>
+						</div>
+					</div>
+				</div>
+			</c:if>
+
 		</div>
 	</div>
 
@@ -51,7 +162,7 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form action="ajoutPanier?action=validerPanier" method="post">
+				<form action="panier" method="post">
 					<div class="modal-body">
 						<label for="magasin">Sélectionnez un magasin :</label> <select
 							name="magasin" id="magasin" required>
@@ -64,15 +175,15 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 							}
 							%>
 						</select> <br>
-						<br> <label for="date">Sélectionnez une date :</label> <input
-							type="date" id="date" name="date"
-							min="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>"
-							required> <br>
-						<br> <label for="horaire">Sélectionnez un horaire :</label> <select
-							name="horaire" id="horaire" required>
-							<option value="">Heure de retrait</option>
-						</select> <br>
-						<br>
+						<br><label for="date">Sélectionnez une date :</label> 
+								<input type="date" id="date" name="date" min="<%=new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>" required> 
+							<br>
+							<br>
+							<label for="horaire">Sélectionnez un horaire :</label> 
+								<select name="horaire" id="horaire" required></select> 
+							<br> 
+							<br> 
+						<input type="hidden" id="pointsUtilisesInput" name="pointsUtilises" value="0">
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Valider</button>
@@ -158,6 +269,17 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 												}
 											});
 						});
+		document.getElementById("viderPanier").addEventListener("click", function() {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("GET", "panier?action=vider", true);
+	        xhr.onreadystatechange = function() {
+	            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+	                // Rafraîchir la page
+	                window.location.reload();
+	            }
+	        };
+	        xhr.send();
+	    });
 	</script>
 
 

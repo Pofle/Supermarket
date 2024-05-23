@@ -7,31 +7,50 @@
 <html>
 <head>
 <jsp:include page="/jsp/header.jsp" />
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
 <link href="css/accueil.css" rel="stylesheet" type="text/css" />
 <title>Accueil</title>
 </head>
 <body>
 	<jsp:include page="/jsp/navbar.jsp" />
-	<div class="search-bar">
-		<input type="text" placeholder="Rechercher..." id="search-bar">
-	</div>
-	<div class="filter-container">
-    <label for="categorie-select">Catégorie :</label>
-    <select id="categorie-select" multiple>
-    </select>
+	<div class="container">
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Rechercher..." id="search-bar">
+            </div>
+        </div>
+    </div>
 
-    <label for="rayon-select">Rayon :</label>
-    <select id="rayon-select" multiple>
-    </select>
+    <div class="row mt-4" id="article-container"></div>
 </div>
 
-	<div class="article-container" id="article-container"></div>
+<div id="popup-data" data-show-popup="${showPopup}"></div>
 
-	<script src="javascript/rechercherProduits.js"></script>
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Choisir le panier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous garder votre panier précédent ou récupérer le panier associé à votre compte ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="keepCart()">Garder le panier précédent</button>
+                <button type="button" class="btn btn-secondary" onclick="retrieveCart()">Récupérer le panier associé au compte</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="javascript/rechercherProduits.js"></script>
+<script src="javascript/popupPanier.js"></script>
 </body>
 </html>
