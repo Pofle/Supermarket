@@ -1,6 +1,7 @@
 package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import fr.miage.supermarket.dao.CommandeDAO;
 import fr.miage.supermarket.dao.ProduitDAO;
 import fr.miage.supermarket.dao.StatistiquesDAO;
+import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Produit;
 import fr.miage.supermarket.models.Utilisateur;
@@ -46,16 +48,44 @@ public class HabitudesConsommationUtilisateurServlet extends HttpServlet {
         if (utilisateur == null) {
             response.sendRedirect("connexion");
             return;
-        }
-
-        Map<String, Object> statistiques = statistiquesDAO.getStatistiquesConsommation(utilisateur);
-        request.setAttribute("statistiques", statistiques);
-        
-        CommandeDAO commandeDAO = new CommandeDAO();
+        } 
+   		CommandeDAO commandeDAO = new CommandeDAO();
         ProduitDAO produitDAO = new ProduitDAO();
-        List<Commande> listeCommandeUser = commandeDAO.getCommandeUtilisateur(utilisateur);
+        Map<String, Object> statistiques;
+        List<Commande> listeCommandeUser;
+   		 if(utilisateur.getRole() != CategorieCompte.GESTIONNAIRE) {
+   			 statistiques = statistiquesDAO.getStatistiquesConsommation(utilisateur);
+   			 listeCommandeUser = commandeDAO.getCommandeUtilisateur(utilisateur);
+   		} else {
+   			statistiques = statistiquesDAO.getStatistiquesConsommationUtilisateurs();
+  			listeCommandeUser = commandeDAO.getAllCommandes();
+  			ArrayList<Commande> commandes = CommandeDAO.getCommandeInLink();
+  	 		long somme = 0;
+  	 		String resultat = "00:00:00";
+  	 		// vérification s'il existe des commandes preparées/terminées
+  		 	if(commandes.size() != 0) {
+  		 		for (Commande c :commandes) {
+  			 		Time chrono = c.getChrono();
+
+  		 			int heures = chrono.getHours();
+  	                int minutes = chrono.getMinutes();
+  	                int secondes = chrono.getSeconds();
+  	                long chronoInSeconds = heures * 3600 + minutes * 60 + secondes;
+  	                somme += chronoInSeconds;
+  		 		}
+  		 		long moyenneResultat = somme / commandes.size();
+
+  		        // Formater la durée en HH:mm:ss
+  		        long hrs = moyenneResultat/3600;
+  		        long min = (moyenneResultat%3600)/60;
+  		        long sec = (moyenneResultat%60);
+
+  		        resultat =  String.format("%02d:%02d:%02d", hrs, min, sec);
+  	 		}
+  	 		request.setAttribute("moyenne", resultat);
+   		}
         HashMap<Produit, Integer> map = new HashMap<Produit, Integer>();
-        
+        request.setAttribute("statistiques", statistiques);
         //On vérifie que l'utilisateur a passé au moins une commande, si c'est le cas on en parcourt la liste (dans le cas du test, deux fois car deux commandes)
         if (listeCommandeUser != null) {			
         	for (int i = 0; i < listeCommandeUser.size(); i++) {
@@ -96,5 +126,5 @@ public class HabitudesConsommationUtilisateurServlet extends HttpServlet {
             request.setAttribute("mapTop10", sortedMap);
 		}
         request.getRequestDispatcher("/jsp/statistiquesConsommation.jsp").forward(request, response);
-	}
+  }
 }

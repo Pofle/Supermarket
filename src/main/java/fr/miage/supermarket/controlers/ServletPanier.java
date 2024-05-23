@@ -79,6 +79,11 @@ public class ServletPanier extends HttpServlet {
 		request.setAttribute("totalPrix", totalPrix);
 		request.setAttribute("magasins", magasins);
 		request.setAttribute("promotions", promotions);
+
+		String action = request.getParameter("action");
+		if("vider".equals(action)) {
+		    session.removeAttribute("panier");
+		    }
 		request.getRequestDispatcher("/jsp/afficherPanier.jsp").forward(request, response);
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
@@ -246,4 +251,5 @@ public class ServletPanier extends HttpServlet {
 		utilisateur.setPoints(utilisateur.getPoints() - pointsUtilises);
 		utilisateurDAO.mettreAJourUtilisateur(utilisateur);
 	}
+	
 }

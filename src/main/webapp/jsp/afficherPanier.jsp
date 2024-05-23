@@ -137,6 +137,8 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 							<button id="validerPanier" type="button"
 								class="btn btn-primary btn-block" data-toggle="modal"
 								data-target="#exampleModal">Valider le panier</button>
+								<br>
+							<button id="viderPanier" type="button" class="btn btn-danger btn-block">Vider le panier</button>
 						</div>
 					</div>
 				</div>
@@ -267,6 +269,17 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 												}
 											});
 						});
+		document.getElementById("viderPanier").addEventListener("click", function() {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open("GET", "panier?action=vider", true);
+	        xhr.onreadystatechange = function() {
+	            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+	                // Rafraîchir la page
+	                window.location.reload();
+	            }
+	        };
+	        xhr.send();
+	    });
 	</script>
 
 

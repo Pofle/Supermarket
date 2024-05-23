@@ -34,7 +34,10 @@
                         <td>${commande.magasin.nom}</td>
                         <td>${commande.dateRetrait}</td>
                         <td>${commande.horaireRetrait}</td>
-                        <td>${commande.statut}</td>
+                        <td>${commande.statut == nonValide ? 'Non validée' :
+                              commande.statut == enCours ? 'En cours' :
+                              commande.statut == pret ? 'Prête' :
+                              commande.statut == termine ? 'Terminée' : 'Inconnu'}</td>
                         <td>
                         <c:if test="${commande.statut == 'EN_COURS'}">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal"

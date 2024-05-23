@@ -27,6 +27,9 @@
 <body>
 	<jsp:include page="/jsp/navbar.jsp" />
 	<div class="container">
+		<c:if test="${requestScope.categorie == 'GESTIONNAIRE'}">
+			<h3> Temps moyen de préparation des paniers = ${ moyenne } secondes </h3>
+		</c:if>
 		<h1>Statistiques de consommation</h1>
 
 		<h2>Répartition par catégorie</h2>
