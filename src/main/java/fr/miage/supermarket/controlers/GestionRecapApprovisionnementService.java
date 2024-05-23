@@ -22,9 +22,8 @@ public class GestionRecapApprovisionnementService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Approvisionnement> approvisionnements = approvisionnementDAO.getAllApprovisionnements();
+        List<Object[]> approvisionnements = approvisionnementDAO.getAllApprovisionnements();
         System.out.println("Nombre d'approvisionnements récupérés : " + approvisionnements.size());
-        System.out.println("BORDEL AFFICHE TOI");
         request.setAttribute("approvisionnements", approvisionnements);
         request.getRequestDispatcher("/jsp/recapCommandesApprovisionnement.jsp").forward(request, response);
     }

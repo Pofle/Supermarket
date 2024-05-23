@@ -19,19 +19,19 @@
             <tr>
                 <th>EAN</th>
                 <th>Produit</th>
-                <th>Quantité Commandée</th>
                 <th>Date Arrivée</th>
                 <th>Magasin</th>
+                <th>Quantité Commandée</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach items="${approvisionnements}" var="approvisionnement">
                 <tr>
-                    <td>${approvisionnement.produit.ean}</td>
-                    <td>${approvisionnement.produit.libelle}</td>
-                    <td>${approvisionnement.quantiteCommandee}</td>
-                    <td>${approvisionnement.dateArriveeStock}</td>
-                    <td>${approvisionnement.magasin.nom}</td>
+                    <td>${approvisionnement[0]}</td>
+                    <td>${approvisionnement[1]}</td>
+                    <td>${approvisionnement[2]}</td>
+                    <td>${approvisionnement[3]}</td>
+                    <td>${approvisionnement[4]}</td>
                 </tr>
             </c:forEach>
         </tbody>

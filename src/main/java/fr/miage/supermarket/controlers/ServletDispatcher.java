@@ -101,8 +101,8 @@ public class ServletDispatcher extends HttpServlet {
 			case "gestionStock":
 				url = "stocks";
 				break;
-			case "gestionCommande":
-				url = "gestionCommande";
+			case "recapCommandesApprovisionnement":
+				url = "recapCommandesApprovisionnement";
 				break;
 			case "habitudesConsommation":
 				url = "habitudesConsommation";
