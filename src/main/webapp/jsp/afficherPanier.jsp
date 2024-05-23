@@ -215,35 +215,33 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 							$('#date')
 									.change(
 											function() {
-												// Vider les options existantes dans le select horaire
+												// vider la liste deroulante des horaires
 												$('#horaire').empty();
 
-												// Récupérer la date sélectionnée
+												// recuperer la date saisie
 												var selectedDate = new Date($(
 														this).val());
 												selectedDate.setHours(0, 0, 0,
-														0); // Réinitialiser l'heure de la date sélectionnée
+														0);
 
-												// Récupérer la date d'aujourd'hui
 												var today = new Date();
-												today.setHours(0, 0, 0, 0); // Réinitialiser l'heure de la date d'aujourd'hui
+												today.setHours(0, 0, 0, 0);
 
-												// Récupérer l'heure actuelle
 												var currentHour = new Date()
 														.getHours();
 
-												// Définir l'heure de début
+												// date debut
 												var debut;
 												if (selectedDate.getTime() === today
 														.getTime()) {
 													debut = currentHour + 2;
 												} else {
-													debut = 9; // Heure de début par défaut si la date sélectionnée n'est pas aujourd'hui
+													debut = 9; // heure de debut par defaut (ouverture du magasin à 9h)
 												}
 
-												var fin = 19; // Heure de fin
+												var fin = 19; // heure de fin des retrait (fermeture du magasin à 20h)
 
-												// Ajouter les horaires au select
+												// ajout des horaires au select
 												for (var i = debut; i <= fin; i++) {
 													for (var j = 0; j < 60; j += 15) {
 														var heure = (i < 10) ? '0'
@@ -261,7 +259,6 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 													}
 												}
 
-												// Si aucune heure n'est ajoutée (le début est après la fin), ajouter un message
 												if ($('#horaire').children().length === 0) {
 													$('#horaire')
 															.append(
@@ -274,7 +271,7 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 	        xhr.open("GET", "panier?action=vider", true);
 	        xhr.onreadystatechange = function() {
 	            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-	                // Rafraîchir la page
+	                // refresh
 	                window.location.reload();
 	            }
 	        };
