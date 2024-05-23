@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 /**
- * Cllasse de l'objet utilisateur
+ * Classe de l'objet utilisateur
  * @author PaulineF
  */
 

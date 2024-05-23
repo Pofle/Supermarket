@@ -24,8 +24,8 @@ public class Link_Produit_Stock {
     /**
      * Quantité de produits en stock.
      */
-    @Column(name = "QUANTITE", nullable = false, columnDefinition = "bigint default 1")
-    private Long quantite;
+    @Column(name = "QUANTITE", nullable = false, columnDefinition = "int default 1")
+    private int quantite;
         
     /**
      * Stock associé au lien produit-stock.
@@ -62,7 +62,7 @@ public class Link_Produit_Stock {
      * @param produit le produit associé
      * @param magasin le magasin associé
      */
-    public Link_Produit_Stock(Long id, Long quantite, Stock stock, Produit produit, Magasin magasin) {
+    public Link_Produit_Stock(Long id, int quantite, Stock stock, Produit produit, Magasin magasin) {
         super();
         this.id = id;
         this.quantite = quantite;
@@ -91,7 +91,7 @@ public class Link_Produit_Stock {
      * Retourne la quantité de produits en stock.
      * @return la quantité de produits en stock
      */
-    public Long getQuantite() {
+    public int getQuantite() {
         return quantite;
     }
 
@@ -99,7 +99,7 @@ public class Link_Produit_Stock {
      * Définit la quantité de produits en stock.
      * @param quantite la quantité de produits en stock
      */
-    public void setQuantite(Long quantite) {
+    public void setQuantite(int quantite) {
         this.quantite = quantite;
     }
 

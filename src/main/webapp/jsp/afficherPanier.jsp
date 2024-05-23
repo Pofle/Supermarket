@@ -130,7 +130,7 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 										type="number" class="form-control" id="pointsUtilises"
 										name="pointsUtilises" min="0" step="10"
 										max="${maxReduction * 10}"
-										onchange="adjustToNearestMultiple(this)">
+										onchange="calculateReduction()">
 								</div>
 								<p id="reductionPoints" class="font-weight-bold"></p>
 							</c:if>
@@ -280,6 +280,32 @@ request.setAttribute("decimalFormat", new DecimalFormat("#.00"));
 	        };
 	        xhr.send();
 	    });
+		
+		function adjustToNearestMultiple(element) {
+            var value = parseInt(element.value);
+            var step = parseInt(element.step);
+            if (isNaN(value) || value < 0) {
+                value = 0;
+            } else {
+                value = Math.round(value / step) * step;
+            }
+            element.value = value;
+        }
+
+        function calculateReduction() {
+            var pointsUtilises = parseInt(document.getElementById('pointsUtilises').value);
+            var totalPrix = parseFloat(document.getElementById('prixTotal').innerText.replace('€', '').replace(',', '.'));
+            var reduction = pointsUtilises / 10;
+            var nouveauTotal = totalPrix - reduction;
+
+            if (isNaN(pointsUtilises) || pointsUtilises < 0) {
+                pointsUtilises = 0;
+            }
+
+            document.getElementById('reductionPoints').innerText = 'Réduction: -' + reduction.toFixed(2) + '€';
+            document.getElementById('prixTotal').innerText = nouveauTotal.toFixed(2) + '€';
+        }
+        
 	</script>
 
 </body>
