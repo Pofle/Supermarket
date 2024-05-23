@@ -10,6 +10,7 @@ import java.util.List;
  * Cette classe est une entité JPA mappée sur la table "STOCK". 
  * Elle contient les informations sur la date de stock et les relations avec 
  * les entités {@link Link_Produit_Stock}.
+ * 
  * @author AlexP
  */
 @Entity

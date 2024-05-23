@@ -11,7 +11,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,10 +21,40 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
-@WebServlet("/GestionApprovisionnementService")
+/**
+ * Servlet qui gère les approvisionnements du stock des produits.
+ * Cette servlet gère les requêtes POST pour enregistrer les commandes de réapprovisionnement
+ * et mettre à jour les stocks.
+ * 
+ * @web.servlet GestionApprovisionnementService
+ * @web.servlet-mapping /GestionApprovisionnementService
+ * 
+ * @see HttpServlet
+ * @see HttpServletRequest
+ * @see HttpServletResponse
+ * @see SessionFactory
+ * @see Session
+ * @see Query
+ * @see Produit
+ * @see Magasin
+ * @see Stock
+ * @see Link_Produit_Stock
+ * @see Approvisionnement
+ * @see HibernateUtil
+ * 
+ * @author AlexP
+ */
 public class GestionApprovisionnementService extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Gère les requêtes HTTP POST pour traiter les commandes de réapprovisionnement.
+     * 
+     * @param request  l'objet HttpServletRequest qui contient la requête
+     * @param response l'objet HttpServletResponse qui contient la réponse envoyée
+     * @throws ServletException si une erreur liée au servlet survient
+     * @throws IOException      si une erreur d'entrée/sortie survient
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
@@ -43,7 +72,7 @@ public class GestionApprovisionnementService extends HttpServlet {
                 if (paramName.startsWith("quantiteCommandee_")) {
                     int quantiteCommandee = Integer.parseInt(request.getParameter(paramName));
                     
-                    // Vérifier si la quantité à commander est supérieure à zéro
+                    // Vérifier si la quantité à commander est supérieure à 0
                     if (quantiteCommandee > 0) {
                         String[] parts = paramName.split("_");
                         String ean = parts[1];
@@ -53,7 +82,7 @@ public class GestionApprovisionnementService extends HttpServlet {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         Date dateStock = sdf.parse(dateStockStr);
         
-                        // Calculer la date d'arrivée (dateStock + 5 jours)
+                        // Calculer la date d'arrivée (date du jour + 5 jours de livraison)
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(dateStock);
                         cal.add(Calendar.DATE, 5);
@@ -67,7 +96,7 @@ public class GestionApprovisionnementService extends HttpServlet {
                         query.setParameter("nom", magasinNom);
                         List<Magasin> magasins = query.list();
                         if (magasins.size() != 1) {
-                            throw new IllegalStateException("Unexpected number of results for magasin: " + magasins.size());
+                            throw new IllegalStateException("Nombre de résultats inattendu pour le magasin: " + magasins.size());
                         }
                         Magasin magasin = magasins.get(0);
         
@@ -132,7 +161,7 @@ public class GestionApprovisionnementService extends HttpServlet {
                                     session.update(existingLink);
                                 }
                             } else {
-                                // Créer un nouveau lien produit-stock pour les stocks futurs
+                                // Créer un nouveau lien produit-stock pour les futurs stocks
                                 Link_Produit_Stock newLink = new Link_Produit_Stock();
                                 newLink.setProduit(produit);
                                 newLink.setMagasin(magasin);

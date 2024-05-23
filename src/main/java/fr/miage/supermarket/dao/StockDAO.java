@@ -12,21 +12,25 @@ import org.hibernate.query.Query;
 import fr.miage.supermarket.utils.HibernateUtil;
 
 /**
- * Classe Data Access Object (DAO) pour accéder aux informations de stock dans la base de données.
- * Cette classe utilise Hibernate pour interagir avec la base de données.
- * @author : AlexP
+ * DAO pour la gestion des stocks.
+ * Cette classe fournit les méthodes pour accéder aux données de stock dans la base de données.
+ * 
+ * @see HibernateUtil
+ * @see SessionFactory
+ * @see Session
+ * @see Query
+ * 
+ * @author AlexP
  */
 public class StockDAO {
 	
     /**
-     * Récupère les informations de stock pour une date donnée.
-     * Cette méthode utilise une requête HQL pour sélectionner les informations des produits,
-     * les quantités en stock, les noms des magasins, et la date de stock selectionnée en paramètre.
+     * Récupère les informations sur les produits en stock pour une date donnée.
+     * 
      * @param date la date pour laquelle récupérer les informations de stock
-     * @return une liste d'objets, où chaque objet est un tableau contenant les informations
-     *         sur un produit, la quantité en stock, le nom du magasin et la date de stock
+     * @return une liste d'objets contenant les informations sur les produits en stock pour la date spécifiée
      */
-	public List<Object[]> getProduitsStockDate(Date date) {
+    public List<Object[]> getProduitsStockDate(Date date) {
         SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
         Session session = sessionFactory.getCurrentSession();
         
@@ -48,7 +52,7 @@ public class StockDAO {
             
             session.getTransaction().commit();
             
-            System.out.println("Number of results: " + results.size());
+            System.out.println("Nombre de résultats : " + results.size());
             for (Object[] result : results) {
                 System.out.println(Arrays.toString(result));
             }
@@ -63,14 +67,13 @@ public class StockDAO {
         }
     }
 
-     /**
-     * Récupère les informations de stock pour une série de dates données.
-     * @param serieDates la liste des dates pour lesquelles récupérer les informations de stock
-     * @return une liste d'objets, où chaque objet est un tableau contenant les informations
-     *         sur un produit, la quantité en stock, le nom du magasin et la date de stock
-     *         pour chaque date dans la série
+    /**
+     * Récupère les informations sur les produits en stock pour une série de dates.
+     * 
+     * @param serieDates la série de dates pour lesquelles récupérer les informations de stock
+     * @return une liste d'objets contenant les informations sur les produits en stock pour la série de dates spécifiée
      */
-	public List<Object[]> getProduitsStockSerieDates(List<Date> serieDates) {
+    public List<Object[]> getProduitsStockSerieDates(List<Date> serieDates) {
         List<Object[]> resultatSerie = new ArrayList<>();
         
         for (Date date : serieDates) {
@@ -79,8 +82,6 @@ public class StockDAO {
                 resultatSerie.addAll(resultatDate);
             }
         }
-        
         return resultatSerie;
     }
-
 }

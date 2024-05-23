@@ -19,9 +19,9 @@
             <tr>
                 <th>EAN</th>
                 <th>Produit</th>
-                <th>Date Arrivée</th>
+                <th>Date d'arrivée</th>
                 <th>Magasin</th>
-                <th>Quantité Commandée</th>
+                <th>Quantité commandée</th>
             </tr>
         </thead>
         <tbody>

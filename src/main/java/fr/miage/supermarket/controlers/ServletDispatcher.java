@@ -23,7 +23,7 @@ import fr.miage.supermarket.models.Utilisateur;
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
- *
+ * @author EricB & AlexP
  */
 public class ServletDispatcher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -100,9 +100,6 @@ public class ServletDispatcher extends HttpServlet {
 				break;
 			case "gestionStock":
 				url = "stocks";
-				break;
-			case "recapCommandesApprovisionnement":
-				url = "recapCommandesApprovisionnement";
 				break;
 			case "habitudesConsommation":
 				url = "habitudesConsommation";

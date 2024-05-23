@@ -13,14 +13,7 @@
 <body>
 	<%@ include file="navbar.jsp"%>
 	<c:set var="todayDate" value="${todayDate}" />
-    <h1>Gestion des Stocks des 15 prochains jours</h1>
-    
-   <select id="dateStock" name="dateStock">
-        <option value="">Sélectionnez une date</option>
-        <c:forEach var="date" items="${datesStock}">
-            <option value="${date}">${date}</option>
-        </c:forEach>
-    </select>
+    <h1>Stocks des produits</h1>
     
     <select id="magasin" name="magasin">
         <option value="">Sélectionnez un magasin</option>
@@ -29,14 +22,21 @@
         </c:forEach>
     </select>
     
+   <select id="dateStock" name="dateStock">
+        <option value="">Sélectionnez une date</option>
+        <c:forEach var="date" items="${datesStock}">
+            <option value="${date}">${date}</option>
+        </c:forEach>
+    </select>
+    
     <form id="approvisionnementForm" method="post" action="approvisionnement">
-        <button type="submit" id="validerCommande">Valider la commande</button>
+        <button type="submit" id="validerCommande">Valider la commande d'approvisionnement</button>
     
     <table class="table-style">
         <thead>
             <tr>
                 <th>EAN</th>
-                <th>Libelle</th>
+                <th>Produit</th>
                 <th>Marque</th>
                 <th>Label</th>
                 <th>Prix</th>
@@ -44,12 +44,13 @@
                 <th>Conditionnement</th>
                 <th>Quantité</th>
                 <th>Magasin</th>
-                <th>Date Stock</th>
-                <th>Stock à réapprovisionner</th>
+                <th>Date du stock</th>
+                <th>Quantité à réapprovisionner</th>
             </tr>
         </thead>
         <tbody id="tableBody">
             <c:forEach items="${produitsStock}" var="produitStock">
+            	<%-- Niveaux d'alertes pour les quantités de stock faibles --%>
                 <c:choose>
                     <c:when test="${produitStock[1] == 0}">
                         <tr class="stock-rupture">
@@ -74,7 +75,7 @@
                     <td>${produitStock[1]}</td>
                     <td>${produitStock[2]}</td>
                     <td>${produitStock[3]}</td>
-                    <td> <!-- Nouvelle colonne pour les boutons -->
+                    <td>
                         <%-- Vérification de la quantité en stock --%>
                         <c:if test="${produitStock[1] <= 10 && produitStock[3] == todayDate}">
                             <%-- Bouton + pour augmenter la quantité --%>
