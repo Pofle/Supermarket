@@ -141,11 +141,6 @@
         <display-name>GestionApprovisionnementService</display-name>
         <servlet-class>fr.miage.supermarket.controlers.GestionApprovisionnementService</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>GestionRecapApprovisionnementService</servlet-name>
-        <display-name>GestionRecapApprovisionnementService</display-name>
-        <servlet-class>fr.miage.supermarket.controlers.GestionRecapApprovisionnementService</servlet-class>
-    </servlet>
     <!-- Fin Servlet Alex -->
     <servlet>
 	    <servlet-name>CommandeUtilisateur</servlet-name>
@@ -301,10 +296,6 @@
     <servlet-mapping>
         <servlet-name>GestionApprovisionnementService</servlet-name>
         <url-pattern>/approvisionnement</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GestionRecapApprovisionnementService</servlet-name>
-        <url-pattern>/recapApprovisionnement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RecapCommandesApprovisionnement</servlet-name>

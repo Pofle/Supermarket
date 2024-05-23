@@ -23,7 +23,6 @@ public class ApprovisionnementDAO {
         try (Session session = sessionFactory.openSession()) {
             approvisionnements = session.createQuery("FROM Approvisionnement", Approvisionnement.class).getResultList();
         }
-        System.out.println("Affiche moi un truc BORDEL !!" + approvisionnements.size());
         return approvisionnements;
     }
 }

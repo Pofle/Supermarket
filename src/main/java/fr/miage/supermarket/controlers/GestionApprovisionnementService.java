@@ -155,7 +155,7 @@ public class GestionApprovisionnementService extends HttpServlet {
         }
 
         if (success) {
-        	response.sendRedirect(request.getContextPath() + "/jsp/recapCommandesApprovisionnement.jsp");
+        	request.getRequestDispatcher("recapCommandesApprovisionnement").forward(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de la commande.");
         }

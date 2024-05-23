@@ -23,7 +23,7 @@ import java.util.List;
  * Génère une série de dates, récupère les produits en stock pour ces dates et les transmet à la vue (JSP) pour affichage.
  * @author AlexP
  */
-@WebServlet("/GestionStockService")
+//@WebServlet("/GestionStockService")
 public class GestionStockService extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
