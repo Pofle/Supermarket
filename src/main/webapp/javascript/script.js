@@ -68,7 +68,7 @@ function chargerMemo(listeId) {
                 var libelle = memoNode.querySelector('libelle').textContent;
                 var li = document.createElement('li');
                 li.innerHTML = `
-                   	${libelle}
+                   	<p>${libelle}</p
                     <a href="#" onclick="supprimerMemo(${idMemo}, ${listeId}); return false;">
                     <img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteProduit" title="Supprimer la ligne"></a>`;
                 modalBody.appendChild(li);
@@ -110,14 +110,19 @@ function chargerMemo(listeId) {
 }
 
 function conversionMemos() {
-   document.getElementById('convertToProductsBtn').addEventListener('click', function() {
-    // Récupérer les libellés des <li>
+   //document.getElementById('convertToProductsBtn').addEventListener('click', function() {
+	var convertToProductsBtn = document.getElementById('convertToProductsBtn');
+   convertToProductsBtn.addEventListener('click', function() {
+    // Récupérer les libellés des <p>
     var libelles = [];
-    var lis = document.querySelectorAll('#modalMemo .modal-body li');
-    lis.forEach(function(li) {
-        var libelle = li.textContent.trim();
-        libelles.push(libelle);
-    });
+    var lis = document.querySelectorAll('#modalMemo .modal-body p');
+    lis.forEach(function(p) {
+            var libelle = p.textContent.trim();
+            // Ignorer les libellés vides
+            if (libelle) {
+                libelles.push(libelle);
+            }
+        });
 
     // Créer un formulaire dynamique
     var form = document.createElement('form');

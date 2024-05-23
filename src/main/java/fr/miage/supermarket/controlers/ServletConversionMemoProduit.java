@@ -2,6 +2,7 @@ package fr.miage.supermarket.controlers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,11 +30,30 @@ public class ServletConversionMemoProduit extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Récupérer les mémos à convertir depuis les paramètres du formulaire
-        String[] memosArray = request.getParameterValues("libelle");
-        List<String> memosList = Arrays.asList(memosArray);
-        System.out.println("Memos reçus pour conversion" +memosArray);
+    	// Récupérer les mémos à convertir depuis les paramètres du formulaire
+        List<String> memosList = new ArrayList<>();
+        //Log de controle
+        request.getParameterMap().forEach((key, values) -> {
+            if (key.startsWith("libelle_")) {
+                System.out.println("Received memo parameter: " + key + " = " + values[0]);
+                memosList.add(values[0]);
+            }
+        });
+        //Fin
 
+     // Récupérer tous les paramètres dont les noms commencent par "libelle_"
+        request.getParameterMap().forEach((key, values) -> {
+            if (key.startsWith("libelle_")) {
+                memosList.add(values[0]);
+            }
+        });
+        if (memosList.isEmpty()) {
+            System.err.println("No memos received for conversion.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No memos received for conversion.");
+            return;
+        }
+        System.out.println("Memos reçus pour conversion: " + memosList);
+        
         List<Produit> produits = MemoDAO.rechercherProduitsPourMemos(memosList);
 
 
