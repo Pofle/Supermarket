@@ -398,15 +398,6 @@
 		<servlet-name>GestionChoixPanierServlet</servlet-name>
 		<url-pattern>/gestionChoixPanier</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>ServletGestionMemo</servlet-name>
-		<url-pattern>/ServletGestionMemo</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>ServletConversionMemoProduit</servlet-name>
-		<url-pattern>/ServletConversionMemoProduit</url-pattern>
-	</servlet-mapping>
-    
     <filter>
 		<filter-name>AccessControlFilter</filter-name>
 		<filter-class>fr.miage.supermarket.utils.AccessControlFilter</filter-class>
