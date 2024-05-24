@@ -301,17 +301,8 @@ public class ServletDispatcher extends HttpServlet {
 	            xmlBuilder.append("</memo>");
 	        }
 	    }
-	    xmlBuilder.append("</memos>");
-	    
-	    // Enregistrer le XML dans un fichier POUR TEST A SUPPRIMER APRES
-	    String xmlString = xmlBuilder.toString();
-	    try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Pauline\\Cours\\Projet\\memos_id.xml"))) {
-	        writer.write(xmlString);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	    
-	    return xmlString;
+	    xmlBuilder.append("</memos>");    
+	    return xmlBuilder.toString();
 	}
 
 }

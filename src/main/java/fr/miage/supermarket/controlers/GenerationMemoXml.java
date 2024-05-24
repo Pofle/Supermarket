@@ -42,8 +42,6 @@ public class GenerationMemoXml extends HttpServlet {
         //Log de controle
         System.out.println("ListeId recevid for memo xml conversion is : "+listeId);
         
-        // Chemin où enregistrer le fichier XML
-        String filePath = "C:\\Users\\Pauline\\Cours\\Projet\\content_memo.xml";
         
         try {
             List<Memo> memos = MemoDAO.getMemoByListId(listeId);
@@ -64,10 +62,6 @@ public class GenerationMemoXml extends HttpServlet {
             // Écriture du contenu XML dans la réponse
             out.println(xmlContent.toString());
 
-            // Écriture du contenu XML dans un fichier
-            try (FileWriter fileWriter = new FileWriter(filePath)) {
-                fileWriter.write(xmlContent.toString());
-            }
             // Log de contrôle de la génération du XML
             System.out.println("XML_MemoContent response generated");
 
