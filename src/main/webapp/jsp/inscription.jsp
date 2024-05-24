@@ -6,10 +6,10 @@
 <meta charset="UTF-8">
 <title>Création de compte</title>
 <jsp:include page="/jsp/header.jsp" />
-	<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
-	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-	crossorigin="anonymous">
+	<link rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+    crossorigin="anonymous">
 
 </head>
 
@@ -25,7 +25,7 @@
 		return true;
 	}
     </script>	
-	<jsp:include page="/jsp/navbar.jsp" />
+	<a class="btn btn-link" href="../central?type_action=accueil">Accueil</a>
 	<br>
 
 	<div class="container-sm">
