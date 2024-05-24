@@ -64,7 +64,7 @@ public class ServletAuthentification extends HttpServlet {
 
 			Panier panier = (Panier) session.getAttribute("panier");
 			Commande commandeNonValidee = commandeDAO.getCommandeNonFinalisee(userConnecting.getId());
-			if(commandeNonValidee != null && (panier != null || !panier.getPanier().values().isEmpty())) {
+			if(commandeNonValidee != null && panier != null && !panier.getPanier().values().isEmpty()) {
 		        request.setAttribute("showPopup", true);
 			} else if((panier != null || !panier.getPanier().values().isEmpty()) && commandeNonValidee == null) { // Si on a un panier en session mais pas sur le compte
 				enregistrerPanierToPanierNonFinalise(userConnecting, panier);
