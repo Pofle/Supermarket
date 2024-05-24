@@ -39,7 +39,7 @@ ul {
     transition: transform 0.3s, filter 0.3s; 
 }
 
-.btn-DeleteListe,.btn-DeleteProduit{
+.btn-DeleteListe,.btn-DeleteProduit, .btn-Memo, .btn-addMemo, .btn-AddInput{
 	width : 4ex;
 }
 .btn-DeleteListe:hover , .btn-DeleteProduit:hover {
@@ -88,12 +88,12 @@ ul {
 .modal-title {
     text-align: center; 
 }
-label {
+.label {
     display: block;
     margin-bottom: 5px;
 }
 
-input[type="text"] {
+#modalAjout .input[type="text"] {
     width: 100%;
     padding: 8px;
     border: 1px solid #ced4da; 
@@ -102,7 +102,7 @@ input[type="text"] {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-input[type="text"]:focus {
+#modalAjout .input[type="text"]:focus {
     border-color: #007bff; 
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
@@ -164,4 +164,29 @@ input[type="text"]:focus {
 input[type="number"] {
     width: 60px;
     margin-right: 10px;
+}
+
+/* Style pour la modale Memo */
+
+#modalMemo .modal-body ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding-left: 20px;
+}
+
+
+#modalMemo .modal-body ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#modalMemo .modal-body ul li p {
+    margin: 0;
+    flex-grow: 1;
+}
+
+#modalMemo .modal-body ul li img {
+    margin-left: 10px; /* Espacement entre le texte et l'image */
 }

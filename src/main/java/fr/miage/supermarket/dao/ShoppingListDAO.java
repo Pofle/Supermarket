@@ -32,10 +32,9 @@ public class ShoppingListDAO {
 	        try {
 	            tx = session.beginTransaction();
 	            shoppingLists = session.createQuery("from ShoppingList sl where sl.utilisateur.id = :userId", ShoppingList.class)
-                        //TO-DO :: remplacer par l'ID de l'User CONNECTÉ QUAND authentifaction sera faite
-	            		// -- Code à remplacer
+                       
 	            		.setParameter("userId", userId)
-	            		// Fin du code à remplacer
+	            		
                         .list();
 	        } catch (Exception e) {
 	            if (tx != null) tx.rollback();
@@ -56,7 +55,7 @@ public class ShoppingListDAO {
 		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
 	     Transaction tx = null;
 	     
-	   //TO-DO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
+	   //TODO :: remplacer par l'User CONNECTÉ QUAND authentifaction sera faite
  		// -- Code à remplacer
 	 // Fin du code à remplacer
 	    
@@ -99,28 +98,6 @@ public class ShoppingListDAO {
 	             session.remove(liste);
 	         }
 	    	 tx.commit();
-	     }catch (Exception e) {
-	            if (tx != null) tx.rollback();
-	            throw e;
-	        } finally {
-	            session.close();
-	        }
-	 }
-	 
-	 /**
-	  * Methode pour ajouté une quantité de produit à une liste - EN COURS-
-	  * @param quantite
-	  */
-	 public static void ajouterArticleListe(int quantite)
-	 {
-		 Session session = HibernateUtil.getSessionAnnotationFactory().openSession();
-	     Transaction tx = null;
-	     
-	     try {
-	    	 tx=session.beginTransaction();
-	    	 LinkListeProduit linkListProduit = new LinkListeProduit();
-	    	 linkListProduit.setQuantite(quantite);
-	    	 
 	     }catch (Exception e) {
 	            if (tx != null) tx.rollback();
 	            throw e;

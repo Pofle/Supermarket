@@ -7,6 +7,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import fr.miage.supermarket.models.Link_Produit_Stock;
 import fr.miage.supermarket.models.Magasin;
+import fr.miage.supermarket.models.Memo;
 import fr.miage.supermarket.models.Approvisionnement;
 import fr.miage.supermarket.models.Memo;
 import fr.miage.supermarket.models.Categorie;

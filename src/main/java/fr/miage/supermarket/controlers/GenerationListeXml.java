@@ -39,13 +39,11 @@ public class GenerationListeXml extends HttpServlet {
 		// Récupérer l'utilisateur connecté
         HttpSession session = request.getSession();
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-        int utilisateurId = utilisateur.getId();
-
-	   	   
+        int utilisateurId = utilisateur.getId();	   	   
 	    List<ShoppingList> shoppingLists = null;
+	    
 	    try {
 	        shoppingLists = ShoppingListDAO.getShoppingLists(utilisateurId);
-	        System.out.println("Shopping lists fetched successfully");
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }

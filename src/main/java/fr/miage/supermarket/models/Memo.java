@@ -17,6 +17,7 @@ import jakarta.persistence.UniqueConstraint;
 /**
  * 
  */
+
 @Entity
 @Table(name = "MEMO",uniqueConstraints= {@UniqueConstraint(columnNames= {"ID"})})
 public class Memo {
@@ -93,6 +94,3 @@ public class Memo {
 	    }
 
 }
-
-
-

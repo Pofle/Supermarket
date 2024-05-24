@@ -27,8 +27,8 @@
 				<!-- Bouton Ajouter produit à une liste -->
 				<%-- <c:if test="${requestScope.categorie == 'UTILISATEUR'}"> --%>
 					 <img onclick="chargerListe('${produit.getEan()}')" 
-					 src="recupererImage?cheminImage=listIMG.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#addProduitModal" />
-				<%-- </c:if> --%>
+					 src="recupererImage?cheminImage=icons/addIntoList_icon.png" class="img-AddIntoList" data-bs-toggle="modal" data-bs-target="#addProduitModal" />
+			<%-- 	</c:if>  --%>
 				<!-- Fin du bouton	 -->	
 				
 				<div class="description">
@@ -92,12 +92,15 @@
       	
       	<form action="ServletAjoutProduitListe" method="post">
       		<div class="modal-body">
-      			<label for="select-qte"> Choisir une quantité : </label>
-        		<input type="number" id="input_qte" name="quantite" class="input-qte" required>                
-        		<label for="select-liste"> Liste :</label>
-        		<select name="select-liste" id="select_list">        		
-        		</select>
-        		<input type="hidden" name="type_action" value="add_produit">
+      		<ul>
+      			<li>
+      				<label for="select-qte"> Choisir une quantité : </label> <input type="number" id="input_qte" name="quantite" class="input-qte" required>    
+      			</li>
+      			<li>
+      				<label for="select-liste"> Liste :</label><select name="select-liste" id="select_list"></select>    			
+      			</li>      		
+      		</ul>
+       		<input type="hidden" name="type_action" value="add_produit">
         		<input type="hidden" name="produit_ean" value="${produit.getEan()}">	
       		</div>    		
       		<div class="modal-footer">

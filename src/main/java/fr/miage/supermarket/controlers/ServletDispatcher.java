@@ -4,9 +4,12 @@ import fr.miage.supermarket.models.Commande;
 import fr.miage.supermarket.models.Memo;
 
 import java.io.BufferedWriter;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,11 +20,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+
+import fr.miage.supermarket.dao.LinkListeProduitDAO;
+import fr.miage.supermarket.dao.MemoDAO;
 import fr.miage.supermarket.dao.CommandeDAO;
 //import org.hibernate.mapping.List;
 import fr.miage.supermarket.dao.MemoDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
+import fr.miage.supermarket.models.LinkListeProduit;
+import fr.miage.supermarket.models.Memo;
 import fr.miage.supermarket.models.ShoppingList;
 import fr.miage.supermarket.models.Utilisateur;
 
@@ -300,7 +310,5 @@ public class ServletDispatcher extends HttpServlet {
 	    
 	    return xmlString;
 	}
-
-	
 
 }

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package fr.miage.supermarket.dao;
 
 import java.util.ArrayList;
@@ -144,3 +147,4 @@ public class MemoDAO {
         }
     }
 }
+

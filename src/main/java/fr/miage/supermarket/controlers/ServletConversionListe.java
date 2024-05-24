@@ -39,9 +39,6 @@ public class ServletConversionListe extends HttpServlet {
         // Récupérer l'ID de la liste de courses
         String listeId = request.getParameter("listeId");
         
-        // Log de controle
-        System.out.println("Request PostConverstion received for the listeId: " +listeId);
-        
         if (listeId == null || listeId.isEmpty()) {
             System.out.println("listeId from Servlet conversion is empty or null");
             return;
@@ -73,22 +70,17 @@ public class ServletConversionListe extends HttpServlet {
                     Float poids = produit.getPoids();
                     String image = produit.getRepertoireVignette(); 
 
-                    // Creation de l'objet
+                    // Creation de l'objet produitPanier
                     ProduitPanier produitPanier = new ProduitPanier(libelle, ean, quantite, prix, null, conditionnement, poids, image);
-                    
-                    //log de controle
-                    System.out.println("Création du lien Panier/produit: "+ libelle + " Qte :" + quantite +" et prix :"+ prix );
 
                     // Ajout des ProduitPanier au panier
                     panier.ajouterProduit(produitPanier);
                     
                     // Log de controle
-                    System.out.println("Ajout des lignes de produits dans le panier");
-                    
+                    System.out.println("Ajout des lignes de produits dans le panier");                    
                 }
             }
         }
-
         // Save du panier dans la session de l'utilisateur
         session.setAttribute("panier", panier);
 

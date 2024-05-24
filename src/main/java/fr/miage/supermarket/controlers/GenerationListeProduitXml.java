@@ -37,7 +37,7 @@ public class GenerationListeProduitXml extends HttpServlet {
 	 * @author Pauline
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 response.setContentType("text/xml; charset=UTF-8");
+		 	response.setContentType("text/xml; charset=UTF-8");
 	        PrintWriter out = response.getWriter();
 	        Integer listeId = getIntegerParameter(request, "id");
 
