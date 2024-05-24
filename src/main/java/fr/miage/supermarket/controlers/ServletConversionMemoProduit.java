@@ -47,7 +47,7 @@ public class ServletConversionMemoProduit extends HttpServlet {
         	List<Produit> produits = MemoDAO.rechercherProduitsPourMemo(memo);
         	mapListProduits.put(memo, produits);
         }
-        
+                
         request.setAttribute("produitsMemos", mapListProduits);
         request.setAttribute("listeId", request.getParameter("listeId"));
         
