@@ -1,6 +1,9 @@
 var processedProductIds = new Set();
 
 document.addEventListener("DOMContentLoaded", function() {
+	
+	
+	
     function calculateTotalPrice() {
         let totalPrice = 0;
         document.querySelectorAll("#produit").forEach(produitDiv => {
@@ -305,6 +308,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const responseXML = xhr.responseXML;
                 if (!responseXML) {
                     alert(xhr.responseText);
+                    $('#exampleModal').modal('hide');
                     return;
                 } else {
                     $('#exampleModal').modal('hide');

@@ -53,25 +53,4 @@ public class ServletConversionMemoProduit extends HttpServlet {
         
         request.getRequestDispatcher("/jsp/conversionEnProduits.jsp").forward(request, response);
     }
-
-    private String construireXMLResponse(List<Produit> produits) {
-        // Construire le contenu XML en utilisant une librairie comme JAXB ou DOM
-        // Pour cet exemple, construisons simplement une chaîne XML manuellement
-        StringBuilder xmlBuilder = new StringBuilder();
-        xmlBuilder.append("<produits>");
-
-        for (Produit produit : produits) {
-            xmlBuilder.append("<produit>");
-            xmlBuilder.append("<libelle>").append(produit.getLibelle()).append("</libelle>");
-            xmlBuilder.append("<marque>").append(produit.getMarque()).append("</marque>");
-            xmlBuilder.append("<descriptionCourte>").append(produit.getDescriptionCourte()).append("</descriptionCourte>");
-            xmlBuilder.append("<nutriscore>").append(produit.getNutriscore()).append("</nutriscore>");
-            xmlBuilder.append("<label>").append(produit.getLabel()).append("</label>");
-            xmlBuilder.append("<prix>").append(produit.getPrix()).append("</prix>");
-            xmlBuilder.append("<imageLocation>").append(produit.getRepertoireImage()).append("</imageLocation>");
-            xmlBuilder.append("</produit>");
-        }
-        xmlBuilder.append("</produits>");
-        return xmlBuilder.toString();
-    }
 }
