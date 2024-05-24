@@ -48,4 +48,10 @@ public class GestionRecapApprovisionnementService extends HttpServlet {
         request.setAttribute("approvisionnements", approvisionnements);
         request.getRequestDispatcher("/jsp/recapCommandesApprovisionnement.jsp").forward(request, response);
     }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Object[]> approvisionnements = approvisionnementDAO.getAllApprovisionnements();
+        request.setAttribute("approvisionnements", approvisionnements);
+        request.getRequestDispatcher("/jsp/recapCommandesApprovisionnement.jsp").forward(request, response);
+    }
 }

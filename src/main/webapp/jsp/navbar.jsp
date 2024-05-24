@@ -11,6 +11,8 @@
 					<li class="navbar-item"><a href="central?type_action=gestionProduit" class="navbar-link">Gestion des produits</a></li>
 					<li class="navbar-item"><a href="central?type_action=gestionStock" class="navbar-link">Gestion du stock</a></li>
 					<li class="navbar-item"><a href="central?type_action=habitudesConsommation" class="navbar-link">Statistiques</a></li>
+					<li class="navbar-item"><a href="central?type_action=approvisionnements" class="navbar-link">Approvisionnements</a></li>
+					
 				</c:if>
 				<c:if test="${requestScope.categorie == 'PREPARATEUR'}">
 					<li class="navbar-item"><a
