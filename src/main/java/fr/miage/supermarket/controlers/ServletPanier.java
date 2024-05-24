@@ -275,7 +275,7 @@ public class ServletPanier extends HttpServlet {
 		//Pour tous les produits du panier, on décrémente le stock du magasin
 		StockDAO stockDAO = new StockDAO();
 		for (Entry<String, ProduitPanier> entry : panier.getPanier().entrySet()) {
-			stockDAO.retirerProduitCommandesStock(entry.getValue().getEan(), magasinId, entry.getValue().getQuantite());
+			stockDAO.retirerProduitCommandesStock(entry.getValue().getEan(), magasinId, entry.getValue().getQuantite(), date);
 		}
 		
 		return commandeDAO.creerOuMajCommande(commande);

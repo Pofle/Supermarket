@@ -60,6 +60,13 @@ public class LinkListeProduitDAO {
                 "from LinkListeProduit where shoppingList.id = :listId", LinkListeProduit.class);
             query.setParameter("listId", listeId);
             linkListeProduits = query.list();
+            
+            for (LinkListeProduit link : linkListeProduits) {
+                if (link.getQuantite() == null) {
+                    link.setQuantite(0);
+                }
+            }
+            
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();

@@ -40,12 +40,17 @@ function generateMemoButtons() {
 /** Appel de la fonction de génération au chargement de la page */ 
 window.onload = generateMemoButtons;
 
+var id = null
+
 /**
  * Fonction pour charger le contenu de la modal memo
  */
 function chargerMemo(listeId) {
-    //log de controle
+    // Log de contrôle
     console.log("ID reçu pour afficher la modale memo : " + listeId);
+	id = listeId;
+    // Mettre à jour l'input hidden avec l'ID de la liste de courses
+    document.getElementById('listeIdInput').value = listeId;
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "GenerationMemoXml?listeId=" + listeId);
@@ -59,7 +64,6 @@ function chargerMemo(listeId) {
             // Sélectionne le corps de la modale
             var modalBody = document.querySelector('#modalMemo .modal-body ul');
             modalBody.innerHTML = ''; // Vide le contenu actuel
-            
 
             // Parcours les éléments XML pour créer les éléments HTML
             var memoNodes = xmlDoc.querySelectorAll('memo');
@@ -77,7 +81,7 @@ function chargerMemo(listeId) {
             var newForm = document.createElement('form');
             newForm.id = "addMemoForm";
             newForm.innerHTML = `
-            	<li>
+                <li>
                     <input type="hidden" name="id_memo" value="">
                     <input type="text" name="newLibelle" id="newLibelle" required>
                     <img src="recupererImage?cheminImage=icons/addLibelle_icon.png" data-liste-id="${listeId}" onclick="ajouterInputLibelle()" class="btn-AddInput" title="Ajouter une ligne">
@@ -109,11 +113,9 @@ function chargerMemo(listeId) {
     xhr.send();
 }
 
-function conversionMemos() {
-   //document.getElementById('convertToProductsBtn').addEventListener('click', function() {
+function conversionMemos() {	
 	var convertToProductsBtn = document.getElementById('convertToProductsBtn');
    convertToProductsBtn.addEventListener('click', function() {
-    // Récupérer les libellés des <p>
     var libelles = [];
     var lis = document.querySelectorAll('#modalMemo .modal-body p');
     lis.forEach(function(p) {
@@ -127,7 +129,7 @@ function conversionMemos() {
     // Créer un formulaire dynamique
     var form = document.createElement('form');
     form.setAttribute('action', 'ServletConversionMemoProduit');
-    form.setAttribute('method', 'post');
+    form.setAttribute('method', 'GET');
     form.style.display = 'none'; // Ne pas afficher le formulaire sur la page
 
     // Créer un input pour chaque libellé
@@ -138,14 +140,17 @@ function conversionMemos() {
         input.setAttribute('value', libelle);
         form.appendChild(input);
     });
+    
+    // Ajouter l'ID de la liste de courses
+        var listeId = document.getElementById('listeIdInput').value;
+        var listeIdInput = document.createElement('input');
+        listeIdInput.setAttribute('type', 'hidden');
+        listeIdInput.setAttribute('name', 'listeId');
+        listeIdInput.setAttribute('value', id);
+        form.appendChild(listeIdInput);
 
-    // Ajouter le formulaire à la page
     document.body.appendChild(form);
-
-    // Soumettre le formulaire
     form.submit();
-
-    // Supprimer le formulaire après soumission
     form.remove();
 });
 }

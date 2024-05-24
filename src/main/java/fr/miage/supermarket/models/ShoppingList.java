@@ -124,7 +124,15 @@ public class ShoppingList {
         this.memos = memos;
     }
     
-    /**
+    public List<Produit> getProduits() {
+		return produits;
+	}
+
+	public void setProduits(List<Produit> produits) {
+		this.produits = produits;
+	}
+
+	/**
      * Methode pour ajouter l'objet memo 
      * @param memo
      * @author Pauline

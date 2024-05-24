@@ -39,8 +39,6 @@ public class RecupererProduits extends HttpServlet {
                     promotionsDisponibles.add(prom);
                 }
             }
-
-            request.setAttribute("categorie", CategorieCompte.GESTIONNAIRE.name());
             request.setAttribute("produit", produit);
             request.setAttribute("promotions", promotionsDisponibles);
             request.getRequestDispatcher("/jsp/detailProduit.jsp").forward(request, response);
