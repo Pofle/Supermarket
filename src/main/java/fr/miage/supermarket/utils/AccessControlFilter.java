@@ -29,12 +29,7 @@ public class AccessControlFilter implements Filter {
 
 		HttpSession session = servletRequest.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
-
-		String uri = servletRequest.getRequestURI();
-
-		String contextPath = servletRequest.getContextPath();
-		String pathInfo = uri.substring(contextPath.length());
-
+		
 		CategorieCompte categorieCompte = CategorieCompte.VISITEUR;
 
 		if (user != null) {
