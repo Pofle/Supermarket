@@ -166,3 +166,27 @@ input[type="number"] {
     margin-right: 10px;
 }
 
+/* Style pour la modale Memo */
+
+#modalMemo .modal-body ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding-left: 20px;
+}
+
+
+#modalMemo .modal-body ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#modalMemo .modal-body ul li p {
+    margin: 0;
+    flex-grow: 1;
+}
+
+#modalMemo .modal-body ul li img {
+    margin-left: 10px; /* Espacement entre le texte et l'image */
+}
