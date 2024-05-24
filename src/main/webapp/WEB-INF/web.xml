@@ -408,7 +408,25 @@
     	<servlet-name>GestionConversionMemoService</servlet-name>
     	<url-pattern>/confirmationConversionMemo</url-pattern>
     </servlet-mapping>
-    <!-- Welcome File List -->
+   
+	<servlet-mapping>
+		<servlet-name>ServletGestionMemo</servlet-name>
+		<url-pattern>/ServletGestionMemo</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ServletConversionMemoProduit</servlet-name>
+		<url-pattern>/ServletConversionMemoProduit</url-pattern>
+	</servlet-mapping>
+    
+    <filter>
+		<filter-name>AccessControlFilter</filter-name>
+		<filter-class>fr.miage.supermarket.utils.AccessControlFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AccessControlFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	 <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>supermarket</welcome-file>
     </welcome-file-list>

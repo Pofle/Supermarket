@@ -299,11 +299,12 @@ document.addEventListener("DOMContentLoaded", function() {
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onload = function() {
             if (xhr.status === 200) {
-                alert(xhr.responseText);
+                alert("Votre commande a bien été enregistrée");
+                location.reload();
             } else {
                 const responseXML = xhr.responseXML;
                 if (!responseXML) {
-                    alert("Une erreur est survenue lors de la validation du panier.");
+                    alert(xhr.responseText);
                     return;
                 } else {
                     $('#exampleModal').modal('hide');
