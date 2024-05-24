@@ -2,4 +2,5 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="css/navbar.css" rel="stylesheet" type="text/css" />
+<!-- <link href="css/navbar.css" rel="stylesheet" type="text/css" /> -->
+<jsp:include page="/jsp/navbar.jsp"/>
