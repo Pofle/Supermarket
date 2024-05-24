@@ -1,8 +1,14 @@
 package fr.miage.supermarket.controlers;
 
+import fr.miage.supermarket.models.Commande;
+import fr.miage.supermarket.models.Memo;
+
+import java.io.BufferedWriter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.List;
@@ -19,18 +25,20 @@ import jakarta.xml.bind.Marshaller;
 
 import fr.miage.supermarket.dao.LinkListeProduitDAO;
 import fr.miage.supermarket.dao.MemoDAO;
+import fr.miage.supermarket.dao.CommandeDAO;
+//import org.hibernate.mapping.List;
+import fr.miage.supermarket.dao.MemoDAO;
 import fr.miage.supermarket.dao.ShoppingListDAO;
 import fr.miage.supermarket.models.CategorieCompte;
 import fr.miage.supermarket.models.LinkListeProduit;
 import fr.miage.supermarket.models.Memo;
 import fr.miage.supermarket.models.ShoppingList;
-import fr.miage.supermarket.utils.ListWrapper;
 import fr.miage.supermarket.models.Utilisateur;
 
 
 /**
  * Servlet principale qui implemente la classe ServletDispatcher
- *
+ * @author EricB & AlexP
  */
 public class ServletDispatcher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -108,11 +116,8 @@ public class ServletDispatcher extends HttpServlet {
 			case "gestionStock":
 				url = "stocks";
 				break;
-			case "gestionCommande":
-				url = "gestionCommande";
-				break;
-			case "statistiques":
-				url = "statistiques";
+			case "habitudesConsommation":
+				url = "habitudesConsommation";
 				break;
 			default:
 				url = "accueil";
@@ -123,6 +128,7 @@ public class ServletDispatcher extends HttpServlet {
 	
 	/**
 	 * Gère les fonctionnalités spécifiques aux préparateurs.
+	 * @author RR
 	 * @param action L'action à effectuer
 	 * @param request L'objet HttpServletRequest contenant la requête
 	 * @param response L'objet HttpServletResponse contenant la réponse envoyée
@@ -137,16 +143,17 @@ public class ServletDispatcher extends HttpServlet {
 			url = "accueil";
 		else {
 			switch (action) {
-			case "preparationPanier":
-				url = "preparationPanier";
+			case "listePaniers":
+				url = "listePaniers";
 				break;
 			default:
 				url = "accueil";
 			}
 		}
+
 		request.getRequestDispatcher(url).forward(request, response);
 	}
-
+	
 	/**
 	 * Gère les fonctionnalités par défaut pour les visiteurs.
 	 * @param action L'action à effectuer
@@ -186,6 +193,9 @@ public class ServletDispatcher extends HttpServlet {
             case "panier":
                 url = "panier";
                 break;
+            case "nosRayons":
+            	url = "nosRayons";
+            	break;
 			default:
 				url = "accueil";
 			
@@ -231,6 +241,7 @@ public class ServletDispatcher extends HttpServlet {
 					 e.printStackTrace();
 				}
 				break;
+
 				
 			case "rayons":
                 url = "rayons";
@@ -246,6 +257,9 @@ public class ServletDispatcher extends HttpServlet {
                 break;
             case "habitudesConsommation":
             	url = "habitudesConsommation";
+            	break;
+            case "nosRayons":
+            	url = "nosRayons";
             	break;
 			default:
 				url = "accueil";

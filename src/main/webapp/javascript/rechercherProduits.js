@@ -1,101 +1,64 @@
-products = [];
+let products = [];
 
-/**
- * Création d'une carte de produit et ajout dans le dom
- */
-function createProductCard(product) {
-	const articleCard = document.createElement('div');
-	articleCard.classList.add('article-card');
+function creerCarteProduit(product) {
+	const prixKilo = !isNaN(product.poids) ? `${(product.prix * 1000 / product.poids).toFixed(2)}€/kg` : '';
 
-	const link = document.createElement('a');
-	link.href = `/SupermarketG3/detailProduit?ean=${product.ean}`;
+	const prixPromotion = !isNaN(Number(product.tauxPromotion)) ? (product.prix * (1 - Number(product.tauxPromotion) / 100)).toFixed(2) : null;
+	const prixPromotionKilo = !isNaN(Number(product.tauxPromotion)) && !isNaN(product.poids) ?
+		((prixPromotion * 1000 / product.poids)).toFixed(2) + '€/kg' : null;
 
-	const productInfo = document.createElement('div');
-	productInfo.classList.add('product-info');
+	const cardHTML = `
+ 	<div class="card border rounded shadow-sm mb-3 custom-card">
+        <div class="card-body p-3">
+            <h6 class="card-title">${product.libelle} 
+            ${prixPromotion ? `<span class="badge badge-danger ml-2">${Number(product.tauxPromotion).toFixed(2)}%</span>` : ''}
+            </h6> 
+            <p class="card-text">
+                ${prixPromotion ? `<del>${product.prix.toFixed(2)}€</del>` : product.prix.toFixed(2)}€
+                ${prixPromotion ? `<span class="font-weight-bold text-danger ml-2">${prixPromotion}€</span>` : ''}
+                ${prixKilo && !prixPromotionKilo ? `<span class="badge badge-success ml-2 bg-secondary">${prixKilo}</span>` : ''}
+                ${prixPromotionKilo ? `<span class="badge badge-success bg-secondary">${prixKilo ? `<del>${prixKilo}</del>` : ''} ${prixPromotionKilo}</span>` : ''}
+            </p>
+            <span class="badge badge-success">${product.conditionnement ? `<span>${product.conditionnement}</span>` : ''}</span> <small class="text-muted">Nutriscore: ${product.nutriscore}</small>
+            ${product.categorie ? `<p class="card-text m-0"><small class="text-muted">Catégorie: ${product.categorie}</small></p>` : ''}
+            ${product.rayon ? `<p class="card-text m-0"><small class="text-muted">Rayon: ${product.rayon}</small></p>` : ''}
+        </div>
+    </div>`;
 
-	const productImage = document.createElement('div');
-	productImage.classList.add('product-image');
-	const img = document.createElement('img');
-	img.src = `/SupermarketG3/recupererImage?cheminImage=${encodeURIComponent(product.vignetteBase64)}`;
-	img.classList.add('image');
-	productImage.appendChild(img);
 
-	const productDetails = document.createElement('div');
-	productDetails.classList.add('product-details');
 
-	const price = document.createElement('p');
-	price.classList.add('price');
-	price.textContent = `${product.prix.toFixed(2)}€`;
-	productDetails.appendChild(price);
-
-	const libelleMarque = document.createElement('p');
-	libelleMarque.classList.add('libelle-marque');
-	libelleMarque.textContent = `${product.libelle} - ${product.marque}`;
-	productDetails.appendChild(libelleMarque);
-
-	const additionalInfo = document.createElement('p');
-	additionalInfo.classList.add('additional-info');
-	if (product.conditionnement) {
-		additionalInfo.textContent = product.quantiteConditionnement + " " + product.conditionnement;
-	} else {
-		const prixKilo = (product.prix * 1000 / product.poids).toFixed(2);
-		additionalInfo.textContent = `${product.poids}g - ${prixKilo}€/kg`;
-	}
-	productDetails.appendChild(additionalInfo);
-
-	const nutriscoreP = document.createElement('p');
-	nutriscoreP.classList.add('nutriscore');
-	nutriscoreP.textContent = `Nutriscore: ${product.nutriscore}`;
-	productDetails.appendChild(nutriscoreP);
-
-	if (product.categorie) {
-		const categorieP = document.createElement('p');
-		categorieP.classList.add('categorie');
-		categorieP.textContent = `Catégorie: ${product.categorie}`
-		productDetails.appendChild(categorieP);
-	}
-
-	if (product.rayon) {
-		const rayonP = document.createElement('p');
-		rayonP.classList.add('rayon');
-		rayonP.textContent = `Rayon: ${product.rayon}`;
-		productDetails.appendChild(rayonP);
-	}
-
-	const boutonAjouterPanier = document.createElement("div");
-	boutonAjouterPanier.innerHTML = svgCaddie;
-	boutonAjouterPanier.className = 'ajouterpanier-bottom-card';
-	console.log(svgCaddie);
-	boutonAjouterPanier.addEventListener('click', () => {
-		ajouterProduit(product.ean);
-	})
-
-	productInfo.appendChild(productImage);
-	productInfo.appendChild(productDetails);
-
-	link.appendChild(productInfo);
-	articleCard.appendChild(link);
-	articleCard.appendChild(boutonAjouterPanier);
-
-	return articleCard;
+	const tempDiv = document.createElement('div');
+	tempDiv.innerHTML = cardHTML.trim();
+	return tempDiv.firstChild;
 }
 
-/**
- * Remplace les produits déjà apparaissant afin de mettre les nouveaux produits retournés par le service
- */
-function displayProducts(products, containerId, svg) {
+function afficherProduits(products, containerId) {
 	const container = document.getElementById(containerId);
 	container.innerHTML = '';
 
 	products.forEach(product => {
-		const productCard = createProductCard(product, svg);
-		container.appendChild(productCard);
+		const productCard = creerCarteProduit(product);
+		const colDiv = document.createElement('div');
+		colDiv.classList.add('col-md-3', 'mb-4');
+		colDiv.innerHTML = `
+		
+            <div class="card shadow-sm custom-card">
+            <a href=detailProduit?ean=${product.ean} class="product-link">
+                <img src="/SupermarketG3/recupererImage?cheminImage=${encodeURIComponent(product.vignetteBase64)}" class="card-img-top rounded-top" alt="Image du produit">
+                <div class="card-body">
+                    ${productCard.innerHTML}
+                </div>
+                </a>
+                <button class="btn btn-primary btn-sm ajouterpanier-bottom-card mt-auto" onclick="ajouterProduit('${product.ean}')">
+            Ajouter au panier
+        </button>
+            </div>
+            
+        `;
+		container.appendChild(colDiv);
 	});
 }
 
-/**
- * Charger les produits à partir du XML retourné
- */
 function parseProductsFromXML(xml) {
 	const produits = xml.querySelectorAll('items');
 	return Array.from(produits).map(produit => {
@@ -113,17 +76,11 @@ function parseProductsFromXML(xml) {
 		const rayonElement = produit.querySelector('rayon');
 		const rayon = rayonElement ? rayonElement.querySelector('libelle').textContent : null;
 		const quantiteCommandee = produit.querySelector('quantiteCommandee').textContent;
+		const tauxPromotion = produit.querySelector('tauxPromotion')?.textContent;
 
-		return { ean, vignetteBase64, prix, libelle, marque, conditionnement, poids, nutriscore, quantiteConditionnement, categorie, rayon, quantiteCommandee };
+
+		return { ean, vignetteBase64, prix, libelle, marque, conditionnement, poids, nutriscore, quantiteConditionnement, categorie, rayon, quantiteCommandee, tauxPromotion };
 	});
-}
-
-function chargerSVG(url, callback) {
-	fetch(url)
-		.then(response => response.text())
-		.then(svgText => {
-			callback(svgText);
-		})
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -131,76 +88,33 @@ document.addEventListener("DOMContentLoaded", function() {
 		.then(response => response.text())
 		.then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
 		.then(xml => {
-			chargerSVG('recupererImage?cheminImage=caddie_ajout.svg', function(svgText) {
-				svgCaddie = svgText;
-				products = parseProductsFromXML(xml);
-				displayProducts(products, 'article-container', svgCaddie);
-			});
+			products = parseProductsFromXML(xml);
+			afficherProduits(products, 'article-container');
 		})
 		.catch(error => console.error('Erreur:', error));
 
-
-
-	fetch('categories')
-		.then(response => response.text())
-		.then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
-		.then(xml => {
-			const categories = xml.querySelectorAll('items');
-			const categorieSelect = document.getElementById('categorie-select');
-			categories.forEach(categorie => {
-				const libelle = categorie.querySelector('libelle').textContent;
-				const option = document.createElement('option');
-				option.value = libelle;
-				option.textContent = libelle;
-				categorieSelect.appendChild(option);
-			});
-		})
-		.catch(error => console.error('Erreur lors du chargement des catégories:', error));
-
-	fetch('rayons')
-		.then(response => response.text())
-		.then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
-		.then(xml => {
-			const rayons = xml.querySelectorAll('items');
-			const rayonSelect = document.getElementById('rayon-select');
-			rayons.forEach(rayon => {
-				const libelle = rayon.querySelector('libelle').textContent;
-				const option = document.createElement('option');
-				option.value = libelle;
-				option.textContent = libelle;
-				rayonSelect.appendChild(option);
-			});
-		})
-		.catch(error => console.error('Erreur lors du chargement des rayons:', error));
-
-	const categorieSelect = document.getElementById('categorie-select');
-	const rayonSelect = document.getElementById('rayon-select');
 	const searchBar = document.getElementById('search-bar');
+	const sortOptions = document.getElementById('sort-options');
 
-	categorieSelect.addEventListener('change', handleFilterChange);
-	rayonSelect.addEventListener('change', handleFilterChange);
 	searchBar.addEventListener('input', handleFilterChange);
+	sortOptions.addEventListener('change', handleFilterChange);
 
 	function handleFilterChange() {
-		const selectedCategories = Array.from(categorieSelect.selectedOptions).map(option => option.value);
-		const selectedRayons = Array.from(rayonSelect.selectedOptions).map(option => option.value);
-		const searchText = searchBar.value.trim();
+		const searchText = searchBar.value.trim().toLowerCase();
+		const sortValue = sortOptions.value;
 
-		const filteredProducts = products.filter(product => {
-			if (selectedCategories.length > 0 && !selectedCategories.includes(product.categorie)) {
-				return false;
-			}
-			if (selectedRayons.length > 0 && !selectedRayons.includes(product.rayon)) {
-				return false;
-			}
-			if (searchText !== '' && !product.libelle.toLowerCase().includes(searchText)) {
-				return false;
-			}
-			return true;
+		let filteredProducts = products.filter(product => {
+			return searchText === '' || product.libelle.toLowerCase().includes(searchText);
 		});
 
-		const sortedProducts = filteredProducts.sort((a, b) => b.quantiteCommandee - a.quantiteCommandee);
+		if (sortValue === 'prixKilo-asc') {
+			filteredProducts.sort((a, b) => (a.prix * 1000 / a.poids) - (b.prix * 1000 / b.poids));
+		} else if (sortValue === 'prixKilo-desc') {
+			filteredProducts.sort((a, b) => (b.prix * 1000 / b.poids) - (a.prix * 1000 / a.poids));
+		} else {
+			filteredProducts.sort((a, b) => b.quantiteCommandee - a.quantiteCommandee);
+		}
 
-		displayProducts(sortedProducts, 'article-container');
+		afficherProduits(filteredProducts, 'article-container');
 	}
 });

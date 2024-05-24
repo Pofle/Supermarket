@@ -34,11 +34,13 @@ public class ServletInscription extends HttpServlet {
         String nom = request.getParameter("nom").trim();
         String mail = request.getParameter("mail").trim();
         String password = request.getParameter("password").trim();
+        boolean personnalisation = request.getParameter("personnalisation") != null;
         
         //Création d'une instance d'utilisateur, vérification de la disponibilité du mail
         Utilisateur nouvelUtilisateur = new Utilisateur();
         UtilisateurDAO user = new UtilisateurDAO();
-        if (user.getUtilisateurByMail(mail)==null) {
+        System.out.println(user.getUtilisateurByMail(mail));
+        if (user.getUtilisateurByMail(mail) == null) {
         	
         	//Attribution des attributs et insertion en BDD
         	nouvelUtilisateur.setPrenom(prenom);
@@ -47,6 +49,7 @@ public class ServletInscription extends HttpServlet {
         	String hashedPassword = user.hacherMotdePasse(password);
         	nouvelUtilisateur.setMotdepasse(hashedPassword);
         	nouvelUtilisateur.setRole(CategorieCompte.UTILISATEUR);
+        	nouvelUtilisateur.setPersonnalisation(personnalisation);
         	user.insertUtilisateur(nouvelUtilisateur);
         	request.setAttribute("message", "Inscription réussie! Bienvenue "+prenom+" "+nom+".");
         	HttpSession session = request.getSession();
