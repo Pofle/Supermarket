@@ -7,11 +7,12 @@
     <jsp:include page="/jsp/header.jsp">
 		<jsp:param name="title" value="Gestion du Stock" />
 	</jsp:include>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Gestion des Stocks</title>
     <link href="css/stock-produit.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<%@ include file="navbar.jsp"%>
+	<jsp:include page="/jsp/navbar.jsp" />
 	<c:set var="todayDate" value="${todayDate}" />
     <h1>Stocks des produits</h1>
     
