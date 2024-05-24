@@ -227,6 +227,12 @@
     	<description></description>
     	<servlet-class>fr.miage.supermarket.controlers.ServletConversionMemoProduit</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>GestionConversionMemoService</servlet-name>
+    	<display-name>GestionConversionMemoService</display-name>
+    	<description></description>
+    	<servlet-class>fr.miage.supermarket.controlers.GestionConversionMemoService</servlet-class>
+    </servlet>
    
     <servlet>
     	<servlet-name>ServletRayons</servlet-name>
@@ -398,6 +404,10 @@
 		<servlet-name>GestionChoixPanierServlet</servlet-name>
 		<url-pattern>/gestionChoixPanier</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>GestionConversionMemoService</servlet-name>
+    	<url-pattern>/confirmationConversionMemo</url-pattern>
+    </servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>supermarket</welcome-file>

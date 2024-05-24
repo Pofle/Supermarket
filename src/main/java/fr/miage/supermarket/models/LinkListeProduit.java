@@ -31,7 +31,7 @@ public class LinkListeProduit {
 	    private Produit produit;
 
 	    @Column(name = "QUANTITE")
-	    private int quantite;
+	    private Integer quantite;
 
 	    /**
 	     * Constructeur par defaut
@@ -73,7 +73,7 @@ public class LinkListeProduit {
 		 * @return
 		 * @author Pauline
 		 */
-		public int getQuantite() {
+		public Integer getQuantite() {
 			return quantite;
 		}	
 		/**
@@ -105,7 +105,7 @@ public class LinkListeProduit {
 		 * @param quantite
 		 * @author Pauline
 		 */
-		public void setQuantite(int quantite) {
+		public void setQuantite(Integer quantite) {
 			this.quantite = quantite;
 		}
 	    

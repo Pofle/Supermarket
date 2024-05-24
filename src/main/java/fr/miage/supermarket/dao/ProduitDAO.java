@@ -28,6 +28,12 @@ public class ProduitDAO {
     public ProduitDAO() {
         this.sessionFactory = HibernateUtil.getSessionAnnotationFactory();
     }
+    
+    public Produit find(String ean) {
+    	try (Session session = sessionFactory.openSession()) {
+    		return session.find(Produit.class, ean);
+    	}
+    }
 	
 	/**
 	 * Enregistre une liste de produits en base

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,58 +20,38 @@ import fr.miage.supermarket.models.Produit;
  */
 public class ServletConversionMemoProduit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String XML_FILE_PATH = "C:/Users/Pauline/Cours/Projet/produits_memo.xml";
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ServletConversionMemoProduit() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	// Récupérer les mémos à convertir depuis les paramètres du formulaire
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<String> memosList = new ArrayList<>();
-        //Log de controle
         request.getParameterMap().forEach((key, values) -> {
             if (key.startsWith("libelle_")) {
-                System.out.println("Received memo parameter: " + key + " = " + values[0]);
                 memosList.add(values[0]);
             }
         });
-        //Fin
 
-     // Récupérer tous les paramètres dont les noms commencent par "libelle_"
-        request.getParameterMap().forEach((key, values) -> {
-            if (key.startsWith("libelle_")) {
-                memosList.add(values[0]);
-            }
-        });
         if (memosList.isEmpty()) {
-            System.err.println("No memos received for conversion.");
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No memos received for conversion.");
             return;
         }
-        System.out.println("Memos reçus pour conversion: " + memosList);
         
-        List<Produit> produits = MemoDAO.rechercherProduitsPourMemos(memosList);
-
-
-        // Définir le type de contenu de la réponse comme XML
-        response.setContentType("application/xml");
-        response.setCharacterEncoding("UTF-8");
-
-        /// Construire le contenu XML pour les produits
-        String xml_MemoProduits = construireXMLResponse(produits);
-
-        // Enregistrer la réponse XML dans un fichier
-        enregistrerXMLDansFichier(xml_MemoProduits, XML_FILE_PATH);
-        System.out.println("XML_MemoProduit generated");
-
-        // Envoyer le XML dans la requête et rediriger vers le JSP
-        request.setAttribute("memoToProduits", xml_MemoProduits);
-        request.getRequestDispatcher("conversionEnProduits").forward(request, response);
+        System.out.println("Memos reçus pour conversion: " + memosList);
+        HashMap<String, List<Produit>> mapListProduits = new HashMap<>();
+        for(String memo: memosList) {
+        	List<Produit> produits = MemoDAO.rechercherProduitsPourMemo(memo);
+        	mapListProduits.put(memo, produits);
+        }
+        
+        request.setAttribute("produitsMemos", mapListProduits);
+        request.setAttribute("listeId", request.getParameter("listeId"));
+        
+        request.getRequestDispatcher("/jsp/conversionEnProduits.jsp").forward(request, response);
     }
 
     private String construireXMLResponse(List<Produit> produits) {
@@ -92,11 +73,5 @@ public class ServletConversionMemoProduit extends HttpServlet {
         }
         xmlBuilder.append("</produits>");
         return xmlBuilder.toString();
-    }
-    
-    private void enregistrerXMLDansFichier(String xmlContent, String filePath) throws IOException {
-        try (PrintWriter writer = new PrintWriter(filePath)) {
-            writer.print(xmlContent);
-        }
     }
 }
