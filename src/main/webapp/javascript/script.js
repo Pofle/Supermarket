@@ -62,7 +62,7 @@ function chargerMemo(listeId) {
                 return;
             }
             // Sélectionne le corps de la modale
-            var modalBody = document.querySelector('#modalMemo .modal-body');
+            var modalBody = document.querySelector('#modalMemo .modal-body ul');
             modalBody.innerHTML = ''; // Vide le contenu actuel
 
             // Parcours les éléments XML pour créer les éléments HTML
@@ -72,7 +72,7 @@ function chargerMemo(listeId) {
                 var libelle = memoNode.querySelector('libelle').textContent;
                 var li = document.createElement('li');
                 li.innerHTML = `
-                    <p>${libelle}</p>
+                   	<p>${libelle}</p>
                     <a href="#" onclick="supprimerMemo(${idMemo}, ${listeId}); return false;">
                     <img src="recupererImage?cheminImage=icons/delete_icon.png" class="btn-DeleteProduit" title="Supprimer la ligne"></a>`;
                 modalBody.appendChild(li);
